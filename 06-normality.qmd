@@ -1,0 +1,265 @@
+# More on the Classical Model {#sec-normality}
+
+{{< include _setupcode.qmd >}}
+
+In the previous chapter, we introduced the classical simple linear regression model (@def-classical-simple-regression).  For a sample $\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)$, the distributional model for the response under the classical model is
+
+$$Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)$$
+
+where $\beta_0$, $\beta_1$, and $\sigma^2$ are unknown parameters.  As we have seen, this embeds four conditions on the distribution --- that the mean is correctly specified, that the observations are independent of one another, that the variance is constant, and that the Normal distribution is appropriate.  While each of these plays a role in determining the sampling distribution of the parameter estimates, the impact of the Normality assumption is unique.  The moment we remove the assumption of Normality, the sampling distribution is no longer tractable analytically.  
+
+In this chapter, we examine some additional results associated with the Normal distribution that are instrumental in classical theory of the linear model.
+
+
+## Linear Combinations
+In general, combining random variables does not yield a predictable result; the Normal distribution is a notable exception.  The following theorem builds on an example seen earlier in the text.
+
+:::{#thm-normal-linear-combination}
+## Linear Combination of Independent Normal Random Variables
+Let $Y_1, Y_2, \dotsc, Y_n$ be independent random variables such that
+
+$$Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\mu_i, \sigma^2_i\right).$$
+
+Let $a_1, a_2, \dotsc, a_n \in \mathbb{R}$ be known constants.  Then,
+
+$$\sum_{i=1}^{n} a_i Y_i \sim N\left(\sum_{i=1}^{n} a_i \mu_i, \sum_{i=1}^{n} a_i \sigma^2_i\right).$$
+:::
+
+:::{.proof}
+Let $Z = \sum_{i=1}^{n} a_i Y_i$.  Then, observe that
+
+$$
+\begin{aligned}
+  M_Z(t) 
+    &= E\left(e^{tZ}\right) \\
+    &= E\left(e^{t \sum_{i=1}^{n} a_i Y_i}\right) \\
+    &= E\left(\prod_{i=1}^{n} e^{ta_i Y_i}\right) \\
+    &= \prod_{i=1}^{n} E\left(e^{t a_i Y_i}\right),
+\end{aligned}
+$$
+
+where the last line is a result of the random variables being independent of one another.  Note that we do not get a further simplification here because we are _not_ assuming that the random variables are identically distributed.  Looking up the form of the moment generating function for a Normal random variable and substituting that here, we have
+
+$$
+\begin{aligned}
+  M_Z(t) 
+    &= \prod_{i=1}^{n} E\left(e^{t a_i Y_i}\right) \\
+    &= \prod_{i=1}^{n} e^{\mu_i \left(t a_i\right) + \sigma_i^2 \left(t a_i\right)^2 / 2} \\
+    &= \exp\left\{\sum_{i=1}^{n} \mu_i t a_i + \frac{1}{2} \sum_{i=1}^{n} \sigma^2 t^2 a_i^2\right\} \\
+    &= \exp\left\{t \left(\sum_{i=1}^{n} a_i \mu_i\right) + \frac{t^2}{2} \left(\sum_{i=1}^{n} a_i^2 \sigma^2\right)\right\}.
+\end{aligned}
+$$
+
+We now recognize this as the form of an MGF of a Normal distribution with a mean of $\sum_{i=1}^{n} a_i \mu_i$ and a variance of $\sum_{i=1}^{n} a_i^2 \sigma^2$.  By the uniqueness of MGF's, we have the result.
+:::
+
+Why is @thm-normal-linear-combination so important?  It turns out that many of the statistics of interest that result from applying least squares are linear combinations of the response.  And, under the classical simple linear regression model, these responses are independent variates from a Normal distribution!
+
+We have already seen one of these results in an earlier chapter when examining the sampling distribution of the sample mean from a Normal distribution.  
+
+:::{#exm-slope-linear-combination}
+## Form of Slope from Simple Linear Regression
+Recall that the least squares estimate for the slope in a simple linear regression model is given by 
+
+$$\widehat{\beta}_1 = \frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)\left(Y_i - \bar{Y}\right)}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}.$$
+
+Show that this can be written as a linear combination of the responses.
+:::
+
+:::{.solution}
+Consider expanding the numerator to observe that
+
+$$
+\begin{aligned}
+  \sum_{i=1}^{n} \left(x_i - \bar{x}\right) \left(Y_i - \bar{Y}\right)
+    &= \sum_{i=1}^{n} \left(x_i - \bar{x}\right) Y_i - \sum_{i=1}^{n} \left(x_i - \bar{x}\right) \bar{Y} \\
+    &= \sum_{i=1}^{n} \left(x_i - \bar{x}\right) Y_i - n\bar{x}\bar{Y} + n\bar{x}\bar{Y} \\
+    &= \sum_{i=1}^{n} \left(x_i - \bar{x}\right) Y_i.
+\end{aligned}
+$$
+
+Now, substituting this into the definition of $\widehat{\beta}_1$, we are able to rewrite the least squares estimator of the slope as
+
+$$
+\begin{aligned}
+  \widehat{\beta}_1
+    &= \frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)\left(Y_i - \bar{Y}\right)}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2} \\
+    &= \frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right) Y_i}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}. 
+\end{aligned}
+$$
+
+Recognizing that the denominator is a constant with respect to the sum in the numerator, we can define
+
+$$a_i = \frac{x_i - \bar{x}}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}.$$
+
+Then, we have that
+
+$$\widehat{\beta}_1 = \sum_{i=1}^{n} a_i Y_i.$$
+:::
+
+The real power of recognizing that the least squares estimate of the slope is a linear combination of the responses is that we can apply @thm-normal-linear-combination.  Immediately, we have the sampling distribution of the least squares estimator of the slope:
+
+$$\widehat{\beta}_1 \sim N\left(\sum_{i=1}^{n} a_i \left(\beta_0 + \beta_1 x_i\right), \sigma^2 \sum_{i=1}^{n} a_i^2\right)$$
+
+where $a_i$ was defined in the solution to @exm-slope-linear-combination.  This reduces to
+
+$$\widehat{\beta}_1 \sim N\left(\beta_1, \sigma^2 \sum_{i=1}^{n} a_i^2\right).$$
+
+:::{.callout-note}
+Notice that since $\sum_{i=1}^{n} \left(x_i - \bar{x}\right) q = 0$ for any constant $q$, we have that $\sum_{i=1}^{n} a_i = 0$ and $\sum_{i=1}^{n} a_ix_i = 1$.  Further, we have that
+
+$$\sum_{i=1}^{n} a_i^2 = \frac{1}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}.$$
+:::
+
+We know from probability if $X \sim N\left(\mu, \sigma^2\right)$, then $(X - \mu)/\sigma) \sim N(0, 1)$.  So, it would seem that @exm-slope-linear-combination, and the resulting discussion, would suggest that
+
+$$\frac{\widehat{\beta}_1 - \beta_1}{\sqrt{\sigma^2 \sum_{i=1}^{n} a_i^2}} \sim N(0, 1),$$
+
+but in the previous chapter, we suggested using the t-distribution.  The difference is that in the above, it is assumed that $\sigma^2$ is known.  Estimating the parameter $\sigma^2$ impacts the sampling distribution.  
+
+:::{.callout-tip}
+## Big Idea
+When the sampling distribution of an estimator depends on unknown nuisance parameters, the estimation of those nuisance parameters impacts the sampling distribution of the estimator.
+:::
+
+
+## Results for Squares
+The previous section considered a linear combination of Normal random variables.  In this section, we explore a related result.
+
+:::{#thm-normal-chi-square}
+## Sum of Squared Normal Random Variables
+Let $Y_1, Y_2, \dotsc, Y_n \stackrel{\text{IID}}{\sim} N(0, 1)$.  Then,
+
+$$\sum_{i=1}^{n} Y_i^2 \sim \chi^2_n.$$
+:::
+
+As with previous proofs, this is best addressed through a moment generating function argument.
+
+:::{.proof}
+Let $Z = \sum_{i=1}^{n} Y_i^2$; then, observe that
+
+$$
+\begin{aligned}
+  M_Z(t)
+    &= E\left(e^{tZ}\right) \\
+    &= E\left(e^{t \sum_{i=1}^{n} Y_i^2}\right) \\
+    &= E\left(\prod_{i=1}^{n} e^{t Y_i^2}\right) \\
+    &= \prod_{i=1}^{n} E\left(e^{t Y_i^2}\right) \\
+    &= \left[M_{Y_1^2}(t)\right]^n
+\end{aligned}
+$$
+
+where line 4 is a result of independence and line 5 is a result of the random variables being identically distributed.  Unfortunately, we do not know the MGF of $Y_1^2$; so, we must first determine its distribution before proceeding.  This is best done through a transformation.  Observe that
+
+$$
+\begin{aligned}
+  F_{Y^2}(y) 
+    &= Pr\left(Y^2 \leq y\right) \\
+    &= Pr\left(-\sqrt{y} \leq Y \leq \sqrt{y}\right) \\
+    &= F_Y(\sqrt{y}) - F_Y(-\sqrt{y}).
+\end{aligned}
+$$
+
+And, since $Y \sim N(0, 1)$, we know the density function of $Y$; therefore,
+
+$$
+\begin{aligned}
+  f_{Y^2}(y) 
+    &= \frac{\partial}{\partial y} F_{Y^2}(y) \\
+    &= \frac{\partial}{\partial y} F_Y(\sqrt{y}) - \frac{\partial}{\partial y} F_Y(-\sqrt{y}) \\
+    &= f_Y(\sqrt{y}) (1/2) y^{-1/2} + f_Y(-\sqrt{y}) (1/2) y^{-1/2} \\
+    &= y^{-1/2} f_Y(\sqrt{y})
+\end{aligned}
+$$
+
+where the last line is based on the symmetry of the Standard Normal distribution.  Thus, we have that the density of $Y^2$ is given by
+
+$$\frac{1}{\sqrt{2\pi}} y^{-1/2} e^{-\frac{1}{2} y^2} = \frac{1}{2^{1/2} \Gamma(1/2)} y^{1/2 - 1} e^{-(1/2) y^2},$$
+
+where we have made use of the fact that $\Gamma(1/2) = \sqrt{\pi}$.  We recognize this as the density function of a $Gamma(1/2, 2)$ or equivalently a $\chi^2_1$ distribution.  We therefore use the MGF for this distribution to continue our previous derivation, giving
+
+$$
+\begin{aligned}
+  M_Z(t)
+    &= \left[M_{Y_1^2}(t)\right]^n \\
+    &= \left[(1 - 2t)^{-1/2}\right]^n \\
+    &= (1 - 2t)^{-n/2}
+\end{aligned}
+$$
+
+which we recognize as the MGF of a $\chi^2_n$ distribution.  By the uniqueness of moment generating functions, we have the result.
+:::
+
+
+## Relation to the F Distribution
+While this chapter has been focused on the Normal distribution, its presence in statistical analysis is often associated with other distributions (notably, the t-distribution, the Chi-Squared distribution, and the F-distribution).  We have already seen one way in which the Normal distribution is associated with the Chi-Squared distribution.  In this section, we establish the link between Chi-Squared distributions and the F-distribution.
+
+:::{#thm-F-distribution}
+## Relationship Between Chi-Squared Distribution and the F-Distribution
+Let $U$ and $V$ be independent Chi-Squared random variables with $\nu$ and $\eta$ degrees of freedom, respectively.  Then, $\frac{U/\nu}{V/\eta} \sim F_{\nu, \eta}$.
+:::
+
+Unlike previous results that relied on the MGF, this theorem requires that we perform a transformation.
+
+:::{.proof}
+Let $X = U/V$ and let $Y = V$.  We will find the joint density of $X$ and $Y$, and then integrate out $Y$ to derive the density of $X$.  Observe that
+
+$$
+\begin{aligned}
+  F_{X,Y}(x,y)
+    &= Pr(X \leq x, Y \leq y) \\
+    &= Pr(U/V \leq x, V \leq y) \\
+    &= Pr(U \leq Vx, V \leq y) \\
+    &= \int_{0}^{y} \int_{0}^{vx} f_{U,V}(u,v) du dv.
+\end{aligned}
+$$
+
+Since $U$ and $V$ are independent random variables, their joint density is easily given.  However, we are particularly interested in the joint density of $X$ and $Y$.  Therefore, we need only consider the derivative.  Observe that
+
+$$
+\begin{aligned}
+  f_{X,Y}(x,y) 
+    &= \frac{\partial^2}{\partial x \partial y} F_{X,Y}(x,y) \\
+    &= f_{U,V}(yx, y) y \\
+    &= \frac{1}{2^{\nu/2} \Gamma(\nu/2)} (yx)^{\nu/2-1} e^{-yx/2} \frac{1}{2^{\eta/2} \Gamma(\eta/2)} (y)^{\eta/2-1} e^{-y/2} y.
+\end{aligned}
+$$
+
+Therefore, we have the joint density of $X$ and $Y$.  We now integrate out $y$ to obtain the marginal density of $X$.  We have
+
+$$
+\begin{aligned}
+  f_X(x) 
+    &= \int_{0}^{\infty} f_{X,Y}(x,y) dy \\
+    &= x^{\nu/2 - 1} \frac{1}{\Gamma(\nu/2)\Gamma(\eta/2) 2^{(\eta + \nu)/2}} \int_{0}^{\infty} y^{(\nu + \eta)/2 - 1} e^{-y (1 + x)/2} dy \\
+    &= \frac{\left(x^{\nu/2 - 1}\right) \Gamma((\nu+\eta)/2)}{\Gamma(\nu/2)\Gamma(\eta/2) 2^{(\eta + \nu)/2} ((1+x)/2)^{(\nu + \eta)/2}} \int_{0}^{\infty} \frac{((1+x)/2)^{(\nu + \eta)/2}}{\Gamma((\nu + \eta)/2)} y^{(\nu + \eta)/2 - 1} e^{-y (1 + x)/2} dy.
+\end{aligned}
+$$
+
+We recognize that the integral is the density function of a Gamma distribution with shape parameter $(\nu + \eta)/2$ and rate parameter $(1 + x)/2$.  Since we are integrating over the entire support, the integral will go to 1.  This means the density of $X$ is given by
+
+$$\frac{\left(x^{\nu/2 - 1}\right) \Gamma((\nu+\eta)/2)}{\Gamma(\nu/2)\Gamma(\eta/2) 2^{(\eta + \nu)/2} ((1+x)/2)^{(\nu + \eta)/2}}.$$
+
+We can rewrite this density to be
+
+$$\frac{\Gamma((\nu + \eta)/2)}{\Gamma(\nu/2)\Gamma(\eta/2)} x^{\nu/2 - 1} \left(1 + x\right)^{-(\nu + \eta)/2}.$$
+
+Therefore, the density of $Z = \frac{U/\nu}{V/\eta} = (U/V)(\eta/\nu)$ is given by
+
+$$
+\begin{aligned}
+  f_Z(z)
+    &= \frac{\partial}{\partial z} F_Z(z) \\
+    &= \frac{\partial}{\partial z} Pr(U/V \leq (\nu/\eta) z) \\
+    &= \frac{\partial}{\partial z} F_X((\nu/\eta) z) \\
+    &= (\nu/\eta) f_X((\nu/\eta) z).
+\end{aligned}
+$$
+
+Finally, substituting in our expression for the density of $X$, we have
+
+$$\frac{\Gamma((\nu + \eta)/2)}{\Gamma(\nu/2)\Gamma(\eta/2)} \left(\frac{\nu}{\eta}\right)^{\nu/2} x^{\nu/2 - 1} \left(1 + x\frac{\nu}{\eta}\right)^{-(\nu + \eta)/2},$$
+
+which we recognize as the density of the F-distribution with $\nu$ numerator and $\eta$ denominator degrees of freedom.
+:::
+

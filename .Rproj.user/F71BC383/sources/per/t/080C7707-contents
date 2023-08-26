@@ -1,0 +1,54 @@
+project:
+  type: book
+  output-dir: 'docs'
+
+book:
+  title: 'Introduction to Statistical Theory'
+  output-file: 'ma382-text'
+  author: 'Eric M Reyes'
+  
+  downloads: [pdf]
+  reader-mode: true
+  search: true
+  
+  sidebar: 
+    style: docked
+    title: 'Intro Statistical Theory'
+    
+  
+  date: last-modified
+  date-format: '[Updated: ] DD MMMM YYYY'
+  
+  chapters:
+    - index.qmd
+    - 01-fundamentals.qmd
+    - 02-randomvariables.qmd
+    - 03-samplingdistributions.qmd
+    - 04-inference.qmd
+    - 05-regression.qmd
+    - 06-normality.qmd
+    - 07-location-scale.qmd
+    - references.qmd
+  appendices: 
+    - app-glossary.qmd
+
+bibliography: [refs382notes.bib, packages.bib]
+
+comments: 
+  hypothesis: false
+
+format:
+  html:
+    theme: cosmo
+    css: mystyles.css
+  pdf:
+    documentclass: scrreprt
+    keep-tex: true
+
+execute:
+  echo: false
+  warning: false
+  error: false
+  
+fig-align: center
+fig-cap-location: bottom

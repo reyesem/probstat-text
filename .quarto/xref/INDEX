@@ -1,0 +1,32 @@
+{
+  "index.qmd": {
+    "index.html": "ff07645d"
+  },
+  "01-fundamentals.qmd": {
+    "01-fundamentals.html": "2582fcab"
+  },
+  "02-randomvariables.qmd": {
+    "02-randomvariables.html": "968cdf8d"
+  },
+  "03-samplingdistributions.qmd": {
+    "03-samplingdistributions.html": "c1662a74"
+  },
+  "04-inference.qmd": {
+    "04-inference.html": "0ebe3af9"
+  },
+  "05-regression.qmd": {
+    "05-regression.html": "7abf1c8e"
+  },
+  "06-normality.qmd": {
+    "06-normality.html": "6b0a82b6"
+  },
+  "07-location-scale.qmd": {
+    "07-location-scale.html": "4ce21b1b"
+  },
+  "references.qmd": {
+    "references.html": "db9764ae"
+  },
+  "app-glossary.qmd": {
+    "app-glossary.html": "54b779ac"
+  }
+}

@@ -1,0 +1,38 @@
+# Glossary
+
+{{< include _setupcode.qmd >}}
+
+The following key terms were defined in the text; each term is presented with a link to where the term was first encountered in the text.
+
+```{r}
+#| label: create-glossary
+#| output: asis
+
+# Create a list of definitions from a QMD file.
+determine_terms <- function(x) {
+  defns <- repeat_block(x, pattern = ':::\\{#def-')
+  
+  tibble(
+    labels = get_terms(defns, 'reference'),
+    terms = get_terms(defns, 'title'),
+    defn = str_trim(get_terms(defns, 'text'))
+  )
+}
+
+
+# Obtain definitions from all files
+defns <- list.files() |>
+  str_subset(pattern = fixed('.qmd')) |>
+  str_subset(pattern = 'glossary', negate = TRUE) |>
+  map(~ determine_terms(read_lines(.x))) |>
+  list_rbind() |>
+  arrange(terms)
+
+
+# Create readable table
+for (i in 1:nrow(defns)) {
+  cat(defns$terms[i], ' (@', defns$labels[i], ') \n',
+      ': ', defns$defn[i], '\n\n', sep = '')
+}
+```
+

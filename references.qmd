@@ -1,0 +1,13 @@
+# References {.unnumbered}
+
+```{r}
+#| label: write-bib
+#| include: false
+
+# Automatically create a bib database for R packages
+knitr::write_bib(
+  c(.packages()), "packages.bib")
+```
+
+::: {#refs}
+:::

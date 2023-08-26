@@ -1,0 +1,831 @@
+"0","#| label: create-glossary"
+"0","#| output: asis"
+"0",""
+"0","# Create a list of definitions from a QMD file."
+"0","determine_terms <- function(x) {"
+"0","  defns <- repeat_block(x, pattern = ':::\\{#def-')"
+"0","  "
+"0","  tibble("
+"0","    labels = get_terms(defns, 'reference'),"
+"0","    terms = get_terms(defns, 'title'),"
+"0","    defn = str_trim(get_terms(defns, 'text'))"
+"0","  )"
+"0","}"
+"0",""
+"0",""
+"0","# Obtain definitions from all files"
+"0","defns <- list.files() |>"
+"0","  str_subset(pattern = fixed('.qmd')) |>"
+"0","  str_subset(pattern = 'glossary', negate = TRUE) |>"
+"0","  map(~ determine_terms(read_lines(.x))) |>"
+"0","  list_rbind() |>"
+"0","  arrange(terms)"
+"0",""
+"0",""
+"0","# Create readable table"
+"0","for (i in 1:nrow(defns)) {"
+"0","  cat(defns$terms[i], ' (@', defns$labels[i], ') \n',"
+"0","      ': ', defns$defn[i], '\n\n', sep = '')"
+"0","}"
+"1","Axioms of Probability"
+"1",""
+"1"," (@"
+"1",""
+"1","def-axioms"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $\mathcal{S}$ be the sample space of a random process.  Suppose that to each event $A$ within $\mathcal{S}$, a number denoted by $Pr(A)$ is associated with $A$.  If the map $Pr(\cdot)$ satisfies the following three axioms, then it is called a __probability__:
+
+  1. $Pr(A) \geq 0$
+  2. $Pr(\mathcal{S}) = 1$
+  3. If $\left\{A_1, A_2, \dotsc\right\}$ is a sequence of mutually exclusive events in $\mathcal{S}$, then
+  
+  $$Pr\left(\bigcup_{i = 1}^{\infty} A_i\right) = \sum_{i = 1}^{\infty} Pr\left(A_i\right).$$
+  
+
+
+$Pr(A)$ is said to be the ""probability of $A$"" or the ""probability $A$ occurs."""
+"1",""
+"1","
+
+"
+"1","Bernoulli Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-bernoulli-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a discrete random variable taking the value 0 or 1.  $X$ is said to have a Bernoulli distribution with density
+
+$$f(x) = \theta^x (1 - \theta)^{1 - x} \qquad x \in \{0, 1\},$$
+
+where $0 < \theta < 1$ is the probability that $X$ takes the value 1.
+
+- $E(X) = \theta$
+- $Var(X) = \theta(1 - \theta)$
+
+We write $X \sim Ber(\theta)$, which is read ""X follows a Bernoulli distribution with probability $\theta$."""
+"1",""
+"1","
+
+"
+"1","Binomial Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-binomial-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a discrete random variable taking integer values between 0 and $n$, inclusive.  $X$ is said to have a Binomial distribution with density
+
+$$f(x) = \begin{pmatrix}n \\ x\end{pmatrix} \theta^x (1 - \theta)^{1 - x} \qquad x \in \{0, 1, \dotsc, n\},$$
+
+where $0 < \theta < 1$ is the probability of a success on an individual trial.
+
+- $E(X) = n\theta$
+- $Var(X) = n\theta(1 - \theta)$
+
+We write $X \sim Bin(n, \theta)$, which is read ""X follows a Binomial distribution with parameters $n$ and $\theta$."""
+"1",""
+"1","
+
+"
+"1","Case-Resampling Bootstrap"
+"1",""
+"1"," (@"
+"1",""
+"1","def-case-bootstrap"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $Y_1, Y_2, \dotsc, Y_n$ be a random sample from an underlying population, and let $\theta$ represent a parameter of interest characterizing the underlying population.  Further, define $\widehat{\theta} = h(\mathbf{Y})$ be a statistic which estimates the parameter.  The case-resampling bootstrap algorithm proceeds as follows:
+
+  1. Take a random sample, with replacement, from the set $\left\{Y_1, Y_2, \dotsc, Y_n\right\}$ of size $n$.  Call these values $Y_1^*, Y_2^*, \dotsc, Y_n^*$.  This is known as a bootstrap resample.
+  2. Compute $\widehat{\theta}^* = h\left(\mathbf{Y}^*\right)$ and store this value.  This is known as a bootstrap statistic.
+  3. Repeat steps 1-2 $m$ times, for some large value of $m$ (say $m = 5000$).  Denote $\widehat{\theta}^*_j$ to be the bootstrap statistic from the $j$-th bootstrap resample.
+  
+The empirical distribution of $\widehat{\theta}_1^*, \widehat{\theta}_2^*, \dotsc, \widehat{\theta}_m^*$ will approximate the shape and spread of the sampling distribution of the statistic  $h(\mathbf{Y})$."
+"1",""
+"1","
+
+"
+"1","Chi-Square Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-chi-square-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a continuous random variable.  $X$ is said to have a Chi-Square distribution if the density is given by
+
+$$f(x) = \frac{1}{2^{\nu/2}\Gamma (\nu/2)}\;x^{\nu/2-1}e^{-x/2} \qquad x > 0,$$
+
+where $\nu > 0$ is the degrees of freedom.
+
+We write $X \sim \chi^2_{\nu}$, which is read ""X follows a Chi-Square distribution with $\nu$ degrees of freedom.""  The Chi-Square distribution is a special case of the Gamma distribution where $\alpha = \nu/2$ and $\beta = 2$."
+"1",""
+"1","
+
+"
+"1","Classical Simple Linear Regression"
+"1",""
+"1"," (@"
+"1",""
+"1","def-classical-simple-regression"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)$ be observations made on a sample of $n$ units.  Under the classical simple linear regression model, the distributional model for the response among the population is given by
+
+$$Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)$$
+
+where $\beta_0$, $\beta_1$, and $\sigma^2$ are unknown parameters."
+"1",""
+"1","
+
+"
+"1","Confidence Interval"
+"1",""
+"1"," (@"
+"1",""
+"1","def-confidence-interval"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Consider repeatedly taking samples $\mathbf{Y}$ of size $n$ from a population characterized by the parameter $\theta$.  The interval $\left(h_1(\mathbf{Y}), h_2(\mathbf{Y})\right)$ is said to be a $100c$% confidence interval if 
+
+$$Pr\left(h_1(\mathbf{Y}) \leq \theta \leq h_2(\mathbf{Y})\right) = c.$$"
+"1",""
+"1","
+
+"
+"1","Continuous and Discrete Random Variable"
+"1",""
+"1"," (@"
+"1",""
+"1","def-rvtypes"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","The random variable $X$ is said to be a discrete random variable if its corresponding support is countable.  The random variable $X$ is said to be a continuous random variable if the corresponding support is uncountable (such as an interval or a union of intervals on the real line)."
+"1",""
+"1","
+
+"
+"1","Cumulative Distribution Function (CDF)"
+"1",""
+"1"," (@"
+"1",""
+"1","def-cdf"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a random variable; the cumulative distribution function (CDF) is defined as
+
+$$F(u) = Pr(X \leq u).$$
+
+For a continuous random variable, we have that
+
+$$F(u) = \int_{-\infty}^{u} f(x) dx$$
+
+implying that the density function is the derivative of the CDF.  For a discrete random variable
+
+$$F(u) = \sum_{x \leq u} f(x).$$"
+"1",""
+"1","
+
+"
+"1","Density Function"
+"1",""
+"1"," (@"
+"1",""
+"1","def-density-function"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","A density function $f$ relates the values in the support of a random variable with the probability of observing those values.  
+
+Let $X$ be a continuous random variable, then its density function $f$ is the function such that
+
+$$Pr(a \leq X \leq b) = \int_a^b f(x) dx$$
+
+for any real numbers $a$ and $b$ in the support.
+
+Let $X$ be a discrete random variable, then its density function $f$ is the function such that
+
+$$Pr(X = u) = f(u)$$
+
+for any real number $u$ in the support."
+"1",""
+"1","
+
+"
+"1","Event"
+"1",""
+"1"," (@"
+"1",""
+"1","def-event"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","A subset of the sample space that is of particular interest."
+"1",""
+"1","
+
+"
+"1","Expectation of a Function"
+"1",""
+"1"," (@"
+"1",""
+"1","def-expectation"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a random variable with density function $f$ over the support $\mathcal{S}$, and let $g$ be a real-valued function.  Then, 
+
+$$E\left[g(X)\right] = \int_{\mathcal{S}} g(x) f(x) dx$$
+
+for continuous random variables and
+
+$$E\left[g(X)\right] = \sum_{\mathcal{S}} g(x) f(x)$$
+
+for discrete random variables."
+"1",""
+"1","
+
+"
+"1","Expectation of a Product of Independent Random Variables"
+"1",""
+"1"," (@"
+"1",""
+"1","def-product-expectations"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X_1, X_2, \dotsc, X_n$ be independent random variables, then
+
+$$E\left(\prod_{i=1}^n X_i\right) = \prod_{i=1}^{n} E\left(X_i\right).$$"
+"1",""
+"1","
+
+"
+"1","Expected Value (Mean)"
+"1",""
+"1"," (@"
+"1",""
+"1","def-mean"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a random variable with density function $f$ defined over the support $\mathcal{S}$.  The expected value of a random variable, also called the mean and denoted $E(X)$, is given by
+
+$$E(X) = \int_{\mathcal{S}} x f(x) dx$$
+
+for continuous random variables and 
+
+$$E(X) = \sum_{\mathcal{S}} x f(x)$$
+
+for discrete random variables."
+"1",""
+"1","
+
+"
+"1","F-Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-f-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a continuous random variable.  $X$ is said to have an F-distribution if the density is given by
+
+$$f(x) = \frac{\Gamma((r + s)/2)}{(\Gamma(r/2) \Gamma(s/2))} (r/s)^{(r/2)} x^{(r/2 - 1)} (1 + (r/s) x)^{-(r + s)/2} \qquad x > 0,$$
+
+where $r,s > 0$ are the numerator and denominator degrees of freedom, respectively.
+
+We write $X \sim F_{r, s}$, which is read ""X has an F-distribution with r numerator degrees of freedom and s denominator degrees of freedom."""
+"1",""
+"1","
+
+"
+"1","Frequentist Interpretation of Probability"
+"1",""
+"1"," (@"
+"1",""
+"1","def-frequentist-interpretation"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","In this perspective, the probability of $A$ describes the long-run behavior of the event.  Specifically, consider repeating the random process $m$ times, and let $f(A)$ represent the number of times the event $A$ occurs out of those $m$ replications.  Then,
+
+$$Pr(A) = \lim_{m \rightarrow \infty} \frac{f(A)}{m}.$$"
+"1",""
+"1","
+
+"
+"1","Gamma Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-gamma-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a continuous random variable.  $X$ is said to have a Gamma distribution if the density is given by
+
+$$f(x) = \frac{1}{\beta^{\alpha} \Gamma(\alpha)} x^{\alpha - 1} e^{-x/\beta} \qquad x > 0,$$
+
+where $\alpha > 0$ is the shape parameter and $\beta > 0$ is the scale parameter.
+
+- $E(X) = \alpha\beta$
+- $Var(X) = \alpha\beta^2$
+
+We write $X \sim Gamma\left(\alpha, \beta\right)$, which is read ""X follows a Gamma distribution with shape $\alpha$ and scale $\beta$.""  This short-hand implies the density above.  When $\alpha = 1$, we refer to this as the Exponential distribution with scale $\beta$.
+
+We note that, in general, there is no closed form solution for $\Gamma(\alpha)$, but 
+
+- $\Gamma(\alpha) = (\alpha - 1) \Gamma(\alpha - 1)$
+- $\Gamma(k) = (k - 1)!$ for non-negative integer $k$"
+"1",""
+"1","
+
+"
+"1","Independence"
+"1",""
+"1"," (@"
+"1",""
+"1","def-independence"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Random variables $X_1, X_2, \dotsc, X_n$ are said to be mutually independent (or just ""independent"") if and only if
+
+$$Pr\left(X_1 \in A_1, X_2 \in A_2, \dotsb, X_n \in A_n\right) = \prod_{i=1}^{n} Pr\left(X_i \in A_i\right),$$
+
+where $A_1, A_2, \dotsc, A_n$ are arbitrary sets."
+"1",""
+"1","
+
+"
+"1","Location-Scale Family"
+"1",""
+"1"," (@"
+"1",""
+"1","def-location-scale"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","For $a \in \mathbb{R}$ and $b > 0$, let $X = a + bZ$ for some random variable $Z$.  $X$ is said to be the location-scale family associated with the distribution of $Z$ with location parameter $a$ and scale parameter $b$."
+"1",""
+"1","
+
+"
+"1","Method of Distribution Functions"
+"1",""
+"1"," (@"
+"1",""
+"1","def-method-of-distribution-functions"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a continuous random variable with density $f$ and cumulative distribution function $F$.  Consider $Y = h(X)$.  The following process provides the density function $g$ of $Y$ by first finding its cumulative distribution function $G$.
+
+  1. Find the set $A$ for which $h(X) \leq t$ if and only if $X \in A$.
+  2. Recognize that $G(y) = Pr(Y \leq y) = Pr\left(h(X) \leq y\right) = Pr(X \in A)$.
+  3. If interested in $g(y)$, note that $g(y) = \frac{\partial}{\partial y} G(y)$."
+"1",""
+"1","
+
+"
+"1","Method of Least Squares"
+"1",""
+"1"," (@"
+"1",""
+"1","def-least-squares"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","The least squares estimates of the parameters $\beta_0$ and $\beta_1$ in a simple linear regression model are the values that minimize the quantity
+
+$$\sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2.$$
+
+The estimates are often denoted $\widehat{\beta}_0$ and $\widehat{\beta}_1$."
+"1",""
+"1","
+
+"
+"1","Moment-Generating Function (MGF)"
+"1",""
+"1"," (@"
+"1",""
+"1","def-mgf"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","For a random variable $X$, let $M_X(t)$ be defined as
+
+$$M_X(t) = E\left(e^{tX}\right).$$
+
+If $M_X(t)$ is defined for all values of $t$ in some interval about 0, then $M_X(t)$ is called the moment-generating function (MGF) of $X$."
+"1",""
+"1","
+
+"
+"1","Normal (Gaussian) Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-normal-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a continuous random variable.  $X$ is said to have a Normal (or Guassian) distribution if the density is given by
+
+$$f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{1}{2\sigma^2} (x - \mu)^2} \qquad -\infty < x < \infty,$$
+
+where $\mu$ is any real number and $\sigma^2 > 0$.  
+
+- $E(X) = \mu$
+- $Var(X) = \sigma^2$
+
+We write $X \sim N\left(\mu, \sigma^2\right)$, which is read ""X follows a Normal distribution with mean $\mu$ and variance $\sigma^2$.""  This short-hand implies the density above.  When $\mu = 0$ and $\sigma^2 = 1$, this is referred to as the Standard Normal distribution."
+"1",""
+"1","
+
+"
+"1","Null Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-null-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Distribution of a statistic under a hypothesized value of the population parameter(s)."
+"1",""
+"1","
+
+"
+"1","Order Statistic"
+"1",""
+"1"," (@"
+"1",""
+"1","def-order-statistic"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X_1, X_2, \dotsc, X_n$ be a random sample of size $n$.  The $j$-th order statistic, denoted $X_{(j)}$ is the $j$-th smallest value in the sample.  Special cases include
+
+  - $X_{(1)}$, the sample minimum, and
+  - $X_{(n)}$, the sample maximum."
+"1",""
+"1","
+
+"
+"1","P-value"
+"1",""
+"1"," (@"
+"1",""
+"1","def-pvalue"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","The probability, assuming the null hypothesis is true, that we would observe a statistic, by chance alone, as extreme or more so than that observed in the sample."
+"1",""
+"1","
+
+"
+"1","Parameter"
+"1",""
+"1"," (@"
+"1",""
+"1","def-parameter"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Numeric quantity which summarizes the distribution of a variable within the _population_ of interest.  Generally denoted by Greek letters in statistical formulas."
+"1",""
+"1","
+
+"
+"1","Percentile"
+"1",""
+"1"," (@"
+"1",""
+"1","def-percentile"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a random variable with density function $f$.  The $100k$ percentile is the value $q$ such that
+
+$$Pr(X \leq q) = k.$$"
+"1",""
+"1","
+
+"
+"1","Random Sample"
+"1",""
+"1"," (@"
+"1",""
+"1","def-random-sample"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","A random sample of size $n$ refers to a collection of $n$ random variables $X_1, X_2, \dotsc, X_n$ such that the random variables are mutually independent, and the distribution of each random variable is identical.
+
+We say $X_1, X_2, \dotsc, X_n$ are independent and identically distributed, abbreviated IID.  We might also write this as $X_i \stackrel{\text{IID}}{\sim} f$ for some density $f$."
+"1",""
+"1","
+
+"
+"1","Random Variable"
+"1",""
+"1"," (@"
+"1",""
+"1","def-random-variable"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $\mathcal{S}$ be the sample space corresponding to a random process; a random variable $X$ is a function mapping elements of the sample space to the real line.
+
+Random variables represent a measurement that will be collected during the course of a study.  Random variables are typically represented by a capital letter."
+"1",""
+"1","
+
+"
+"1","Regression"
+"1",""
+"1"," (@"
+"1",""
+"1","def-regression"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Allowing the parameters characterizing the distribution of a random variable to depend, through some specified function, on the value of additional variables."
+"1",""
+"1","
+
+"
+"1","Sample Quantile"
+"1",""
+"1"," (@"
+"1",""
+"1","def-sample-quantile"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $x_{(j)}$ denote the $j$-th observed order statistic in a sample.  Then, the $q$-th quantile of the sample is given by $x_{(j)}$ for $\frac{j-1}{n} < q \leq \frac{j}{n}$ and $x_{(1)}$ if $q = 0$, for $j=1,2,\dotsc,n$."
+"1",""
+"1","
+
+"
+"1","Sample Space"
+"1",""
+"1"," (@"
+"1",""
+"1","def-sample-space"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","The sample space for a random process is the collection of all possible results that we might observe."
+"1",""
+"1","
+
+"
+"1","Sampling Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-sampling-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","The distribution of a statistic across repeated samples."
+"1",""
+"1","
+
+"
+"1","Statistic"
+"1",""
+"1"," (@"
+"1",""
+"1","def-statistic"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","A statistic is a numerical summary of a sample; it is a function of the data alone.  Prior to collecting data, a statistic is a function of the data to be collected, alone."
+"1",""
+"1","
+
+"
+"1","Subjective Interpretation of Probability"
+"1",""
+"1"," (@"
+"1",""
+"1","def-subjective-interpretation"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","In this perspective, the probability of $A$ describes the individual's uncertainty about event $A$."
+"1",""
+"1","
+
+"
+"1","Support"
+"1",""
+"1"," (@"
+"1",""
+"1","def-support"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","The support of a random variable is the set of all possible values the random variable can take."
+"1",""
+"1","
+
+"
+"1","Unbiased"
+"1",""
+"1"," (@"
+"1",""
+"1","def-unbiased"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","An estimator (statistic) $\widehat{\theta}$ is said to be unbiased for the parameter $\theta$ if
+
+$$E\left(\widehat{\theta}\right) = \theta.$$"
+"1",""
+"1","
+
+"
+"1","Variance"
+"1",""
+"1"," (@"
+"1",""
+"1","def-variance"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a random variable with density function $f$ defined over the support $\mathcal{S}$.  The variance of a random variable, denoted $Var(X)$, is given by
+
+$$Var(X) = E\left[X - E(X)\right]^2 = E\left(X^2\right) - E^2(X).$$
+
+If we let $\mu = E(X)$, then this is equivalent to
+
+$$\int_{\mathcal{S}} (x - \mu)^2 f(x) dx$$
+
+for continuous random variables and 
+
+$$\sum_{\mathcal{S}} (x - \mu)^2 f(x)$$
+
+for discrete random variables."
+"1",""
+"1","
+
+"
+"1","t-Distribution"
+"1",""
+"1"," (@"
+"1",""
+"1","def-t-distribution"
+"1",""
+"1",") 
+"
+"1",""
+"1",": "
+"1",""
+"1","Let $X$ be a continuous random variable.  $X$ is said to have a (standardized) t-distribution, sometimes called the Student's t-distribution, if the density is given by
+
+$$f(x) = \frac{\Gamma \left(\frac{\nu+1}{2} \right)} {\sqrt{\nu\pi}\,\Gamma \left(\frac{\nu}{2} \right)} \left(1+\frac{x^2}{\nu} \right)^{-\frac{\nu+1}{2}} \qquad x > 0$$
+
+where $\nu > 0$ is the degrees of freedom.
+
+We write $X \sim t_{\nu}$, which is read ""X follows a t-distribution with $\nu$ degrees of freedom."""
+"1",""
+"1","
+
+"

@@ -1,0 +1,118 @@
+# Location Scale Families {#sec-location-scale}
+
+{{< include _setupcode.qmd >}}
+
+As we have seen, the Normal distribution plays a large role in classical statistical theory.  However, it is just one example of a location-scale family.  In this chapter, we briefly discuss a key property of location-scale families --- probability plots.
+
+:::{#def-location-scale}
+## Location-Scale Family
+For $a \in \mathbb{R}$ and $b > 0$, let $X = a + bZ$ for some random variable $Z$.  $X$ is said to be the location-scale family associated with the distribution of $Z$ with location parameter $a$ and scale parameter $b$.
+:::
+
+While technically we can create a location-scale family for any distribution, we generally think of those distributions for which the support remains unchanged.  Many such distributions we have seen belong to this class.  
+
+:::{#exm-exponential-scale}
+## Scale Family: Exponential Distribution
+The Exponential distribution is a scale family (the location parameter is 0).  Let $X$ follow an Exponential distribution with scale parameter $\lambda$.  Show that $aX$ also follows an Exponential distribution with scale parameter $a\lambda$.
+:::
+
+:::{.solution}
+Let $Y = aX$, then the CDF of $Y$ is given by
+
+$$
+\begin{aligned}
+  F_Y(y)
+    &= Pr(Y \leq y) \\
+    &= Pr(aX \leq y) \\
+    &= Pr(X \leq y/a) \\
+    &= F_X(y/a) \\
+    &= 1 - e^{-\frac{y}{a\lambda}},
+\end{aligned}
+$$
+
+which we recognize as the CDF of an Exponential distribution with scale parameter $a\lambda$.
+:::
+
+The above example illustrates a very helpful result regarding location-scale families.
+
+:::{#thm-location-scale}
+## CDF for Location-Scale Families
+Let $Z$ be a random variable with CDF $F_Z(z)$, and define $X = aZ + b$ for $a \in \mathbb{R}$ and $b > 0$.  Then, 
+
+$$F_X(x) = F_Z\left(\frac{x - a}{b}\right).$$
+:::
+
+That is, the CDF for a location-scale family is a function of the CDF of the "standard" distribution, the location parameter, and the scale parameter.  Throughout a course in probability, we often make use of this property when computing probabilities of a Normal distribution (this is essentially what every Normal table in the back of a probability textbook is relying on).  However, we can exploit this feature of location-scale families for much more than creating a table to enable "by-hand" computations of probabilities.
+
+:::{#exm-location-scale-quantiles}
+## Quantiles of a Location-Scale Family
+Let $X \sim F_X$ be a random variable belonging to a location-scale family with location parameter $a \in \mathbb{R}$ and scale parameter $b > 0$.  Let $Z \sim F_Z$ be the "standard" distribution generating this location-scale family.  Find an expression for the $q$-th quantile of $X$ as a function of the $q$-th quantile of $Z$.
+:::
+
+:::{.solution}
+The $q$-th quantile of $X$, call it $X_q$, is the value such that
+
+$$q = F_X\left(X_q\right).$$
+
+By @thm-location-scale, we have that
+
+$$q = F_Z\left(\frac{X_q - a}{b}\right).$$
+
+This implies that the $q$-th quantile of $Z$, call it $Z_q$ is given by
+
+$$\frac{X_q - a}{b}.$$
+
+Therefore,
+
+$$X_q = Z_q b + a.$$
+:::
+
+@exm-location-scale-quantiles reveals that the quantiles of a location-scale distribution are linearly related to the quantiles of the corresponding "standard" distribution.  
+
+In order to see how this can be useful in a statistical analysis, we must first consider how we define a sample quantile.  Our first pass at a definition might go something like the following:
+
+  > The $q$-th sample quantile is the value $k$ such that $100q$% of observed vales in the sample are no more than $k$.  
+  
+While this makes intuitive sense, we recognize that it does not result in a unique value.  For example, consider a the simple sample $\{1, 2, 3, 4, 5\}$.  In this sample, 60% of observations in the sample have a value no more than 3; so, it would seem that 3 represents the 0.6 quantile.  But, we also know that 60% of observations have a value no more than 3.5; so, 3.5 is also the 0.6 quantile.  More, we would generally consider 3 to be the median (0.5 quantile) of the sample!  It seems our working definition of a sample quantile seems a bit off.  In order to create a more rigorous definition, we first need the concept of an order statistic.
+
+:::{#def-order-statistic}
+## Order Statistic
+Let $X_1, X_2, \dotsc, X_n$ be a random sample of size $n$.  The $j$-th order statistic, denoted $X_{(j)}$ is the $j$-th smallest value in the sample.  Special cases include
+
+  - $X_{(1)}$, the sample minimum, and
+  - $X_{(n)}$, the sample maximum.
+:::
+
+:::{#def-sample-quantile}
+## Sample Quantile
+Let $x_{(j)}$ denote the $j$-th observed order statistic in a sample.  Then, the $q$-th quantile of the sample is given by $x_{(j)}$ for $\frac{j-1}{n} < q \leq \frac{j}{n}$ and $x_{(1)}$ if $q = 0$, for $j=1,2,\dotsc,n$.
+:::
+
+Let's apply the above definition to our sample $\{1, 2, 3, 4, 5\}$.  For the median, we have $q = 0.5$, which falls between $\frac{2}{5}$ and $\frac{3}{5}$; therefore, we take the third observation in the dataset, which is 3.  
+
+:::{.callout-note}
+There are several accepted definitions for computing a sample quantile.  In fact, the default definition used by the major statistical software packages (SAS, R, SPSS) do not agree.  In large sample sizes, the results are nearly identical.  For smaller samples, the results can differ dramatically; however, this is not cause for alarm in practice.  If quantiles are the focal point of an analysis, be sure to check the definition being used by your software.
+:::
+
+Let's consider applying the above to a sample from a Normal distribution.  In particular, consider taking a random sample of 15 observations from a Normal distribution with a _known_ mean of $\mu$ and a _known_ variance of $\sigma^2$.  For these 15 observations, note that we have that 
+
+$$Q\left(\frac{j - 0.5}{15}\right) = X_{(j)}$$
+
+where $Q(p)$ represents the $p$-th quantile for $j = 1,2,\dotsc, 15$.  The choice of the these 15 quantiles is somewhat arbitrary but provides 15 evenly spaced points over the interval $(0, 1)$.  Additionally, since each observation is from a known Normal distribution, we can apply the results of @exm-location-scale-quantiles to recognize that
+
+$$X_{(j)} = Z_{(j - 0.5)/15} \sigma + \mu,$$
+
+where 
+
+$$Z_{(j - 0.5)/15} = \begin{cases} -1.83 & j = 1 \\ -1.28 & j = 2 \\ \dotsc & \dotsc \\ 1.83 & j = 15\end{cases}$$
+
+are known values since $Z \sim N(0, 1)$.  Therefore, a plot of the observed order statistics against the corresponding quantiles of a Standard Normal distribution will fall along a line with a slope of $\sigma$ and an intercept of $\mu$.
+
+Of course, in practice, we do not know $\mu$ and $\sigma$, but we can rely on this same idea because it should work for _any_ choice of $\mu$ and $\sigma$.  
+
+:::{.callout-note}
+## Assessing Normality
+Given a sample of size $n$, a plot of the observed quantiles against the quantiles from a Standard Normal distribution will be roughly linear if the sample is from a Normal distribution.  The slope of the relationship will be an estimate of the standard deviation, and the intercept of the relationship will be an estimate of the average.
+:::
+
+This graphic that is constructed is known as a "Quantile-Quantile" plot; it is also known as a "Probability Plot" as it is sometimes presented equivalently with different scales.  Again, while the choice of which quantiles should be considered when constructing the plot is somewhat arbitrary, we want to select $n$ evenly spaced points across the interval $(0, 1)$, making use of all the unique information in the sample.  One such choice was illustrated above, choosing quantiles to correspond to $\frac{j - 0.5}{n}$ for $j = 1,2,\dotsc,n$.

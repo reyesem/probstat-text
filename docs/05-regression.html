@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction to Statistical Theory - 5&nbsp; Inference for Regression Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./06-normality.html" rel="next">
+<link href="./04-inference.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="mystyles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-regression.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inference for Regression Models</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Intro Statistical Theory</a> 
+        <div class="sidebar-tools-main">
+    <a href="./ma382-text.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-fundamentals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Essential Probability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-randomvariables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Random Variables and Distributions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-samplingdistributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sampling Distribution of a Statistic</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference for a Population Mean</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-regression.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inference for Regression Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-normality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">More on the Classical Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-location-scale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Location Scale Families</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./app-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#simple-linear-regression-model" id="toc-simple-linear-regression-model" class="nav-link active" data-scroll-target="#simple-linear-regression-model"><span class="header-section-number">5.1</span> Simple Linear Regression Model</a></li>
+  <li><a href="#least-squares-estimation" id="toc-least-squares-estimation" class="nav-link" data-scroll-target="#least-squares-estimation"><span class="header-section-number">5.2</span> Least Squares Estimation</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-regression" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inference for Regression Models</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>The previous chapters introduced the primary components of inference. Particular attention was paid to making inference for the mean of a quantitative variable. Most interesting questions involve examining a relationship between two variables. For example, consider the following question:</p>
+<blockquote class="blockquote">
+<p>Does the average cost of a diamond (in US dollars) tend to change as the carat (a measure of the size) changes?</p>
+</blockquote>
+<p>The above question depends on the relationship between the cost of a diamond and the carat of the diamond. In this chapter, we examine some of the probabilistic components associated with such problems, known as <strong>regression</strong>.</p>
+<div id="def-regression" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 5.1 (Regression) </strong></span>Allowing the parameters characterizing the distribution of a random variable to depend, through some specified function, on the value of additional variables.</p>
+</div>
+<section id="simple-linear-regression-model" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="simple-linear-regression-model"><span class="header-section-number">5.1</span> Simple Linear Regression Model</h2>
+<p>In previous chapters, we considered distributional models for the population of the form</p>
+<p><span class="math display">\[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\mu, \sigma^2\right),\]</span></p>
+<p>for some unknown mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. Note that under such a distributional model, if we knew the value of the parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, we know everything we need to know to fully characterize the variability in the response <span class="math inline">\(Y\)</span>. However, knowing the parameters does not explain <em>why</em> there is variability in the population. Why doesn’t every unit share the exact same value of the response? We know that variability is inherent in any process; perhaps all of the variability in this response is due to measurement error. If that were true, then if we had infinitely precise measuring tools, then the variability would be eliminated.</p>
+<p>It is more likely that the various units are not meant to be completely identical. That is, there are additional characteristics that might explain why each unit has a different response. For example, in our sample of diamonds, the units (the diamonds) are not identical. Some diamonds are larger than others; some have superior color or clarity. These differences in the characteristics of the diamonds might explain their different prices. Unfortunately, the distributional model above does not incorporate additional characteristics.</p>
+<p>The research question posed above suggested that the average response (cost) might depend upon another variable (carat), a predictor. The simple linear regression model allows the average response to depend upon the predictor through a linear function.</p>
+<div id="def-classical-simple-regression" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 5.2 (Classical Simple Linear Regression) </strong></span>Let <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)</span> be observations made on a sample of <span class="math inline">\(n\)</span> units. Under the classical simple linear regression model, the distributional model for the response among the population is given by</p>
+<p><span class="math display">\[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)\]</span></p>
+<p>where <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\sigma^2\)</span> are unknown parameters.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In <a href="#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a>, note that we only consider the response to be a random variable; the predictor is considered fixed (hence the use of a lowercase <span class="math inline">\(x\)</span> instead of a capital <span class="math inline">\(X\)</span>). This is consistent with the idea of a designed experiment for which the values of the predictor can be determined in advance by the researchers.</p>
+<p>However, for observational studies, the values of the predictor cannot be fixed. That is, in practice, the predictor is also unknown in advance and is therefore a random variable as well. In such cases, we can proceed in the same manner, considering the <em>conditional</em> distribution of the response <em>given</em> the predictor.</p>
+</div>
+</div>
+<p>Notice that <a href="#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a> simply extends the form of the distributional model we have previously considered. It makes it clear that</p>
+<p><span class="math display">\[E\left(Y_i\right) = \beta_0 + \beta_1 x_i\]</span></p>
+<p>for each unit. Notice that we do not say that the observations are “identically distributed,” because they are not! The mean response differs (at least potentially) for each observation as it depends on the corresponding value of the predictor.</p>
+<p>While the above presentation connects the process for the inference of a single mean with that of regression, it is not the common presentation. Instead, the model is traditionally presented as saying that</p>
+<p><span class="math display">\[Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i\]</span></p>
+<p>where <span class="math inline">\(\varepsilon_i \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right)\)</span>, where now we can make use of the “identically distributed” language. In this presentation, we have introduced a new random variable, <span class="math inline">\(\varepsilon\)</span>. Since the expression <span class="math inline">\(\beta_0 + \beta_1 x_i\)</span> does not contain a random variable, it is deterministic in nature. Therefore, the distribution of <span class="math inline">\(Y_i\)</span> is determined because we are simply shifting the distribution of <span class="math inline">\(\varepsilon_i\)</span>.</p>
+<p>Whenever we posit a distributional model for the population, as we do in <a href="#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a>, we are making a fairly strong assumption. In practice, we may not feel comfortable positing the form of the distribution. We can reduce the conditions on <span class="math inline">\(\varepsilon\)</span> and still retain some of the key characteristics of the model.</p>
+<p>Regardless of the conditions we impose on <span class="math inline">\(\varepsilon\)</span>, we are essentially specifying a model for the data generating process — the set of statements we are willing to make regarding the variability in the response. We know that since the response is a random variable it has some distribution. The model for the data generating process is really a set of statements about that distribution. We may only be characterizing the mean of the distribution of the response; we may be willing to characterize the mean and the variance; or, we may be willing to fully characterize the distributional form.</p>
+</section>
+<section id="least-squares-estimation" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="least-squares-estimation"><span class="header-section-number">5.2</span> Least Squares Estimation</h2>
+<p>While the previous section defines a model for the data generating process, it does not specify how to estimate the unknown parameters. Prior to this section, we were able to estimate the parameters by making analogous computations within the sample. As we replace a singular parameter with a function, corresponding computations are no longer obvious. A general process for estimating the unknown parameters that define the mean response is the <strong>method of least squares</strong>.</p>
+<div id="def-least-squares" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 5.3 (Method of Least Squares) </strong></span>The least squares estimates of the parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in a simple linear regression model are the values that minimize the quantity</p>
+<p><span class="math display">\[\sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2.\]</span></p>
+<p>The estimates are often denoted <span class="math inline">\(\widehat{\beta}_0\)</span> and <span class="math inline">\(\widehat{\beta}_1\)</span>.</p>
+</div>
+<div id="thm-least-squares-slr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 5.1 (Least Squares Estimates) </strong></span>Let <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)</span> be observations made on a sample of <span class="math inline">\(n\)</span> units. The least squares estimates for the simple linear regression model relating the response and predictor are given by</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \widehat{\beta}_1
+    &amp;= \frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)\left(Y_i - \bar{Y}\right)}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2} \\
+  \widehat{\beta}_0
+    &amp;= \bar{Y} - \widehat{\beta}_1 \bar{x}.
+\end{aligned}
+\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>By definition, the least squares estimates are the values of the parameters that minimize the quantity</p>
+<p><span class="math display">\[\sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2.\]</span></p>
+<p>To minimize this quantity, we can consider taking partial derivatives with respect to each quantity:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \frac{\partial}{\partial \beta_0} \sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2
+    &amp;= -2 \sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right) \\
+  \frac{\partial}{\partial \beta_1} \sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2
+    &amp;= -2 \sum_{i=1}^{n} x_i \left(Y_i - \beta_0 - \beta_1 x_i\right).
+\end{aligned}
+\]</span></p>
+<p>Setting each derivative equal to zero, we have</p>
+<p><span class="math display">\[
+\begin{aligned}
+  0
+    &amp;= n\bar{Y} - n\beta_0 - n\beta_1 \bar{x} \\
+  0
+    &amp;= \sum_{i=1}^{n} x_i Y_i - n\beta_0 \bar{x} - \beta_1 \sum_{i=1}^{n} x_i^2.
+\end{aligned}
+\]</span></p>
+<p>We now have two equations and two unknown terms. Solving the first equation, we have that</p>
+<p><span class="math display">\[\widehat{\beta}_0 = \bar{Y} - \widehat{\beta}_1 \bar{x}.\]</span></p>
+<p>Plugging this into the second expression, we have</p>
+<p><span class="math display">\[
+\begin{aligned}
+  0
+    &amp;= \sum_{i=1}^{n} x_i Y_i - n\bar{Y}\bar{x} + n \beta_1 \bar{x}^2 - \beta_1 \sum_{i=1}^{n} x_i^2 \\
+    &amp;= \sum_{i=1}^{n} x_i \left(Y_i - \bar{Y}\right) - \beta_1 \sum_{i=1}^{n} \left(x_i^2 - \bar{x}^2\right) \\
+    &amp;= \sum_{i=1}^{n} \left(x_i - \bar{x} + \bar{x}\right) \left(Y_i - \bar{Y}\right) - \beta_1 \sum_{i=1}^{n} \left(x_i^2 - \bar{x}^2\right),
+\end{aligned}
+\]</span></p>
+<p>where the second line rearranges the terms by bringing things inside the sums, and the third line “does nothing” by adding and subtracting the same term, <span class="math inline">\(\bar{x}\)</span>. Note that the second term can be written as</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \beta_1 \sum_{i=1}^{n} \left(x_i^2 - \bar{x}^2\right)
+    &amp;= \beta_1 \sum_{i=1}^{n} \left[\left(x_i - \bar{x}\right)^2 + 2x_i\bar{x} - 2\bar{x}^2\right] \\
+    &amp;= \beta_1\sum_{i=1}^{n}\left(x_i - \bar{x}\right)^2 + \beta_1 2 n\bar{x}^2 - 2n\bar{x}^2 \\
+    &amp;= \beta_1 \sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2.
+\end{aligned}
+\]</span></p>
+<p>And, the first term simplifies to</p>
+<p><span class="math display">\[\sum_{i=1}^{n} \left(x_i - \bar{x}\right)\left(Y_i - \bar{Y}\right) + \bar{x} \sum_{i=1}^{n} \left(Y_i - \bar{Y}\right) = \sum_{i=1}^{n} \left(x_i - \bar{x}\right)\left(Y_i - \bar{Y}\right).\]</span></p>
+<p>Putting these components together, we have that the least squares estimate of <span class="math inline">\(\beta_1\)</span> must satisfy the equality</p>
+<p><span class="math display">\[0 = \sum_{i=1}^{n} \left(x_i - \bar{x}\right)\left(Y_i - \bar{Y}\right) - \beta_1 \sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2.\]</span></p>
+<p>This gives us that</p>
+<p><span class="math display">\[\widehat{\beta}_1 = \frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)\left(Y_i - \bar{Y}\right)}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}.\]</span></p>
+<p>Of course, we have simply found the limits; to establish these are actually minimums, we must consider the Hessian matrix, which consists of second-order partial derivatives. For our model, we have</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \frac{\partial^2}{\partial \beta_0^2} \sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2
+    &amp;= 2n \\
+  \frac{\partial^2}{\partial \beta_1^2} \sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2
+    &amp;= 2\sum_{i=1}^{n} x_i^2\\
+  \frac{\partial^2}{\partial \beta_1 \partial \beta_0} \sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2  
+    &amp;= 2n\bar{x}.
+\end{aligned}
+\]</span></p>
+<p>The determinant of the Hessian matrix is then</p>
+<p><span class="math display">\[
+\begin{aligned}
+  4n\sum_{i=1}^{n} x_i^2 - 4n\bar{x}^2
+    &amp;= 4n\left[\sum_{i=1}^{n} x_i^2 - \bar{x}^2\right] \\
+    &amp;= 4n\left\{\sum_{i=1}^{n} \left[\left(x_i - \bar{x}\right)^2 + 2x_i\bar{x} - \bar{x}^2\right] - \bar{x}^2\right\} \\
+    &amp;= 4n \left[\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2 + n\bar{x}^2 - \bar{x}^2\right] \\
+    &amp;= 4n \left[\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2 + (n - 1)\bar{x}^2\right] \\
+    &amp;&gt; 0.
+\end{aligned}
+\]</span></p>
+<p>Since the determinant is always positive, we have that our least squares estimates minimize the quantity of interest.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the proof above, we essentially derive a very helpful relation that pops up often in statistical proofs:</p>
+<p><span class="math display">\[\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2 = \sum_{i=1}^{n} x_i^2 - n\bar{x}^2.\]</span></p>
+</div>
+</div>
+<p>The method of least squares can be used to estimate the parameters in the mean model, but this is not <em>statistics</em>; it is <em>mathematics</em>. In particular, the method of least squares is just one of several optimization problems we might have defined to estimate the parameters. Statistics is the discipline of characterizing variability. Characterizing the uncertainty in these estimates — characterizing their sampling distribution — that is where we move into a statistical analysis.</p>
+<div id="exm-unbiased-ls" class="theorem example">
+<p><span class="theorem-title"><strong>Example 5.1 (Expected Value of the Intercept) </strong></span>The least squares estimate of the intercept is an unbiased estimator. Establish this, assuming that the least squares estimate of the slope is also an unbiased estimator.</p>
+</div>
+<div class="solution proof">
+<p><span class="proof-title"><em>Solution</em>. </span>To establish that this statement is correct, observe that</p>
+<p><span class="math display">\[
+\begin{aligned}
+  E\left(\widehat{\beta}_0\right)
+    &amp;= E\left(\bar{Y} - \widehat{\beta}_1 \bar{x}\right) \\
+    &amp;= E\left(n^{-1} \sum_{i=1}^{n} \left(\beta_0 + \beta_1 x_i + \varepsilon_i\right) - \widehat{\beta}_1 \bar{x}\right) \\
+    &amp;= E\left(n^{-1} \sum_{i=1}^{n} \left(\beta_0 + \beta_1 x_i + \varepsilon_i\right)\right) - \bar{x}E\left(\widehat{\beta}_1\right) \\
+    &amp;= n^{-1}\sum_{i=1}^{n} \left(\beta_0 + \beta_1 x_i + E\left(\epsilon_i\right)\right) - \bar{x} \beta_1 \\
+    &amp;= \beta_0 + \beta_1 \bar{x} - \bar{x} \beta_1 \\
+    &amp;= \beta_0.
+\end{aligned}
+\]</span></p>
+<p>Note that in line 2, we insert the value of <span class="math inline">\(Y_i\)</span> from the model for the data generating process; in line 3, we make use of the linearity of expectations; in line 4, we assume that the least squares estimate of the slope is an unbiased estimator. Finally, in line 5, we assume that the error term has an average of 0.</p>
+</div>
+<p>Note that in our solution, the only assumption we needed on the error term was that it had an average of 0. While the other conditions on the error term typically assumed (classical regression model) are helpful in characterizing the sampling distribution of the least squares estimates, only this one condition is needed to establish where that sampling distribution is centered.</p>
+<div id="thm-classical-ls" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 5.2 (Sampling Distribution for Least Squares Estimators) </strong></span>Under the conditions of the Classical Regression Model (<a href="#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a>), we have that</p>
+<p><span class="math display">\[\frac{\widehat{\beta}_j - \beta_j}{\sqrt{Var\left(\widehat{\beta}_j\right)}} \sim t_{n - 2}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{aligned}
+  Var\left(\widehat{\beta}_0\right)
+    &amp;= \widehat{\sigma}^2 \left(\frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}\right)\\
+  Var\left(\widehat{\beta}_1\right)
+    &amp;= \frac{\widehat{\sigma}^2}{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}
+\end{aligned}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\widehat{\sigma}^2 = \frac{1}{n-2} \sum_{i=1}^{n} \left(Y_i - \widehat{\beta}_0 - \widehat{\beta}_1 x_i\right)^2\]</span></p>
+<p>is our estimate of the unknown population variance <span class="math inline">\(\sigma^2\)</span>.</p>
+</div>
+<p>Once we have a model for the sampling distribution, we have the ability to make inference — confidence intervals or p-values.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./04-inference.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference for a Population Mean</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./06-normality.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">More on the Classical Model</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

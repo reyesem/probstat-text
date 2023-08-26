@@ -1,0 +1,357 @@
+{
+    "sources": [
+        {
+            "author": [
+                {
+                    "family": "Box",
+                    "given": "George E P"
+                }
+            ],
+            "container-title": "Robustness in statistics",
+            "editor": [
+                {
+                    "family": "Launer",
+                    "given": "R L"
+                },
+                {
+                    "family": "Wilkinson",
+                    "given": "G N"
+                }
+            ],
+            "id": "Box1979",
+            "issued": {
+                "date-parts": [
+                    [
+                        1979
+                    ]
+                ]
+            },
+            "page": "201-236",
+            "publisher": "Academic Press",
+            "title": "Robustness in the strategy of scientific model building",
+            "type": "chapter"
+        },
+        {
+            "author": [
+                {
+                    "family": "Chihara",
+                    "given": "Laura"
+                },
+                {
+                    "family": "Hesterberg",
+                    "given": "Tim"
+                }
+            ],
+            "id": "Chihara2011",
+            "issued": {
+                "date-parts": [
+                    [
+                        2011
+                    ]
+                ]
+            },
+            "publisher": "Wiley",
+            "title": "Mathematical statistics with resampling and r",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Doyle",
+                    "given": "Sir Arthur Conan"
+                }
+            ],
+            "id": "Doyle1890",
+            "issued": {
+                "date-parts": [
+                    [
+                        1890
+                    ]
+                ]
+            },
+            "publisher": "Spencer Blackett",
+            "title": "The sign of the four",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Dudeck",
+                    "given": "A E"
+                },
+                {
+                    "family": "Peeacock",
+                    "given": "C H"
+                }
+            ],
+            "container-title": "Proceedings of the fourth international turfgrass research conference",
+            "editor": [
+                {
+                    "family": "Sheard",
+                    "given": "R W"
+                }
+            ],
+            "id": "Dudeck1981",
+            "issued": {
+                "date-parts": [
+                    [
+                        1981
+                    ]
+                ]
+            },
+            "page": "75-81",
+            "title": "Effects of several overseeded ryegrasses on turf quality, traffic tolerance and ball roll",
+            "type": "chapter"
+        },
+        {
+            "author": [
+                {
+                    "family": "Eskine",
+                    "given": "Kendall J"
+                }
+            ],
+            "container-title": "Social Psychological and Personality Science",
+            "id": "Eskine2013",
+            "issue": "2",
+            "issued": {
+                "date-parts": [
+                    [
+                        2013
+                    ]
+                ]
+            },
+            "page": "251-254",
+            "title": "Wholesome foods and wholesome morals? Organic foods reduce prosocial behavior and harshen moral judgments",
+            "type": "article-journal",
+            "volume": "4"
+        },
+        {
+            "DOI": "10.1056/NEJMra1007197",
+            "author": [
+                {
+                    "family": "Goldstein",
+                    "given": "Bernard D"
+                },
+                {
+                    "family": "Osofsky",
+                    "given": "Howard J"
+                },
+                {
+                    "family": "Lichtveld",
+                    "given": "Maureen Y"
+                }
+            ],
+            "container-title": "The New England Journal of Medicine",
+            "id": "Goldstein2011",
+            "issued": {
+                "date-parts": [
+                    [
+                        2011
+                    ]
+                ]
+            },
+            "page": "1334-1348",
+            "title": "The gulf oil spill",
+            "type": "article-journal",
+            "volume": "364"
+        },
+        {
+            "author": [
+                {
+                    "family": "Johnson",
+                    "given": "Eric J"
+                },
+                {
+                    "family": "Goldstein",
+                    "given": "Daniel"
+                }
+            ],
+            "container-title": "Science",
+            "id": "Johnson2003",
+            "issued": {
+                "date-parts": [
+                    [
+                        2003
+                    ]
+                ]
+            },
+            "page": "1338-1339",
+            "title": "Do defaults save lives?",
+            "type": "article-journal",
+            "volume": "302"
+        },
+        {
+            "DOI": "10.1080/13632460209350411",
+            "author": [
+                {
+                    "family": "Koutrakis",
+                    "given": "S I"
+                },
+                {
+                    "family": "Karakaisis",
+                    "given": "G P"
+                },
+                {
+                    "family": "Hatzidimitriou",
+                    "given": "P M"
+                },
+                {
+                    "family": "Koliopoulos",
+                    "given": "P K"
+                },
+                {
+                    "family": "Margaris",
+                    "given": "V N"
+                }
+            ],
+            "container-title": "Journal of Earthquake Engineering",
+            "id": "Koutrakis2002",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2002
+                    ]
+                ]
+            },
+            "page": "75-109",
+            "title": "Seismic hazard in greece based on different strong ground motion parameters",
+            "type": "article-journal",
+            "volume": "6"
+        },
+        {
+            "author": [
+                {
+                    "family": "Lee",
+                    "given": "J"
+                }
+            ],
+            "id": "Lee1992",
+            "issued": {
+                "date-parts": [
+                    [
+                        1992
+                    ]
+                ]
+            },
+            "note": "Unpublished PhD Thesis",
+            "title": "Relationships between properties of pulp-fibre and paper",
+            "type": "manuscript"
+        },
+        {
+            "author": [
+                {
+                    "family": "Magritte",
+                    "given": "R."
+                },
+                {
+                    "family": "Torczyner",
+                    "given": "H."
+                }
+            ],
+            "collection-title": "Contemporary artists series",
+            "id": "Magritte1977",
+            "issued": {
+                "date-parts": [
+                    [
+                        1977
+                    ]
+                ]
+            },
+            "publisher": "H. N. Abrams",
+            "title": "Magritte, ideas and images",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Moery",
+                    "given": "Eileen"
+                },
+                {
+                    "family": "Calin-Jageman",
+                    "given": "Robert J"
+                }
+            ],
+            "container-title": "Social Psychological and Personality Science",
+            "id": "Moery2016",
+            "issue": "4",
+            "issued": {
+                "date-parts": [
+                    [
+                        2016
+                    ]
+                ]
+            },
+            "page": "312-319",
+            "title": "Direct and conceptual replications of eskine (2013): Organic food exposure has little to no effect on moral judgments and prosocial behavior",
+            "title-short": "Direct and conceptual replications of eskine (2013)",
+            "type": "article-journal",
+            "volume": "7"
+        },
+        {
+            "author": [
+                {
+                    "family": "Tintle",
+                    "given": "Nathan"
+                },
+                {
+                    "family": "Chance",
+                    "given": "Beth L"
+                },
+                {
+                    "family": "Rossman",
+                    "given": "A J"
+                },
+                {
+                    "family": "Roy",
+                    "given": "S"
+                },
+                {
+                    "family": "Swanson",
+                    "given": "T"
+                },
+                {
+                    "family": "VanderStoep",
+                    "given": "J"
+                }
+            ],
+            "id": "Tintle2015",
+            "issued": {
+                "date-parts": [
+                    [
+                        2015
+                    ]
+                ]
+            },
+            "publisher": "Wiley",
+            "title": "Introduction to statistical investigations",
+            "type": "book"
+        },
+        {
+            "URL": "https://www.R-project.org/",
+            "author": [
+                {
+                    "literal": "R Core Team"
+                }
+            ],
+            "id": "R-base",
+            "issued": {
+                "date-parts": [
+                    [
+                        2023
+                    ]
+                ]
+            },
+            "publisher": "R Foundation for Statistical Computing",
+            "publisher-place": "Vienna, Austria",
+            "title": "R: A language and environment for statistical computing",
+            "title-short": "R",
+            "type": "book"
+        }
+    ],
+    "project_biblios": [
+        "refs382notes.bib",
+        "packages.bib"
+    ]
+}
