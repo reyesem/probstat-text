@@ -418,6 +418,10 @@ where $\nu > 0$ is the degrees of freedom.
 We write $X \sim t_{\nu}$, which is read "X follows a t-distribution with $\nu$ degrees of freedom."
 :::
 
+:::{.callout-note}
+As the degrees of freedom approach infinity, the density function of the t-distribution approaches that of a Standard Normal random variable.
+:::
+
 The Chi-Square distribution is a skewed distribution (looks like a giant slide).  It has a single parameter, known as the degrees of freedom.  The degrees of freedom for this distribution characterize both the location and spread simultaneously.
 
 :::{#def-chi-square-distribution}

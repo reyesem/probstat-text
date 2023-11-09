@@ -158,12 +158,12 @@
 \floatname{codelisting}{Listing}
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \usepackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
 \theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Proof}}
 \newtheorem*{remark}{Remark}
@@ -201,11 +201,11 @@
 
 \title{Introduction to Statistical Theory}
 \author{Eric M Reyes}
-\date{Updated: 24 August 2023}
+\date{Updated: 09 November 2023}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, borderline west={3pt}{0pt}{shadecolor}, enhanced, frame hidden, interior hidden, breakable, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, frame hidden, interior hidden, enhanced, breakable]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -339,7 +339,7 @@ two events, \(A\) and \(B\), within a sample space \(\mathcal{S}\).}
 
 \end{figure}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Probability represents an area.
 
@@ -587,7 +587,7 @@ importance of this discussion is not yet clear. But, we will see that
 how probability is interpreted impacts how we interpret the results of
 our statistical analyses.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 The frequentist interpretation of probability does not quantify our
 uncertainty about an event; it quantifies the likelihood of an event in
@@ -662,7 +662,7 @@ numeric (or quantitative) variables in data analysis; continuous random
 variables are used to model the result of a random process which
 produces a number for which arithmetic makes sense.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-warning-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Whether we use a continuous or discrete random variable to represent a
 measurement is not always obvious. Suppose we consider recording the age
@@ -717,7 +717,7 @@ States. Further, the likelihood that \(Y\) falls within any interval is
 determined by the distribution of the cost across the population. That
 is, the distribution of \(Y\) is the distribution of the population.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 If a random variable \(X\) represents a measurement for a single
 observation from a population, the distribution of the random variable
@@ -753,7 +753,7 @@ for any real number \(u\) in the support.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Properties of a Density Function}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Properties of a Density Function}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Let \(X\) be a random variable with density function \(f\) defined over
 support \(\mathcal{S}\). Then,
@@ -778,7 +778,7 @@ support \(\mathcal{S}\). Then,
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 In a probability course, there is often a distinction made between
 probability ``density'' functions (used for continuous random variables)
@@ -856,7 +856,7 @@ characterize the parameter; but, the parameter itself will remain
 unknown. In both cases, however, the parameter is a \emph{fixed
 quantity}, even if we are ignorant of that value.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 When a probability model is specified for a population, it is generally
 specified up to some unknown parameter(s). Making inference on the
@@ -925,7 +925,7 @@ for discrete random variables.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-warning-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Pay careful attention to the notation. \(E^2(X)\) represents the square
 of the expected value; that is,
@@ -1092,7 +1092,7 @@ Setting this expression equal to 0.5 and solving for \(q\) yields
 
 \end{solution}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Suppose the density \(f\) is a function of the parameters
 \(\boldsymbol{\theta}\); then, the mean, variance, and median (as well
@@ -1140,7 +1140,7 @@ integrate each time; instead, the integral is computed once (and stored
 internally in the computer) and we use the result to compute
 probabilities directly.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Density functions are the mathematical models for distributions; they
 link values of the variable with the likelihood of occurrence. However,
@@ -1295,7 +1295,7 @@ We note that, in general, there is no closed form solution for
 
 The Gamma distribution is useful for modeling time-to events.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-warning-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 We have presented the Gamma (and Exponential) distribution in terms of
 the \emph{scale} parameter. It is sometimes easier to parameters the
@@ -1311,7 +1311,7 @@ the distribution provided.
 of common distributions} is given in Casella and Berger, a popular text
 for statistical theory at the graduate level.}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 The Exponential distribution being a special case of the Gamma
 distribution is not the only relationship between common distributions.
@@ -1346,6 +1346,13 @@ We write \(X \sim t_{\nu}\), which is read ``X follows a t-distribution
 with \(\nu\) degrees of freedom.''
 
 \end{definition}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+
+As the degrees of freedom approach infinity, the density function of the
+t-distribution approaches that of a Standard Normal random variable.
+
+\end{tcolorbox}
 
 The Chi-Square distribution is a skewed distribution (looks like a giant
 slide). It has a single parameter, known as the degrees of freedom. The
@@ -1407,7 +1414,7 @@ embedded. The key idea here is that when we know the model for a
 distribution, we can make use of several results about this
 distribution.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Some probability models occur so frequently that we give them names for
 easy reference. Some models are common for modeling the population, in
@@ -1521,7 +1528,7 @@ of \(X\).
 
 \end{solution}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-warning-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 While mathematicians distinguish between a derivative \(\frac{d}{dx}\)
 and a partial derivative \(\frac{\partial}{\partial x}\), we do not make
@@ -1572,7 +1579,7 @@ For example, the sample mean takes the form
 
 \[\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i.\]
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 While a capital letter denotes a random variable (not yet observed), the
 corresponding lowercase letter is used to denote a past observation
@@ -1692,7 +1699,7 @@ where \(A_1, A_2, \dotsc, A_n\) are arbitrary sets.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 For those not familiar, \(\prod_{i=1}^n a_i\) is the \emph{product
 operator}. It is analogous to \(\sum_{i=1}^{n} a_i\), but uses products
@@ -1727,7 +1734,7 @@ distributed, abbreviated IID. We might also write this as
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-warning-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Let \(X\) and \(Y\) be identically distributed random variables. This
 does not mean that \(X = Y\). That is, the two random variables need not
@@ -1769,7 +1776,7 @@ Theorem~\ref{thm-variance-independent-sum} gives
 
 \end{solution}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-warning-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 It is important to remember that Example~\ref{exm-mean-xbar} and
 Example~\ref{exm-var-xbar} describe the mean and variance of the sample
@@ -1836,7 +1843,7 @@ If \(M_X(t)\) is defined for all values of \(t\) in some interval about
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 When we are working with multiple random variables, it is common to use
 a subscript to denote the random variable we are referencing. For
@@ -1963,7 +1970,7 @@ that this sampling distribution depends on the unknown parameter
 \(\theta\) that also governs the underlying population. In addition, it
 depends on the sample size.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 The sampling distribution of a statistic depends on both the parameters
 from the underlying population as well as the sample size.
@@ -2058,7 +2065,7 @@ estimate of the population mean. It turns out the sampling distributions
 of most estimators (statistics chosen to estimate a parameter) tend to
 share similar characteristics.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Common Characteristics of Sampling Distributions}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Common Characteristics of Sampling Distributions}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 While not guaranteed, the sampling distribution of many statistics tend
 to have the following characteristics:
@@ -2112,7 +2119,7 @@ sample will tend not to stray as far from the population mean as that of
 a smaller sample. This is where the notion of ``more data is better''
 comes from.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Larger samples result in more reliable statistics.
 
@@ -2125,7 +2132,7 @@ advantageous than any other distribution, but it reinforces the idea
 that the statistic tends to be near the parameter of interest across
 repeated sampling.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-warning-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Remember, these discussions are about the distribution of a statistic
 across repeated samples, and so they apply prior to collecting data.
@@ -2200,7 +2207,7 @@ sample mean and \(S^2\) is the sample standard deviation.
 
 \end{theorem}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 ``The'' Central Limit Theorem is a misnomer; there are actually several
 Central Limit Theorems which differ in their assumptions. The one most
@@ -2228,7 +2235,7 @@ The huge draw of the CLT is that it applies under vary weak conditions
 any population, we have an approximation for the sampling distribution
 of the sample mean.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 The above methods describe the actual sampling distribution. Of course,
 because these describe how a statistic behaves across repeated samples,
@@ -2324,7 +2331,7 @@ approximate that of a Normal distribution as a result of the CLT. This
 highlights that \emph{models} of the sampling distribution tend to have
 similar characteristics to that of sampling distributions.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Common Characteristics of Models for Sampling Distributions}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Common Characteristics of Models for Sampling Distributions}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 While not guaranteed, the model of a sampling distribution of many
 statistics tend to have the following characteristics:
@@ -2395,7 +2402,7 @@ that observed in the sample. With a large sample size, we see that the
 empirical model of the sampling distribution is very similar to that
 suggested by the CLT.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Bootstrapping can be used to qualitatively assess whether the CLT is
 appropriate for a particular sample. Of course, if we have gone through
@@ -2503,7 +2510,7 @@ population characterized by the parameter \(\theta\). The interval
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-warning-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 It is important to note that in the definition of a confidence interval,
 the statistics \(h_1(\mathbf{Y})\) and \(h_2(\mathbf{Y})\) are the
@@ -2664,7 +2671,7 @@ respectively. In the above ratio, \(\theta\) is unknown. However,
 \emph{if we are willing to assume the above null hypothesis is true},
 then we know that \(\theta = 3900\).
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 When working with a one-sided hypothesis, ``assuming the null
 hypothesis'' always considers the boundary of the interval. The idea
@@ -2724,7 +2731,7 @@ observed in the sample.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Often times, our analytic results imply a sampling distribution (or an
 approximation of the sampling distribution) for a ratio instead of the
@@ -2813,7 +2820,7 @@ where \(\beta_0\), \(\beta_1\), and \(\sigma^2\) are unknown parameters.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 In Definition~\ref{def-classical-simple-regression}, note that we only
 consider the response to be a random variable; the predictor is
@@ -3023,7 +3030,7 @@ estimates minimize the quantity of interest.
 
 \end{proof}
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 In the proof above, we essentially derive a very helpful relation that
 pops up often in statistical proofs:
@@ -3265,7 +3272,7 @@ Example~\ref{exm-slope-linear-combination}. This reduces to
 
 \[\widehat{\beta}_1 \sim N\left(\beta_1, \sigma^2 \sum_{i=1}^{n} a_i^2\right).\]
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Notice that since \(\sum_{i=1}^{n} \left(x_i - \bar{x}\right) q = 0\)
 for any constant \(q\), we have that \(\sum_{i=1}^{n} a_i = 0\) and
@@ -3287,7 +3294,7 @@ difference is that in the above, it is assumed that \(\sigma^2\) is
 known. Estimating the parameter \(\sigma^2\) impacts the sampling
 distribution.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 When the sampling distribution of an estimator depends on unknown
 nuisance parameters, the estimation of those nuisance parameters impacts
@@ -3646,7 +3653,7 @@ For the median, we have \(q = 0.5\), which falls between \(\frac{2}{5}\)
 and \(\frac{3}{5}\); therefore, we take the third observation in the
 dataset, which is 3.
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 There are several accepted definitions for computing a sample quantile.
 In fact, the default definition used by the major statistical software
@@ -3688,7 +3695,7 @@ Of course, in practice, we do not know \(\mu\) and \(\sigma\), but we
 can rely on this same idea because it should work for \emph{any} choice
 of \(\mu\) and \(\sigma\).
 
-\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Assessing Normality}, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, toptitle=1mm, breakable, bottomtitle=1mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, bottomrule=.15mm, arc=.35mm, toprule=.15mm, colback=white, rightrule=.15mm, coltitle=black, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Assessing Normality}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
 
 Given a sample of size \(n\), a plot of the observed quantiles against
 the quantiles from a Standard Normal distribution will be roughly linear
