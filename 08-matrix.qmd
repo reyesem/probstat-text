@@ -35,7 +35,7 @@ You might have noticed that we wrote our mean model as a linear combination of p
 
 $$\sum_{j=1}^{p} \beta_j x_{j,i}.$$
 
-Actually, while it may not be clear at this stage, it is better to recognize the mean model as a linear combination of _predictors_, written as
+Actually, while it may not be clear at this stage, it is better to recognize the mean model as a linear combination of _parameters_, written as
 
 $$\beta_0 + \sum_{j=1}^{p} \beta_j x_{j,i} = 1 \beta_0 + x_{1,i} \beta_1 + \dotsb + x_{p,i} \beta_p.$$
 
