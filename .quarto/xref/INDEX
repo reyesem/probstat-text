@@ -28,5 +28,14 @@
   },
   "app-glossary.qmd": {
     "app-glossary.html": "54b779ac"
+  },
+  "08-matrix.qmd": {
+    "08-matrix.html": "c2d28759"
+  },
+  "09-hierarchical-models.qmd": {
+    "09-hierarchical-models.html": "f85fbef7"
+  },
+  "10-autocorrelation.qmd": {
+    "10-autocorrelation.html": "6146036a"
   }
 }

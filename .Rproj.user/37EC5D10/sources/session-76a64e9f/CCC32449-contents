@@ -1,0 +1,190 @@
+```{r}
+#| include: false
+
+# Define default chunk options
+knitr::opts_chunk$set(
+  fig.path = "./images/",
+  out.width = '80%'
+)
+
+
+# Load necessary packages
+library(IntroAnalysis)
+library(tidyverse)
+library(broom)
+library(gghighlight)
+
+# Additional Options
+options(knitr.kable.NA = '',
+        dplyr.show_progress = FALSE,
+        contrasts = rep ("contr.treatment", 2))
+
+# Graphic Options
+theme_set(theme_bw(12))
+theme_update(legend.position = "bottom",
+             legend.box = "vertical",
+             legend.direction = "horizontal")
+
+# knitr::write_bib(c(.packages(), "bookdown"), "packages.bib")
+```
+
+
+```{r}
+#| include: false
+
+# ---- Support Functions
+
+# function: mykable
+# description: Create a default version of kbl().
+mykable <- function(x, ...) {
+  kableExtra::kbl(x, booktabs = TRUE, ...) |>
+    kableExtra::kable_styling(
+      bootstrap_options = c('striped', 'responsive'),
+      latex_options = c('striped'),
+      position = 'center'
+    )
+}
+
+
+# function: get_block
+# description: Extract fenced blocks from a QMD document matching some pattern.
+repeat_block <- function(x, pattern) {
+  # find start lines
+  startind <- x |>
+    str_detect(pattern = pattern) |>
+    which()
+  
+  # find all fenced blocks
+  allind <- x |>
+    str_detect(fixed(':::')) |>
+    which()
+  
+  # find end of each block
+  endind <- allind[(is.element(allind, startind) |> which()) + 1]
+  
+  map2(startind, endind, ~ x[.x:.y])
+}
+
+
+# function: trim_vector
+# description: Remove empty elements from beginning and end of a vector.
+trim_vector <- function(x, side = c('both', 'left', 'right')) {
+  if ((side == 'left') || (side == 'both')) {
+    x <- x[c((which(str_detect(x, '[[:graph:]]'))[1]):(length(x)))]
+  }
+  
+  if ((side == 'right') || (side == 'both')) {
+    x <- x[c(1L:(rev(which(str_detect(x, '[[:graph:]]')))[1]))]
+  }
+  
+  return(x)
+}
+
+
+
+# function: get_terms
+# description: Given a list of fenced blocks, extract terms.
+get_terms <- function(x, term = c('reference', 'title', 'text', 'fullblock')) {
+  if (term == 'reference') {
+    map_chr(x, ~ .x |>
+              str_subset(pattern = ':::\\{#') |>
+              str_remove_all(pattern = '(:::\\{#)|(\\})'))
+  } else if (term == 'title') {
+    map_chr(x, ~ .x |> 
+              str_subset(pattern = '##') |> 
+              str_remove(pattern = '##') |>
+              str_trim())
+  } else if (term == 'text') {
+    map_chr(x, ~ .x |>
+            str_subset(pattern = '(:::)|(##)', negate = TRUE) |>
+            trim_vector(side = 'both') |>
+            str_c(collapse = '\n'))
+    
+    
+  } else if (term == 'fullblock') {
+    map_chr(x, ~ .x |>
+              str_subset(pattern = ':::', negate = TRUE) |>
+              str_c(collapse = '\n'))
+  }
+}
+```
+
+
+```{r}
+#| include: false
+
+# ---- Case Study Data: Deepwater Horizon
+deepwater.df <- tibble(
+  Volunteer_Location = 
+    factor(rep(c("Wildlife Cleanup", "No Oil Exposure"), each = 2),
+           levels = c("Wildlife Cleanup", "No Oil Exposure"),
+           ordered = TRUE),
+  Respiratory_Symptoms = 
+    factor(rep(c("Yes", "No"), times = 2),
+           levels = c("No", "Yes"),
+           ordered = TRUE),
+  Frequency = c(15, 54-15, 16, 103-16),
+  Rel_Frequency = c(15/54, (54-15)/54, 16/103, (103-16)/103)
+)
+```
+
+
+```{r}
+#| include: false
+
+# ---- Case Study Data: Infant Birthweight
+babies.df <- read_csv("./data/case-babies.csv",
+                      col_types = c("icccciic"))
+```
+
+
+```{r}
+#| include: false
+
+# ---- Case Study Data: Greece Earthquakes
+greece.df <- 
+  read_csv("./data/case-greece.csv",
+           col_types = "iniinnnnnnnnn") |>
+  rename(Station_Id = NC,
+         Magnitude = Mw,
+         Epicentral_Distance = R) |>
+  mutate(Soil_Condition = recode(SC,
+                                 `0` = "Soft",
+                                 `1` = "Intermediate",
+                                 `2` = "Rocky")) |>
+  dplyr::select(-SC) %>%
+  filter((Station_Id %% 2) == 1)
+```
+
+
+```{r}
+#| include: false
+
+# ---- Case Study Data: Organic Food and Morals
+#  Available originally from OSF (https://osf.io/hbav9/).
+organic.df <- 
+  haven::read_sav("./data/case-organic.sav") |>
+  mutate(
+    Food_Condition = haven::as_factor(Food_Condition) |>
+      factor(levels = c('comfort', 'control', 'organic')),
+    gender = haven::as_factor(gender),
+    ethnic = haven::as_factor(ethnic),
+    flag_gambler = haven::as_factor(flag_gambler),
+    filter_ = haven::as_factor(`filter_$`)
+  ) |>
+  drop_na(moral_avg)
+```
+
+
+```{r}
+#| include: false
+
+# ---- Case Study Data: Yogurt 
+#  Available from Dr. O'Connor's class.
+yogurt.df <-
+  read_csv("./data/case-yogurt.csv",
+           col_types = "iiiic") |>
+  mutate(
+    `Participant ID` = factor(`Participant ID`)
+  )
+```

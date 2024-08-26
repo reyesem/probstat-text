@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction to Statistical Theory - 8&nbsp; Matrix View of Regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./09-hierarchical-models.html" rel="next">
+<link href="./07-location-scale.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="mystyles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-matrix.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Intro Statistical Theory</a> 
+        <div class="sidebar-tools-main">
+    <a href="./ma382-text.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-fundamentals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Essential Probability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-randomvariables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Random Variables and Distributions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-samplingdistributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sampling Distribution of a Statistic</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference for a Population Mean</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inference for Regression Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-normality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">More on the Classical Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-location-scale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Location Scale Families</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-matrix.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-hierarchical-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Autocorrelation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./app-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#expressing-linear-combinations" id="toc-expressing-linear-combinations" class="nav-link active" data-scroll-target="#expressing-linear-combinations"><span class="header-section-number">8.1</span> Expressing Linear Combinations</a></li>
+  <li><a href="#multiple-regression" id="toc-multiple-regression" class="nav-link" data-scroll-target="#multiple-regression"><span class="header-section-number">8.2</span> Multiple Regression</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-matrix" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="05-regression.html#def-classical-simple-regression" class="quarto-xref">Definition&nbsp;<span>5.2</span></a> introduced us to a model for the mean response as a function of a single predictor. Specifically, we considered <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)</span> to be observations made on a sample of <span class="math inline">\(n\)</span> units. Under the classical simple linear regression model, the distributional model for the response among the population is given by</p>
+<p><span class="math display">\[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)\]</span></p>
+<p>where <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\sigma^2\)</span> are unknown parameters.</p>
+<p>This model is simplistic in that it only considers a single predictor. In reality, we often want the mean response to depend on several variables.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Predictors vs.&nbsp;Covariates
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A statistical model posits a relationship between a response and one or more variables. Depending on the discipline or the use of the statistical model, we might refer to the variables in the model as “predictors,” “covariates,” “factors,” or “treatments.” We tend to refer to quantitative variables as “predictors” and categorical variables as “factors” when they appear in the mean model. However, these terms may be used differently in different disciplines.</p>
+</div>
+</div>
+<p>On one hand, incorporating additional predictors into the model is straight-forward; for example, we might consider <span class="math inline">\(Y_i\)</span> to be the response measured on the <span class="math inline">\(i\)</span>-th observation in a sample, and <span class="math inline">\(x_{1,i}, x_{2, i}, \dotsc, x_{p,i}\)</span> to be the 1st, 2nd, <span class="math inline">\(\dotsc\)</span>, <span class="math inline">\(p\)</span>-th predictor measured on the <span class="math inline">\(i\)</span>-th observation (for <span class="math inline">\(i = 1, 2, \dotsc, n\)</span>). Then, we might posit the following model for the response among the population:</p>
+<p><span class="math display">\[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \sum_{j=1}^{p} \beta_j x_{j,i}, \sigma^2\right)\]</span></p>
+<p>where <span class="math inline">\(\beta_0, \beta_1, \beta_2, \dotsc, \beta_p\)</span> and <span class="math inline">\(\sigma^2\)</span> are unknown parameters.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As in <a href="05-regression.html#def-classical-simple-regression" class="quarto-xref">Definition&nbsp;<span>5.2</span></a>, note that we only consider the response to be a random variable; the predictors are considered fixed (hence the use of a lowercase <span class="math inline">\(x\)</span> instead of a capital <span class="math inline">\(X\)</span>). This is consistent with the idea of a designed experiment for which the values of the predictor can be determined in advance by the researchers.</p>
+<p>However, for observational studies, the values of the predictor cannot be fixed. That is, in practice, the predictor is also unknown in advance and is therefore a random variable as well. In such cases, we can proceed in the same manner, considering the <em>conditional</em> distribution of the response <em>given</em> the predictor.</p>
+</div>
+</div>
+<p>While we can continue to extend results from <a href="05-regression.html" class="quarto-xref"><span>Chapter 5</span></a> to the case of <span class="math inline">\(p\)</span> predictors, the notation can become tedious. It helps to express our model using matrices.</p>
+<section id="expressing-linear-combinations" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="expressing-linear-combinations"><span class="header-section-number">8.1</span> Expressing Linear Combinations</h2>
+<p>You might have noticed that we wrote our mean model as a linear combination of predictors</p>
+<p><span class="math display">\[\sum_{j=1}^{p} \beta_j x_{j,i}.\]</span></p>
+<p>Actually, while it may not be clear at this stage, it is better to recognize the mean model as a linear combination of <em>predictors</em>, written as</p>
+<p><span class="math display">\[\beta_0 + \sum_{j=1}^{p} \beta_j x_{j,i} = 1 \beta_0 + x_{1,i} \beta_1 + \dotsb + x_{p,i} \beta_p.\]</span></p>
+<p>Recall that a linear combination can be written as a dot product of two vectors. Therefore, we can express this linear combination as</p>
+<p><span class="math display">\[1 \beta_0 + x_{1,i} \beta_1 + \dotsb + x_{p,i} \beta_p = \mathbf{x}_i^\top \boldsymbol{\beta},\]</span></p>
+<p>where</p>
+<p><span class="math display">\[\mathbf{x}_i = \begin{pmatrix} 1 \\x_{1,i} \\ x_{2,i} \\ \vdots \\ x_{p,i} \end{pmatrix}\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\boldsymbol{\beta} = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \\ \vdots \\ \beta_p \end{pmatrix}.\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All vectors are by default column vectors, which corresponds to how they are stored in statistical programming languages.</p>
+</div>
+</div>
+<p>Notice we maintain the <span class="math inline">\(i\)</span> subscript, because the linear combination <span class="math inline">\(\mathbf{x}_i^\top \boldsymbol{\beta}\)</span> will differ for each observation in our sample (the values of the variables for one observation will differ from the values of the variables for other observations). We might then re-express distributional model for the response as</p>
+<p><span class="math display">\[Y_i \stackrel{\text{Ind}}{\sim} N\left(\mathbf{x}_i^\top \boldsymbol{\beta}, \sigma^2\right).\]</span></p>
+</section>
+<section id="multiple-regression" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="multiple-regression"><span class="header-section-number">8.2</span> Multiple Regression</h2>
+<p>Often termed “multiple regression,” we write out the model for the response when we allow the mean to be a linear function of several predictors.</p>
+<div id="def-multiple-model" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 8.1 (Classical Regression Model)</strong></span> Let <span class="math inline">\(Y_i\)</span> represent the response for the <span class="math inline">\(i\)</span>-th observation, and let <span class="math inline">\(\mathbf{x}_i\)</span> represent the vector of observed predictors for the <span class="math inline">\(i\)</span>-th observation in a sample of <span class="math inline">\(n\)</span> units, including the intercept term. Under the classical linear regression model, the distributional model for the response among the population is given by</p>
+<p><span class="math display">\[Y_i \stackrel{\text{Ind}}{\sim} N\left(\mathbf{x}_i^\top \boldsymbol{\beta}, \sigma^2\right).\]</span></p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We have been assuming that the first element in <span class="math inline">\(\mathbf{x}_i\)</span> is a 1 to capture the intercept. It is possible to express a model without an intercept term in which case the first element of <span class="math inline">\(\mathbf{x}_i\)</span> is <span class="math inline">\(x_{1,i}\)</span>.</p>
+</div>
+</div>
+<p>Notice that <a href="#def-multiple-model" class="quarto-xref">Definition&nbsp;<span>8.1</span></a> simply extends the form of the distributional model we have previously considered. It makes it clear that</p>
+<p><span class="math display">\[E\left(Y_i\right) = \mathbf{x}_i^\top \boldsymbol{\beta}\]</span></p>
+<p>for each unit. While this presentation connects the process for the inference of a single mean with that of regression, it is not the common presentation. Instead, the model is traditionally presented as saying that</p>
+<p><span class="math display">\[Y_i = \mathbf{x}_i^\top \boldsymbol{\beta} + \varepsilon_i\]</span></p>
+<p>where <span class="math inline">\(\varepsilon_i \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right)\)</span>, where now we can make use of the “identically distributed” language. In this presentation, we have introduced a new random variable, <span class="math inline">\(\varepsilon\)</span>. Since the expression <span class="math inline">\(\mathbf{x}_i^\top \boldsymbol{\beta}\)</span> does not contain a random variable, it is deterministic in nature. Therefore, the distribution of <span class="math inline">\(Y_i\)</span> is determined because we are simply shifting the distribution of <span class="math inline">\(\varepsilon_i\)</span>. As with the simple linear regression model, we can relax the conditions we place on the distribution of <span class="math inline">\(\varepsilon_i\)</span>.</p>
+<p>Regardless of the conditions we impose on <span class="math inline">\(\varepsilon\)</span>, we are essentially specifying a model for the data generating process — the set of statements we are willing to make regarding the variability in the response. We know that since the response is a random variable it has some distribution. The model for the data generating process is really a set of statements about that distribution. We may only be characterizing the mean of the distribution of the response; we may be willing to characterize the mean and the variance; or, we may be willing to fully characterize the distributional form.</p>
+<p>Just as we did with the simple linear regression model, we can use the method of least squares to estimate the parameters in the model. Specifically, we choose the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> to minimize the quantity</p>
+<p><span id="eq-lsq"><span class="math display">\[\sum_{i=1}^{n} \left(Y_i - \mathbf{x}_i^\top \boldsymbol{\beta}\right)^2. \tag{8.1}\]</span></span></p>
+<p>The corresponding estimates are denoted by the vector <span class="math inline">\(\widehat{\boldsymbol{\beta}}.\)</span> Unlike the simple linear regression case, we now have <span class="math inline">\(p + 1\)</span> parameters (assuming an intercept term) and therefore minimizing this quantity requires that we take <span class="math inline">\(p + 1\)</span> partial derivatives and simultaneously solve the <span class="math inline">\(p + 1\)</span> resulting equations. This is where the power of matrix algebra makes the computations simpler.</p>
+<p>Let <span class="math inline">\(\mathbf{Y}\)</span> denote the vector of responses; that is,</p>
+<p><span class="math display">\[\mathbf{Y} = \begin{pmatrix} Y_1 \\ Y_2 \\ \vdots \\ Y_n \end{pmatrix}.\]</span></p>
+<p>And, let <span class="math inline">\(\mathbf{X}\)</span> denote the <strong>design matrix</strong></p>
+<p><span class="math display">\[\mathbf{X} = \begin{pmatrix} 1 &amp; x_{1,1} &amp; x_{2,1} &amp; \dotsb &amp; x_{p, 1} \\
+1 &amp; x_{1, 2} &amp; x_{2, 2} &amp; \dotsb &amp; x_{p, 2} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; x_{1, n} &amp; x_{2, n} &amp; \dotsb &amp; x_{p, n} \end{pmatrix} = \begin{pmatrix} \mathbf{x}_1^\top \\ \mathbf{x}_2^\top \\ \vdots \\ \mathbf{x}_n^\top \end{pmatrix}.\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The first column being a column of 1’s captures the intercept term; if there is no intercept in the model, this column is omitted.</p>
+</div>
+</div>
+<p>Now, we can express the least squares objective function (<a href="#eq-lsq" class="quarto-xref">Equation&nbsp;<span>8.1</span></a>) as</p>
+<p><span id="eq-ls-matrix"><span class="math display">\[(\mathbf{Y} - \mathbf{X}\boldsymbol{\beta})^\top (\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}). \tag{8.2}\]</span></span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Before proceeding, convince yourself that this algebra makes sense. A dot product of any vector with itself is simply a sum of squared terms (“sum of squares”), and the <span class="math inline">\(i\)</span>-th element of each vector is simply the <span class="math inline">\(i\)</span>-th component of the sum in <a href="#eq-lsq" class="quarto-xref">Equation&nbsp;<span>8.1</span></a>.</p>
+</div>
+</div>
+<p>Least squares estimation is now about choosing the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> such that we minimize <a href="#eq-ls-matrix" class="quarto-xref">Equation&nbsp;<span>8.2</span></a>. Taking a derivative (with respect to the <em>vector</em> <span class="math inline">\(\boldsymbol{\beta}\)</span>) results in choosing the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> such that</p>
+<p><span id="eq-norm-eq"><span class="math display">\[\left(\mathbf{X}^\top \mathbf{X}\right) \boldsymbol{\beta} = \mathbf{X}^\top \boldsymbol{Y}, \tag{8.3}\]</span></span></p>
+<p>which are known as the <strong>normal equations</strong>. Again, we have not changed the original problem; we are just expressing it in matrices; there are still <span class="math inline">\(p + 1\)</span> equations with <span class="math inline">\(p + 1\)</span> unknowns (assuming an intercept term). This leads to a compact expression for the least squares estimator:</p>
+<p><span id="eq-reg-lse"><span class="math display">\[\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \boldsymbol{Y}. \tag{8.4}\]</span></span></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In practice, the inverse of the matrix <span class="math inline">\(\mathbf{X}^\top \mathbf{X}\)</span> is never taken directly. There are much more efficient algorithms for computing the least squares estimates.</p>
+</div>
+</div>
+<div id="thm-least-squares-mlr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 8.1 (Least Squares Estimates)</strong></span> Let <span class="math inline">\(Y_i\)</span> represent the response for the <span class="math inline">\(i\)</span>-th observation, and let <span class="math inline">\(\mathbf{x}_i\)</span> represent the vector of observed predictors for the <span class="math inline">\(i\)</span>-th observation in a sample of <span class="math inline">\(n\)</span> units, including the intercept term. The least squares estimates for the multiple linear regression model relating the response and predictor are given by</p>
+<p><span class="math display">\[\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \boldsymbol{Y}.\]</span></p>
+<p>where <span class="math inline">\(\mathbf{Y}\)</span> is the vector of responses and</p>
+<p><span class="math display">\[\mathbf{X} = \begin{pmatrix} \mathbf{x}_1^\top \\ \mathbf{x}_2^\top \\ \vdots \\ \mathbf{x}_n^\top \end{pmatrix}.\]</span></p>
+<p>is known as the design matrix.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>By definition, the least squares estimate of the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> is the vector that minimizes the quantity</p>
+<p><span class="math display">\[Q(\boldsymbol{\beta}) = \left(\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}\right)^\top \left(\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}\right).\]</span></p>
+<p>Define <span class="math inline">\(\widehat{\boldsymbol{\beta}}\)</span> to be the vector</p>
+<p><span class="math display">\[\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \boldsymbol{Y}.\]</span></p>
+<p>Observe that</p>
+<p><span class="math display">\[
+\begin{aligned}
+  Q(\boldsymbol{\beta})
+    &amp;= \left(\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}\right)^\top \left(\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}\right) \\
+    &amp;= \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}} + \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}} + \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)
+\end{aligned}
+\]</span></p>
+<p>where the second line is obtained by adding and subtracting the term <span class="math inline">\(\mathbf{X}\widehat{\boldsymbol{\beta}}\)</span> from each vector. We then expand the terms and obtain</p>
+<p><span id="eq-proof-q"><span class="math display">\[
+\begin{aligned}
+  Q(\boldsymbol{\beta})
+    &amp;= \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right)^\top \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right) \\
+    &amp;\qquad + \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right) \\
+    &amp;\qquad + \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right) \\
+    &amp;\qquad + \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right).
+\end{aligned}
+\tag{8.5}\]</span></span></p>
+<p>Let’s consider the second line of <a href="#eq-proof-q" class="quarto-xref">Equation&nbsp;<span>8.5</span></a>; observe that</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)
+    &amp;= \mathbf{Y}^\top \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &amp;\qquad - \widehat{\boldsymbol{\beta}}^\top \mathbf{X}^\top \mathbf{X} \widehat{\boldsymbol{\beta}} + \widehat{\boldsymbol{\beta}}^\top \mathbf{X}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &amp;= \mathbf{Y}^\top \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &amp;\qquad - \left[\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Y}\right]^\top \mathbf{X}^\top \mathbf{X} \widehat{\boldsymbol{\beta}} \\
+    &amp;\qquad + \left[\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Y}\right]^\top \mathbf{X}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &amp;= \mathbf{Y}^\top \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &amp;\qquad - \mathbf{Y}^\top \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1}  \mathbf{X}^\top \mathbf{X} \widehat{\boldsymbol{\beta}} \\
+    &amp;\qquad + \mathbf{Y}^\top \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &amp;= \mathbf{Y}^\top \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &amp;\qquad - \mathbf{Y}^\top \mathbf{X} \widehat{\boldsymbol{\beta}} + \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &amp;= 0.
+\end{aligned}
+\]</span></p>
+<p>That is, the cross product terms cancel out. Further, since line 3 of <a href="#eq-proof-q" class="quarto-xref">Equation&nbsp;<span>8.5</span></a> is simply the transpose of line 2, we also have that line 3 is equivalent to 0. That is, we rewrite <a href="#eq-proof-q" class="quarto-xref">Equation&nbsp;<span>8.5</span></a> as</p>
+<p><span id="eq-proof-q-simple"><span class="math display">\[
+\begin{aligned}
+  Q(\boldsymbol{\beta})
+    &amp;= \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right)^\top \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right) \\
+    &amp;\qquad + \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right) \\
+    &amp;= Q\left(\widehat{\boldsymbol{\beta}}\right) + \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right).
+\end{aligned}
+\tag{8.6}\]</span></span></p>
+<p>We note that both terms are sums of squares and therefore must be non-negative. Further, since only the second term is a function of <span class="math inline">\(\boldsymbol{\beta}\)</span>, minimizing <span class="math inline">\(Q(\boldsymbol{\beta})\)</span> is equivalent to minimizing the second term. Since the second term in <a href="#eq-proof-q-simple" class="quarto-xref">Equation&nbsp;<span>8.6</span></a> is non-negative, we can minimize it by equating it to 0, which happens if and only if <span class="math inline">\(\boldsymbol{\beta} = \widehat{\boldsymbol{\beta}}\)</span>. This establishes the result.</p>
+</div>
+<div id="exm-special-case" class="theorem example">
+<p><span class="theorem-title"><strong>Example 8.1 (Least Squares Estimate in the Intercept Only Model)</strong></span> Suppose we have only an intercept in the model, determine the least squares estimates of the intercept starting with the matrix representation.</p>
+</div>
+<div class="proof solution">
+<p><span class="proof-title"><em>Solution</em>. </span>While we have already determined the least squares estimates for the simple linear model in <a href="05-regression.html" class="quarto-xref"><span>Chapter 5</span></a>, and we could use that result to determine this estimate. However, we establish this as a special case of the multiple regression model as well. Specifically, note that the least squares estimates are given by</p>
+<p><span class="math display">\[\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}^top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Y}.\]</span></p>
+<p>Now, we know that for an intercept-only model, the design matrix is given by</p>
+<p><span class="math display">\[\mathbf{X} = \begin{pmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{pmatrix}.\]</span></p>
+<p>Therefore, we have that</p>
+<p><span class="math display">\[\mathbf{X}^\top \mathbf{X} = n\]</span> and</p>
+<p><span class="math display">\[
+\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} = \frac{1}{n}.
+\]</span></p>
+<p>We also have that</p>
+<p><span class="math display">\[\mathbf{X}^\top \mathbf{Y} = \sum_{i=1}^{n} y_i = n\bar{y}.\]</span></p>
+<p>Therefore, the least squares estimate is given by</p>
+<p><span class="math display">\[
+\widehat{\beta}_0 = \frac{1}{n} n \bar{y} = \bar{y}
+\]</span></p>
+<p>the sample mean response.</p>
+</div>
+<div id="thm-classical-ls-multiple" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 8.2 (Sampling Distribution for Least Squares Estimators)</strong></span> Under the conditions of the Classical Regression Model (<a href="#def-multiple-model" class="quarto-xref">Definition&nbsp;<span>8.1</span></a>), we have that, holding all other predictors fixed</p>
+<p><span class="math display">\[\frac{\widehat{\beta}_j - \beta_j}{\sqrt{Var\left(\widehat{\beta}_j\right)}} \sim t_{n - p - 1}\]</span></p>
+<p>where <span class="math inline">\(Var\left(\widehat{\beta}_j\right)\)</span> is the <span class="math inline">\((j,j)\)</span>-th element of the matrix</p>
+<p><span class="math display">\[\widehat{\sigma}^2 \left(\mathbf{X}^\top \mathbf{X}\right)^{-1}\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\widehat{\sigma}^2 = \frac{1}{n - p - 1} \sum_{i=1}^{n} \left(Y_i - \mathbf{x}_i^\top \widehat{\boldsymbol{\beta}}\right)^2\]</span></p>
+<p>is our estimate of the unknown population variance <span class="math inline">\(\sigma^2\)</span>.</p>
+</div>
+<p>Once we have a model for the sampling distribution, we have the ability to make inference — confidence intervals or p-values.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>While subtle, the phrase “holding all other predictors fixed” is critical in the sampling distribution of the least squares estimates.</p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./07-location-scale.html" class="pagination-link" aria-label="Location Scale Families">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Location Scale Families</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./09-hierarchical-models.html" class="pagination-link" aria-label="Hierarchical Models">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

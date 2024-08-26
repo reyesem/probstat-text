@@ -1,0 +1,262 @@
+---
+title: 'Homework 2: General Linear Model'
+subtitle: 'Biostatistics (MA482)'
+
+format:
+  pdf:
+    documentclass: scrartcl
+    papersize: letter
+    geometry: 
+      - includeheadfoot
+      - textwidth=7in
+      - textheight=8.5in
+    include-in-header: ReyesStyles.tex
+    include-before-body: UpdateTheorems.tex
+    keep-tex: false
+    latex-clean: true
+    latex-auto-install: true
+    tbl-cap-location: top
+    fig-cap-location: bottom
+    fig-align: center
+    linestretch: 1.5
+    number-sections: true
+    number-depth: 1
+    shift-heading-level-by: 0
+  html: 
+    css: ReyesStyles.css
+    code-overflow: scroll
+    code-line-numbers: true
+    self-contained: true
+    code-tools: false
+    code-fold: show
+    code-summary: Solution
+    page-layout: full
+    tbl-cap-location: top
+    fig-cap-location: bottom
+    fig-align: center
+  docx: 
+    reference-doc: ReyesStyles.docx
+    fig-align: center
+    
+filters:
+   - latex-environment
+environments: 
+   - question
+   - instructor
+---
+
+
+```{r}
+#| include: false
+
+reyescourses:::course_setup('MA482')
+library(reyesr)
+
+solutions <- knitr::is_html_output()
+```
+
+```{r}
+#| echo: false
+#| output: asis
+
+reyesr::print_latex_commands()
+```
+
+
+
+## Problem 1 (Cancer, Endocrinology)
+Obesity is very common in American society and is a risk factor for breast cancer in postmenopausal women.  One mechanism explaining why obesity is a risk factor is that it may raise estrogen levels in women.  In particular, one type of estrogen, serum estradiol, is a strong risk factor for breast cancer.  To better assess these relationships, researchers studied a group of 209 premenopausal women.  Adiposity was measured in two different ways: by body-mass index (`BMI`) and by the waist-hip ratio (`WHR`).  BMI is a measure of overall adiposity, while WHR is a measure of abdominal adiposity.  In addition, a complete hormonal profile was obtained, including estrodiol.  Finally, other risk factors for breast cancer were recorded including ethnicity, age, parity (number of children), having given birth (any kids), and age at menarche (age when menstrual periods first began).  The data are on the course website (`EstrogenCancer`). 
+
+
+### Part (a)
+Consider the following model posed by researchers:
+
+$$(\text{Estradl})_i = \beta_0 + \beta_1(\text{BMI})_i + \beta_2(\text{Entage})_i + \beta_3(\text{Anykids})_i + \beta_4(\text{BMI})_i(\text{Anykids})_i + \varepsilon_i$$
+  
+where
+
+$$
+(\text{Anykids})_i = \begin{cases} 
+  1 & \text{if i-th woman has had children} \\
+  0 & \text{if i-th woman has not had children.}
+  \end{cases}
+$$
+
+:::{.question custom-style='question'}
+Describe the role of $\beta_4$ in the above model in the context of the problem as if to a clinician who has not had statistics.
+:::
+
+:::{.instructor custom-style='instructor' `r visible(solutions)`}
+The interaction term allows the relationship between the estradiol levels and the subject's BMI to differ between those women with kids and those without.
+:::
+
+
+### Part (b)
+:::{.question custom-style='question'}
+Fit the model posed in part (a).  Provide a summary of the model fit (coefficients, standard errors, etc.).  Ignoring whether the trends are statistically significant, describe the relationship between the estradiol levels in post-menopausal women (both those who have and those who have not had children) and their body mass index.
+:::
+
+```{r}
+#| echo: !expr solutions
+#| eval: true
+#| results: !expr ifelse(solutions, 'markup', 'hide')
+#| code-summary: Solution
+
+cancer <- read_csv('EstrogenCancer.csv')
+
+fit.cancer <- lm(Estradl ~ BMI + Entage + Anykids + BMI:Anykids,
+                 data = cancer)
+
+tidy(fit.cancer)
+```
+
+:::{.instructor custom-style='instructor' `r visible(solutions)`}
+In women who never had children, the estradiol levels tend to decrease as the BMI increases.  However, in women who have had kids, it tends to increase ($-0.38 + 0.67 = 0.29$).
+:::
+
+
+### Part (c)
+:::{.question custom-style='question'}
+Consider the model posed in part (a).  Assuming the data is consistent with all conditions for a classical regression model, test the following hypothesis:
+
+$$H_0: \beta_1 = \beta_4 = 0 \qquad \text{vs.} \qquad H_1: \text{At least one } \beta_j \text{ differs from 0}$$
+
+What conclusions can you draw?  Report the p-value to justify your response.
+:::
+
+:::{.callout-tip}
+This hypothesis is assessing whether BMI has any effect on the estradiol levels after accounting for the patient's age and whether she ever had children.  Notice that since BMI appears in two terms in the model, to determine if it has any significance, we must drop it out everywhere.  
+
+Therefore, your conclusion should be about whether BMI is associated with the estradiol levels in post-menapausal women after accounting for their age and whether they had children.
+:::
+
+```{r}
+#| echo: !expr solutions
+#| eval: true
+#| results: !expr ifelse(solutions, 'markup', 'hide')
+#| code-summary: Solution
+
+K.bmi <- matrix(
+  c(0, 1, 0, 0, 0,
+    0, 0, 0, 0, 1),
+  nrow = 2, ncol = 5, byrow = TRUE
+)
+
+linearHypothesis(fit.cancer, K.bmi)
+```
+
+:::{.instructor custom-style='instructor' `r visible(solutions)`}
+There is no evidence (`r display_pval(linearHypothesis(fit.cancer, K.bmi), 'BMI')`) that the estradiol levels of post-menapausal women are associated with their BMI after accounting for their age and whether they had children.
+:::
+
+
+
+## Problem 2 (Infant Vitamin K Shots)
+Nurses at Northbay Healthcare regularly participate in an Evidence Based Practice (EBP) program.  The purpose of the program is to research and implement improvements in nursing care, and then to evaluate the success of these changes using statistical methods.  In one study, they introduced changes in the way newborn babies are handled.  The goal was to reduce pain experienced by the infants resulting from their vitamin K shot (given just a few moments after birth).  Supervising nurses assessed a newborn's pain using a scale known as the Neonatal Infant Pain Score (NIPS), which ranges from 0 to 7.  This scale measures pain based on observing the infant's bodily reactions.  In addition, nurses measured the total length of time the infant cried after receiving the shot.  A total of 158 infants were randomized to either a control group (no intervention) or an intervention group (79 infants in each of the two treatment groups).  Infants in the intervention group were held by their mothers prior to and during the administering of the shot (which is known as "Kangaroo Care").  NIPS scores were recorded immediately after the shot, 30 seconds following, 60 seconds following, and 120 seconds following the shot.  
+
+The primary question of interest is whether the total cry time on average (a measure of infant pain) differed between infants exposed to the intervention and those in the control group.  The data are on the course site (`InfantVitaminK`).
+
+
+### Part (a)
+:::{.question custom-style='question'}
+Construct a graphic that addresses the question of interest.  Be sure the graphic is appropriately labeled.
+:::
+
+```{r}
+#| echo: !expr solutions
+#| eval: true
+#| results: !expr ifelse(solutions, 'markup', 'hide')
+#| code-summary: Solution
+
+vitk <- read_csv("InfantVitaminK.csv")
+
+
+#  Change indicator of treatment to be more meaningful.
+vitk <- vitk |>
+  mutate(
+    Trt = case_match(
+      Trt,
+      1 ~ 'Control Group',
+      2 ~ 'Kangaroo Care'
+    )
+  )
+```
+
+```{r}
+#| echo: !expr solutions
+#| eval: !expr solutions
+#| code-summary: Solution
+
+set.seed(123)
+ggplot(vitk) +
+  aes(y = TotalCryTime,
+      x = Trt) +
+  geom_boxplot() +
+  geom_jitter(width = 0.2, height = 0, alpha = 0.5) +
+  labs(y = "Total Cry Time (seconds)",
+       x = NULL)
+```
+
+
+### Part (b)
+Consider the following linear model appropriate for addressing the question of interest:
+
+$$(\text{Total Cry Time})_i = \beta_0 + \beta_1 (\text{Kangaroo Care})_i + \epsilon_i$$
+
+where
+
+$$
+(\text{Kangaroo Care})_i = \begin{cases}
+  1 & \text{if i-th infant received kangaroo care} \\
+  0 & \text{if i-th infant in control group.} 
+  \end{cases}
+$$
+
+:::{.question custom-style='question'}
+Fit the above model and report a summary of the model fit (coefficients, standard errors, etc.).
+:::
+
+```{r}
+#| echo: !expr solutions
+#| eval: true
+#| results: !expr ifelse(solutions, 'markup', 'hide')
+#| code-summary: Solution
+
+fit.infant <- lm(TotalCryTime ~ Trt, data = vitk)
+
+tidy(fit.infant, conf.int = TRUE)
+```
+
+
+### Part (c)
+:::{.question custom-style='question'}
+Assuming the data is consistent with the standard regression conditions, would you recommend implementing the intervention?  Justify your answer by referring to relevant model output.
+:::
+
+:::{.instructor custom-style='instructor' `r visible(solutions)`}
+Yes, based on the model output, there is evidence that the time the infant cries after receiving a shot is significantly shorter (95% CI: `r display_ci(fit.infant, 'TrtKangaroo Care')`).  An average decrease of even 10 seconds of crying would mean a lot to a new parent. 
+:::
+
+
+### Part (d)
+A medical researcher asks the following secondary question:
+
+  > Does the effect of Kangaroo Care differ depending on the infant's natural pain tolerance?
+  
+To address this question, they would like to determine if there is evidence that the effect of the treatment on the total cry time differs depending on the NIPS score of the infant _immediately after the shot_.
+
+They decide to fit the following model:
+
+$$(\text{Total Cry Time})_i = \beta_0 + \beta_1 (\text{Kangaroo Care})_i + \beta_2 (\text{NIPS 0})_i + \beta_3 (\text{Kangaroo Care})_i (\text{NIPS 0})_i + \varepsilon_i.$$
+
+:::{.question custom-style='question'}
+While the question itself is reasonable, the proposed model/analysis is completely inappropriate.  What makes the analysis inappropriate?
+:::
+
+:::{.callout-tip}
+This is a subtle issue with the design of the study and data used; it does not have to do with regression conditions.
+:::
+
+:::{.instructor custom-style='instructor' `r visible(solutions)`}
+The NIPS0 score is taken after subjects are assigned to the intervention; therefore, it can be affected by the intervention itself.  Therefore, it should not be included as a covariate in the problem because it occurs after the timing of the treatment.
+:::

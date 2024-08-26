@@ -1,0 +1,9 @@
+# Preface {.unnumbered}
+
+{{< include _setupcode.qmd >}}
+
+Probability is the field within mathematics that studies and models random processes.  In contrast, Statistics is a discipline separate from mathematics that uses data to make inference on a population.  Like many other disciplines (e.g., Engineering and the Sciences), while Statistics is a separate discipline, the theory underlying the discipline relies heavily on mathematics; for Statistics, probability plays a pivotal role.  The key step in any statistical analysis is characterizing variability; this is what allows a statistician to make decisions using data.  And, Probability can be used to develop analytical models to describe that variability.  While we do not need proficiency with probability to be practitioners of statistical methodology, a foundation in probability models is necessary for developing statistical theory and helps us see common threads in statistical modeling.
+
+This is not a Probability text; instead, this text acts as a supplement to an Introductory Statistics course.  Our interest is in illustrating how Probability is applied to support statistical methodology.  While we assume the reader has taken a course in Probability, we review key results as needed.  As this is meant to be used in a Statistics course, our goals are much different than those of a mathematician.  Instead of a rigorous treatment of Probability theory (axioms, etc.), our focus is on the application of Probability to Statistics.
+
+Our goal is that this supplement provides a richer experience for those students entering Statistics with exposure to Probability by leveraging the connections between the two disciplines.

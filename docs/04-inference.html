@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -47,7 +47,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -56,6 +62,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -64,6 +71,33 @@ ul.task-list li input[type="checkbox"] {
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="mystyles.css">
 </head>
@@ -74,12 +108,12 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-inference.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference for a Population Mean</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-inference.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference for a Population Mean</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -89,12 +123,12 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Intro Statistical Theory</a> 
         <div class="sidebar-tools-main">
-    <a href="./ma382-text.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="./ma382-text.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -160,8 +194,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./08-matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-hierarchical-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Autocorrelation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -184,7 +230,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -214,36 +260,46 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <p>In the previous chapter, we examined properties of sampling distribution, with particular attention paid to the sampling distribution of the sample mean. We also discussed both analytical and empirical methods for modeling the sampling distribution of a statistic. In this chapter, we build on those results to conduct inference on a parameter.</p>
 <section id="confidence-intervals" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">4.1</span> Confidence Intervals</h2>
 <p>Sampling distributions characterize the variability in a statistic across repeated samples. That is, we expect the statistic to differ from one sample to another. However, what the sampling distribution reveals is that the degree to which these statistics vary, and the degree to which they vary from the corresponding parameter, is quantifiable. This is how sampling distributions are used in a probability course — given an underlying population, determine the probability that the sample mean exceeds a particular value. In statistics, however, we want to go in the other direction — given a set of data, determine a suitable interval of estimates for the parameter.</p>
-<p><a href="#fig-inference-samplingdistribution">Figure&nbsp;<span>4.1</span></a> accompanies the “forward” direction that would accompany a probability problem. Given the sampling distribution, we would be 95% sure the statistic would fall within <span class="math inline">\(d\)</span> units of the parameter <span class="math inline">\(\theta\)</span>, as illustrated by the shaded region.</p>
+<p><a href="#fig-inference-samplingdistribution" class="quarto-xref">Figure&nbsp;<span>4.1</span></a> accompanies the “forward” direction that would accompany a probability problem. Given the sampling distribution, we would be 95% sure the statistic would fall within <span class="math inline">\(d\)</span> units of the parameter <span class="math inline">\(\theta\)</span>, as illustrated by the shaded region.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-inference-samplingdistribution" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/fig-inference-samplingdistribution-1.png" class="img-fluid figure-img" style="width:80.0%" alt="Density curve with the middle 95% of values highlighted."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.1: Illustration of using a sampling distribution to determine the values of a statistic we would likely observe in a new sample.</figcaption>
+<div id="fig-inference-samplingdistribution" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Density curve with the middle 95% of values highlighted.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-inference-samplingdistribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/fig-inference-samplingdistribution-1.png" class="img-fluid figure-img" style="width:80.0%" alt="Density curve with the middle 95% of values highlighted.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inference-samplingdistribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: Illustration of using a sampling distribution to determine the values of a statistic we would likely observe in a new sample.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Given a sample, we want to “reverse engineer” the problem. That is, the sampling distribution tells us that the statistic would likely not fall more than <span class="math inline">\(d\)</span> units from the parameter. Therefore, if we take a sample from the underlying population and compute a statistic, we would expect the parameter to be within <span class="math inline">\(d\)</span> units of this statistic. This is illustrated in <a href="#fig-inference-model">Figure&nbsp;<span>4.2</span></a>, where the difference is that the model for the sampling distribution is centered on the statistic. We call this a <strong>confidence interval</strong>.</p>
+<p>Given a sample, we want to “reverse engineer” the problem. That is, the sampling distribution tells us that the statistic would likely not fall more than <span class="math inline">\(d\)</span> units from the parameter. Therefore, if we take a sample from the underlying population and compute a statistic, we would expect the parameter to be within <span class="math inline">\(d\)</span> units of this statistic. This is illustrated in <a href="#fig-inference-model" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>, where the difference is that the model for the sampling distribution is centered on the statistic. We call this a <strong>confidence interval</strong>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-inference-model" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/fig-inference-model-1.png" class="img-fluid figure-img" style="width:80.0%" alt="Density curve with the middle 95% of values highlighted."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.2: Illustration of using a model for the sampling distribution to determine the values of the parameter that are consistent with the observed sample.</figcaption>
+<div id="fig-inference-model" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Density curve with the middle 95% of values highlighted.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-inference-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/fig-inference-model-1.png" class="img-fluid figure-img" style="width:80.0%" alt="Density curve with the middle 95% of values highlighted.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inference-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: Illustration of using a model for the sampling distribution to determine the values of the parameter that are consistent with the observed sample.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <div id="def-confidence-interval" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.1 (Confidence Interval) </strong></span>Consider repeatedly taking samples <span class="math inline">\(\mathbf{Y}\)</span> of size <span class="math inline">\(n\)</span> from a population characterized by the parameter <span class="math inline">\(\theta\)</span>. The interval <span class="math inline">\(\left(h_1(\mathbf{Y}), h_2(\mathbf{Y})\right)\)</span> is said to be a <span class="math inline">\(100c\)</span>% confidence interval if</p>
+<p><span class="theorem-title"><strong>Definition 4.1 (Confidence Interval)</strong></span> Consider repeatedly taking samples <span class="math inline">\(\mathbf{Y}\)</span> of size <span class="math inline">\(n\)</span> from a population characterized by the parameter <span class="math inline">\(\theta\)</span>. The interval <span class="math inline">\(\left(h_1(\mathbf{Y}), h_2(\mathbf{Y})\right)\)</span> is said to be a <span class="math inline">\(100c\)</span>% confidence interval if</p>
 <p><span class="math display">\[Pr\left(h_1(\mathbf{Y}) \leq \theta \leq h_2(\mathbf{Y})\right) = c.\]</span></p>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -259,11 +315,11 @@ Warning
 <p>It is important to note that in the definition of a confidence interval, the statistics <span class="math inline">\(h_1(\mathbf{Y})\)</span> and <span class="math inline">\(h_2(\mathbf{Y})\)</span> are the random variables; the parameter <span class="math inline">\(\theta\)</span> is fixed. That is, it is the <em>interval</em> that is moving across the repeated samples, not the parameter. Instead of saying “the probability the parameter is within the interval,” we would say “the probability the interval captures the parameter.” While this may seem subtle, it is important for correctly interpreting the interval.</p>
 </div>
 </div>
-<p>Notice that in the definition of a confidence interval depends on repeated sampling. Once we have a sample, probability no longer makes sense; the interval either captures the parameter or it does not, but our ignorance of the result does not warrant a probability statement. This is a direct result of our interpretation of probability (<a href="01-fundamentals.html#def-frequentist-interpretation">Definition&nbsp;<span>1.5</span></a>).</p>
+<p>Notice that in the definition of a confidence interval depends on repeated sampling. Once we have a sample, probability no longer makes sense; the interval either captures the parameter or it does not, but our ignorance of the result does not warrant a probability statement. This is a direct result of our interpretation of probability (<a href="01-fundamentals.html#def-frequentist-interpretation" class="quarto-xref">Definition&nbsp;<span>1.5</span></a>).</p>
 <div id="exm-ci-clt" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.1 (CI for Sample Mean Using CLT) </strong></span>Let <span class="math inline">\(Y_1, Y_2, \dotsc, Y_n\)</span> be a large random sample from a population with a finite mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. Develop a <span class="math inline">\(100c\)</span>% confidence interval for the population mean <span class="math inline">\(\mu\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 4.1 (CI for Sample Mean Using CLT)</strong></span> Let <span class="math inline">\(Y_1, Y_2, \dotsc, Y_n\)</span> be a large random sample from a population with a finite mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. Develop a <span class="math inline">\(100c\)</span>% confidence interval for the population mean <span class="math inline">\(\mu\)</span>.</p>
 </div>
-<div class="solution proof">
+<div class="proof solution">
 <p><span class="proof-title"><em>Solution</em>. </span>Define <span class="math inline">\(z_{0.5(1 + c)}\)</span> to be the value such that</p>
 <p><span class="math display">\[Pr\left(Z \leq z_{0.5(1+c)}\right) = 0.5(1 + c)\]</span></p>
 <p>for any <span class="math inline">\(0 &lt; c &lt; 1\)</span> where <span class="math inline">\(Z \sim N(0, 1)\)</span>. Then, we know that</p>
@@ -285,7 +341,7 @@ Warning
 <blockquote class="blockquote">
 <p>Estimate the average cost (in US dollars) of a diamond for sale in the United States.</p>
 </blockquote>
-<p>In the previous chapter, we saw that the CLT could be used to model the sampling distribution of the sample mean using the available data. Applying the result of <a href="#exm-ci-clt">Example&nbsp;<span>4.1</span></a>, we have that a 95% confidence interval for the average cost of a diamond is given by</p>
+<p>In the previous chapter, we saw that the CLT could be used to model the sampling distribution of the sample mean using the available data. Applying the result of <a href="#exm-ci-clt" class="quarto-xref">Example&nbsp;<span>4.1</span></a>, we have that a 95% confidence interval for the average cost of a diamond is given by</p>
 <p><span class="math display">\[
 \begin{aligned}
   \bar{y} &amp;\pm z_{0.925} \left(s / \sqrt{n}\right) \\
@@ -293,13 +349,17 @@ Warning
   (3899&amp;,\ 3966).
 \end{aligned}
 \]</span></p>
-<p>While <a href="#exm-ci-clt">Example&nbsp;<span>4.1</span></a> provided a formula for a confidence interval using the CLT, we can also develop a confidence interval in the same spirit from an empirical model. Simply define <span class="math inline">\(h_1(\mathbf{Y})\)</span> and <span class="math inline">\(h_2(\mathbf{Y})\)</span> to be the 2.5-th and 97.5-th percentiles from the empirical sampling distribution. Then, we will have a valid 95% confidence interval. <span class="quarto-unresolved-ref">?fig-inference-bootstrap</span> illustrates the 95% CI using the same data.</p>
+<p>While <a href="#exm-ci-clt" class="quarto-xref">Example&nbsp;<span>4.1</span></a> provided a formula for a confidence interval using the CLT, we can also develop a confidence interval in the same spirit from an empirical model. Simply define <span class="math inline">\(h_1(\mathbf{Y})\)</span> and <span class="math inline">\(h_2(\mathbf{Y})\)</span> to be the 2.5-th and 97.5-th percentiles from the empirical sampling distribution. Then, we will have a valid 95% confidence interval. <span class="quarto-unresolved-ref">?fig-inference-bootstrap</span> illustrates the 95% CI using the same data.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-samplingdistributions-bootstrap" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/fig-samplingdistributions-bootstrap-1.png" class="img-fluid figure-img" style="width:80.0%" alt="Density plot of bootstrap statistics with the area under the curve corresponding to the middle 95% of values shaded."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.3: Bootstrap sampling distribution of the sample mean cost of a diamond based on the available data. 5000 bootstrap replicates were used.</figcaption>
+<div id="fig-samplingdistributions-bootstrap" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Density plot of bootstrap statistics with the area under the curve corresponding to the middle 95% of values shaded.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-samplingdistributions-bootstrap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/fig-samplingdistributions-bootstrap-1.png" class="img-fluid figure-img" style="width:80.0%" alt="Density plot of bootstrap statistics with the area under the curve corresponding to the middle 95% of values shaded.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-samplingdistributions-bootstrap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: Bootstrap sampling distribution of the sample mean cost of a diamond based on the available data. 5000 bootstrap replicates were used.
+</figcaption>
 </figure>
 </div>
 </div>
@@ -308,9 +368,9 @@ Warning
 </section>
 <section id="null-distributions-and-p-values" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="null-distributions-and-p-values"><span class="header-section-number">4.2</span> Null Distributions and P-Values</h2>
-<p>The disciplines of probability and statistics blend together most naturally when performing a hypothesis test. In <a href="03-samplingdistributions.html"><span>Chapter&nbsp;3</span></a>, we examined sampling distributions of a statistic, with particular attention paid to the sample mean. We had to transition to modeling these sampling distributions using data since the population parameters, which also characterize the sampling distribution of the statistic, are unknown. When we are performing a hypothesis test, however, the null distribution specifies a particular value of the unknown parameter(s); this then allows us to make use of our models directly! This is known as a <strong>null distribution</strong>.</p>
+<p>The disciplines of probability and statistics blend together most naturally when performing a hypothesis test. In <a href="03-samplingdistributions.html" class="quarto-xref"><span>Chapter 3</span></a>, we examined sampling distributions of a statistic, with particular attention paid to the sample mean. We had to transition to modeling these sampling distributions using data since the population parameters, which also characterize the sampling distribution of the statistic, are unknown. When we are performing a hypothesis test, however, the null distribution specifies a particular value of the unknown parameter(s); this then allows us to make use of our models directly! This is known as a <strong>null distribution</strong>.</p>
 <div id="def-null-distribution" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.2 (Null Distribution) </strong></span>Distribution of a statistic under a hypothesized value of the population parameter(s).</p>
+<p><span class="theorem-title"><strong>Definition 4.2 (Null Distribution)</strong></span> Distribution of a statistic under a hypothesized value of the population parameter(s).</p>
 </div>
 <p>Let’s return to our investigation of diamond prices. Suppose we are interested in the following research question:</p>
 <blockquote class="blockquote">
@@ -350,7 +410,7 @@ Note
 \]</span></p>
 <p>where <span class="math inline">\(Z \sim N(0, 1)\)</span>. That is, assuming the mean cost of a diamond is $3900, there is only a 2.81% chance that we would observe a ratio of at least 1.909. However, using the data we obtained, we find that the ratio we observed in our sample was 1.909, where we use the observed sample mean and standard deviation in the computation. That is, if the average cost of a diamond is $3900, if we were to repeat the study, there is only a 2.81% chance that we would observe data that would provide a ratio as extreme or more so than that observed. Further, larger values of this ratio are more consistent with the alternative hypothesis (average costs larger than $3900). So, if the average cost of a diamond is $3900, there is only a 2.81% chance that we would observe data as consistent or more so with the alternative hypothesis as that observed. This is known as a <strong>p-value</strong>.</p>
 <div id="def-pvalue" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.3 (P-value) </strong></span>The probability, assuming the null hypothesis is true, that we would observe a statistic, by chance alone, as extreme or more so than that observed in the sample.</p>
+<p><span class="theorem-title"><strong>Definition 4.3 (P-value)</strong></span> The probability, assuming the null hypothesis is true, that we would observe a statistic, by chance alone, as extreme or more so than that observed in the sample.</p>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -449,10 +509,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -462,8 +539,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -475,7 +561,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -519,6 +728,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -544,6 +754,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -605,17 +841,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./03-samplingdistributions.html" class="pagination-link">
+      <a href="./03-samplingdistributions.html" class="pagination-link" aria-label="Sampling Distribution of a Statistic">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sampling Distribution of a Statistic</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05-regression.html" class="pagination-link">
+      <a href="./05-regression.html" class="pagination-link" aria-label="Inference for Regression Models">
         <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inference for Regression Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

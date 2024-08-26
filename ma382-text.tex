@@ -77,29 +77,6 @@
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newlength{\csllabelwidth}
-\setlength{\csllabelwidth}{3em}
-\newlength{\cslentryspacingunit} % times entry-spacing
-\setlength{\cslentryspacingunit}{\parskip}
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
-  % turn on hanging indent if param 1 is 1
-  \ifodd #1
-  \let\oldpar\par
-  \def\par{\hangindent=\cslhangindent\oldpar}
-  \fi
-  % set entry spacing
-  \setlength{\parskip}{#2\cslentryspacingunit}
- }%
- {}
-\usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
-\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \KOMAoption{captions}{tableheading}
 \makeatletter
@@ -117,8 +94,6 @@
 \definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
 \definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
 \definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
-\makeatother
-\makeatletter
 \makeatother
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
@@ -158,35 +133,30 @@
 \floatname{codelisting}{Listing}
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \usepackage{amsthm}
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Proof}}
 \newtheorem*{remark}{Remark}
 \newtheorem*{solution}{Solution}
+\newtheorem{refremark}{Remark}[chapter]
+\newtheorem{refsolution}{Solution}[chapter]
+\makeatother
+\makeatletter
 \makeatother
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-\makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
-\makeatother
-\makeatletter
-\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
-\makeatother
-\makeatletter
-\makeatother
-\makeatletter
-\makeatother
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
@@ -201,11 +171,10 @@
 
 \title{Introduction to Statistical Theory}
 \author{Eric M Reyes}
-\date{Updated: 09 November 2023}
+\date{Updated: 26 August 2024}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, frame hidden, interior hidden, enhanced, breakable]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -215,11 +184,19 @@
 }
 \bookmarksetup{startatroot}
 
-\hypertarget{preface}{%
-\chapter*{Preface}\label{preface}}
+\chapter*{Preface}\label{preface}
 \addcontentsline{toc}{chapter}{Preface}
 
 \markboth{Preface}{Preface}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 Probability is the field within mathematics that studies and models
 random processes. In contrast, Statistics is a discipline separate from
@@ -250,8 +227,16 @@ the connections between the two disciplines.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{sec-fundamentals}{%
-\chapter{Essential Probability}\label{sec-fundamentals}}
+\chapter{Essential Probability}\label{sec-fundamentals}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 Probability is a vast field within Mathematics. However, the starting
 point for nearly every course in probability is the development of
@@ -261,8 +246,7 @@ probability. While we will not make use of these results directly, it is
 helpful to review them as they lurk in the background of many more
 useful results.
 
-\hypertarget{probability-of-an-event}{%
-\section{Probability of an Event}\label{probability-of-an-event}}
+\section{Probability of an Event}\label{probability-of-an-event}
 
 Any process for which the outcome cannot be predicted with certainty is
 a random process. The collection of all possible results from this
@@ -330,23 +314,24 @@ this idea of probability as an area.
 
 \begin{figure}
 
-{\centering \includegraphics{images/RandomnessVennDiagram.jpg}
+\centering{
+
+\includegraphics{images/RandomnessVennDiagram.jpg}
 
 }
 
 \caption{\label{fig-fundamentals-venn-diagram}Venn-Diagram illustrating
 two events, \(A\) and \(B\), within a sample space \(\mathcal{S}\).}
 
-\end{figure}
+\end{figure}%
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 Probability represents an area.
 
 \end{tcolorbox}
 
-\hypertarget{essential-results}{%
-\section{Essential Results}\label{essential-results}}
+\section{Essential Results}\label{essential-results}
 
 While the Axioms of Probability (Definition~\ref{def-axioms}) set the
 foundation, we can combine these axioms to form a set of rules which can
@@ -408,7 +393,6 @@ Probability text, we provide the proof below because it illustrates the
 ``do nothing'' technique that will be helpful later on.
 
 \begin{proof}
-
 Let \(A\) and \(B\) be arbitrary events. We note that
 \(A \cap \mathcal{S}\) is the set \(A\). And, since the intersection of
 any set with itself is itself (like multiplying by 1, or ``doing
@@ -432,15 +416,13 @@ the third axiom of probability, we have that
 \[Pr\left((A \cap B) \cup \left(A \cap B^c\right)\right) = Pr(A \cap B) + Pr\left(A \cap B^c\right)\]
 
 giving the desired result.
-
 \end{proof}
 
 While there are many other rules that are interesting and useful in
 application, the above rules suffice for our purposes.
 
-\hypertarget{interpretation-of-probability}{%
 \section{Interpretation of
-Probability}\label{interpretation-of-probability}}
+Probability}\label{interpretation-of-probability}
 
 Again, most probability courses are focused on the mathematics of
 probability; as a result, rarely is the \emph{interpretation} of
@@ -587,7 +569,7 @@ importance of this discussion is not yet clear. But, we will see that
 how probability is interpreted impacts how we interpret the results of
 our statistical analyses.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 The frequentist interpretation of probability does not quantify our
 uncertainty about an event; it quantifies the likelihood of an event in
@@ -597,8 +579,16 @@ repeated observation.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{sec-randomvariables}{%
-\chapter{Random Variables and Distributions}\label{sec-randomvariables}}
+\chapter{Random Variables and Distributions}\label{sec-randomvariables}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 In Chapter~\ref{sec-fundamentals}, we discussed the probability of an
 ``event.'' For statisticians, the events of interests center on
@@ -607,8 +597,7 @@ In this chapter, we begin to connect probability to data analysis. Our
 goal is to reexamine concepts introduced in a probability course,
 relating them to their data-centric analogues.
 
-\hypertarget{random-variables}{%
-\section{Random Variables}\label{random-variables}}
+\section{Random Variables}\label{random-variables}
 
 Consider collecting data; before the data is collected, we cannot
 predict with certainty what we will observe. Therefore, we can think of
@@ -662,7 +651,7 @@ numeric (or quantitative) variables in data analysis; continuous random
 variables are used to model the result of a random process which
 produces a number for which arithmetic makes sense.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
 
 Whether we use a continuous or discrete random variable to represent a
 measurement is not always obvious. Suppose we consider recording the age
@@ -689,9 +678,8 @@ collecting data on a sample requires that we deal with at least \(n\)
 random variables (one measurement for each of the observations in our
 sample).
 
-\hypertarget{characterizing-a-distribution}{%
 \section{Characterizing a
-Distribution}\label{characterizing-a-distribution}}
+Distribution}\label{characterizing-a-distribution}
 
 Again, the goal of statistics is to use a sample to say something about
 the underlying population. Consider the following research objective:
@@ -717,7 +705,7 @@ States. Further, the likelihood that \(Y\) falls within any interval is
 determined by the distribution of the cost across the population. That
 is, the distribution of \(Y\) is the distribution of the population.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 If a random variable \(X\) represents a measurement for a single
 observation from a population, the distribution of the random variable
@@ -753,7 +741,7 @@ for any real number \(u\) in the support.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Properties of a Density Function}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Properties of a Density Function}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 Let \(X\) be a random variable with density function \(f\) defined over
 support \(\mathcal{S}\). Then,
@@ -778,7 +766,7 @@ support \(\mathcal{S}\). Then,
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 In a probability course, there is often a distinction made between
 probability ``density'' functions (used for continuous random variables)
@@ -812,7 +800,9 @@ function).
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-randomvariables-density-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-randomvariables-density-1.pdf}
 
 }
 
@@ -821,7 +811,7 @@ function representing the posited distribution of the population
 alongside a histogram summarizing the cost of diamonds using a sample of
 53940 diamonds.}
 
-\end{figure}
+\end{figure}%
 
 You may recognize the particular form of the density function in
 Figure~\ref{fig-randomvariables-density}. The general form is
@@ -856,7 +846,7 @@ characterize the parameter; but, the parameter itself will remain
 unknown. In both cases, however, the parameter is a \emph{fixed
 quantity}, even if we are ignorant of that value.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 When a probability model is specified for a population, it is generally
 specified up to some unknown parameter(s). Making inference on the
@@ -864,8 +854,7 @@ unknown parameter(s) therefore characterizes the entire distribution.
 
 \end{tcolorbox}
 
-\hypertarget{common-parameters}{%
-\subsection{Common Parameters}\label{common-parameters}}
+\subsection{Common Parameters}\label{common-parameters}
 
 Most scientific questions are focused on the location or spread of a
 distribution. For example, we are interested in estimating the average
@@ -925,7 +914,7 @@ for discrete random variables.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
 
 Pay careful attention to the notation. \(E^2(X)\) represents the square
 of the expected value; that is,
@@ -1006,7 +995,6 @@ a very useful technique when working with known distributions in
 statistical theory.
 
 \begin{solution}
-
 We note that the function
 
 \[g(y) = \frac{1}{\beta^{\alpha} \Gamma(\alpha)} y^{\alpha - 1} e^{-y/\beta}\]
@@ -1089,10 +1077,9 @@ but, we recognize that
 Setting this expression equal to 0.5 and solving for \(q\) yields
 \(q = -\sigma \log(0.5)\), where \(\log(\cdot)\) represents the
 \emph{natural} logarithm.
-
 \end{solution}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 Suppose the density \(f\) is a function of the parameters
 \(\boldsymbol{\theta}\); then, the mean, variance, and median (as well
@@ -1107,8 +1094,7 @@ the ``do nothing'' strategy discussed in the previous chapter. The
 solution also shows that there is more than one way to characterize a
 distribution.
 
-\hypertarget{distribution-function}{%
-\subsection{Distribution Function}\label{distribution-function}}
+\subsection{Distribution Function}\label{distribution-function}
 
 Especially for visualization, the density function is the most common
 way of characterizing a probability model. However, computing the
@@ -1140,7 +1126,7 @@ integrate each time; instead, the integral is computed once (and stored
 internally in the computer) and we use the result to compute
 probabilities directly.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 Density functions are the mathematical models for distributions; they
 link values of the variable with the likelihood of occurrence. However,
@@ -1150,9 +1136,8 @@ or equal to a value.
 
 \end{tcolorbox}
 
-\hypertarget{common-probability-distributions}{%
 \section{Common Probability
-Distributions}\label{common-probability-distributions}}
+Distributions}\label{common-probability-distributions}
 
 While we could posit any non-negative function as a model for a density
 function (properly scaled of course), there are some models that are
@@ -1295,7 +1280,7 @@ We note that, in general, there is no closed form solution for
 
 The Gamma distribution is useful for modeling time-to events.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
 
 We have presented the Gamma (and Exponential) distribution in terms of
 the \emph{scale} parameter. It is sometimes easier to parameters the
@@ -1311,7 +1296,7 @@ the distribution provided.
 of common distributions} is given in Casella and Berger, a popular text
 for statistical theory at the graduate level.}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 The Exponential distribution being a special case of the Gamma
 distribution is not the only relationship between common distributions.
@@ -1347,7 +1332,7 @@ with \(\nu\) degrees of freedom.''
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 As the degrees of freedom approach infinity, the density function of the
 t-distribution approaches that of a Standard Normal random variable.
@@ -1399,14 +1384,16 @@ freedom.''
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-randomvariables-comparisons-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-randomvariables-comparisons-1.pdf}
 
 }
 
 \caption{\label{fig-randomvariables-comparisons}Comparison of various
 common distributions for continuous random variables.}
 
-\end{figure}
+\end{figure}%
 
 The formulas above are ugly, but we will not be working with them
 directly. Instead, statistical software have these distributions
@@ -1414,7 +1401,7 @@ embedded. The key idea here is that when we know the model for a
 distribution, we can make use of several results about this
 distribution.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 Some probability models occur so frequently that we give them names for
 easy reference. Some models are common for modeling the population, in
@@ -1424,9 +1411,8 @@ other distributions that occur in statistical practice.
 
 \end{tcolorbox}
 
-\hypertarget{transformations-of-a-random-variable}{%
 \section{Transformations of a Random
-Variable}\label{transformations-of-a-random-variable}}
+Variable}\label{transformations-of-a-random-variable}
 
 Occasionally, we are interested in a transformation of a particular
 characteristic. That is, we have a model for the distribution of \(X\),
@@ -1484,7 +1470,6 @@ with an analysis. Find the density of \(Y = \log(X)\).
 \end{example}
 
 \begin{solution}
-
 We note that \(\log(x)\) is a strictly monotone function. Therefore, we
 have that
 
@@ -1525,10 +1510,9 @@ which will be valid for all real values of \(y\); that is, the support
 of \(Y\) is all real numbers. In line 2 above, we applied the chain rule
 to compute the derivative, avoiding the need to explicitly state the CDF
 of \(X\).
-
 \end{solution}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
 
 While mathematicians distinguish between a derivative \(\frac{d}{dx}\)
 and a partial derivative \(\frac{\partial}{\partial x}\), we do not make
@@ -1538,9 +1522,17 @@ that distinction.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{sec-samplingdistributions}{%
 \chapter{Sampling Distribution of a
-Statistic}\label{sec-samplingdistributions}}
+Statistic}\label{sec-samplingdistributions}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 In the previous chapter, we related probability concepts associated with
 random variables to their statistical counterparts in data collection.
@@ -1553,9 +1545,7 @@ estimated using statistics; in this chapter, we explore how probability
 theory helps us to characterize the variability in these statistics ---
 which is the key component of statistical inference.
 
-\hypertarget{statistics-and-expectations}{%
-\section{Statistics and
-Expectations}\label{statistics-and-expectations}}
+\section{Statistics and Expectations}\label{statistics-and-expectations}
 
 The goal of statistics is to use a sample to say something about the
 underlying population. Consider the following research objective:
@@ -1579,7 +1569,7 @@ For example, the sample mean takes the form
 
 \[\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i.\]
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 While a capital letter denotes a random variable (not yet observed), the
 corresponding lowercase letter is used to denote a past observation
@@ -1649,7 +1639,6 @@ parameters that govern the shape of that distribution.
 Example~\ref{exm-mean-xbar} is focused on the mean of the distribution.
 
 \begin{solution}
-
 Applying Theorem~\ref{thm-linearity-of-expectations}, we have
 
 \[
@@ -1665,7 +1654,6 @@ If we assume that each \(X_i\) is taken from the same population, then
 \(\mu\). Therefore, we have that
 
 \[E\left(\bar{X}\right) = \frac{1}{n} \sum_{i=1}^{n} \mu = \mu.\]
-
 \end{solution}
 
 Theorem~\ref{thm-linearity-of-expectations} discusses how expectations
@@ -1699,7 +1687,7 @@ where \(A_1, A_2, \dotsc, A_n\) are arbitrary sets.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 For those not familiar, \(\prod_{i=1}^n a_i\) is the \emph{product
 operator}. It is analogous to \(\sum_{i=1}^{n} a_i\), but uses products
@@ -1734,7 +1722,7 @@ distributed, abbreviated IID. We might also write this as
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
 
 Let \(X\) and \(Y\) be identically distributed random variables. This
 does not mean that \(X = Y\). That is, the two random variables need not
@@ -1759,7 +1747,6 @@ Determine \(Var\left(\bar{X}\right)\).
 \end{example}
 
 \begin{solution}
-
 Since \(X_1, X_2, \dotsc, X_n\) form a random sample; we know that they
 are mutually independent. Therefore,
 Theorem~\ref{thm-variance-independent-sum} gives
@@ -1773,10 +1760,9 @@ Theorem~\ref{thm-variance-independent-sum} gives
     &= \sigma^2 / n.
 \end{aligned}
 \]
-
 \end{solution}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
 
 It is important to remember that Example~\ref{exm-mean-xbar} and
 Example~\ref{exm-var-xbar} describe the mean and variance of the sample
@@ -1798,9 +1784,8 @@ Let \(X_1, X_2, \dotsc, X_n\) be independent random variables, then
 
 \end{definition}
 
-\hypertarget{sampling-distribution-of-sample-mean}{%
 \section{Sampling Distribution of Sample
-Mean}\label{sampling-distribution-of-sample-mean}}
+Mean}\label{sampling-distribution-of-sample-mean}
 
 Together, Example~\ref{exm-mean-xbar} and Example~\ref{exm-var-xbar}
 characterize the center and spread of the distribution of the sample
@@ -1843,7 +1828,7 @@ If \(M_X(t)\) is defined for all values of \(t\) in some interval about
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 When we are working with multiple random variables, it is common to use
 a subscript to denote the random variable we are referencing. For
@@ -1861,9 +1846,8 @@ particular random variable. That is, there are distributions for which
 the MGF is not defined. The power of the MGF is summarized in
 \textbf{?@thm-mgf-properties}.
 
-\hypertarget{properties-of-the-moment-generating-function}{%
 \section{Properties of the Moment-Generating
-Function}\label{properties-of-the-moment-generating-function}}
+Function}\label{properties-of-the-moment-generating-function}
 
 Let \(X\) be a random variable with moment-generating function
 \(M_X(t).\) Then, we have that
@@ -1908,7 +1892,6 @@ sampling distribution of \(Z\).
 \end{example}
 
 \begin{solution}
-
 In order to determine the distribution of \(Z\), we find its MGF.
 
 \[
@@ -1960,7 +1943,6 @@ as the moment-generating function of a Binomial distribution with
 parameters \(n\) and \(\theta\). Since moment-generating functions
 uniquely define a distribution when they exist, we have that
 \(Z \sim Bin(n, \theta)\).
-
 \end{solution}
 
 The next chapter will illustrate how we can capitalize on this
@@ -1970,7 +1952,7 @@ that this sampling distribution depends on the unknown parameter
 \(\theta\) that also governs the underlying population. In addition, it
 depends on the sample size.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 The sampling distribution of a statistic depends on both the parameters
 from the underlying population as well as the sample size.
@@ -1996,7 +1978,6 @@ the sample mean. Determine the sampling distribution of \(\bar{Y}\).
 \end{example}
 
 \begin{solution}
-
 In order to determine the distribution of \(\bar{Y}\), we find its MGF.
 
 \[
@@ -2051,7 +2032,6 @@ But, consulting a table of common distributions, we recognize
 distribution with a mean of \(\mu\) and a variance of \(\sigma^2/n\).
 Since moment-generating functions uniquely define a distribution when
 they exist, we have that \(\bar{Y} \sim N\left(\mu, \sigma^2/n\right)\).
-
 \end{solution}
 
 We note a difference between Example~\ref{exm-bernoulli-sum} and
@@ -2065,7 +2045,7 @@ estimate of the population mean. It turns out the sampling distributions
 of most estimators (statistics chosen to estimate a parameter) tend to
 share similar characteristics.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Common Characteristics of Sampling Distributions}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Common Characteristics of Sampling Distributions}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 While not guaranteed, the sampling distribution of many statistics tend
 to have the following characteristics:
@@ -2119,7 +2099,7 @@ sample will tend not to stray as far from the population mean as that of
 a smaller sample. This is where the notion of ``more data is better''
 comes from.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 Larger samples result in more reliable statistics.
 
@@ -2132,7 +2112,7 @@ advantageous than any other distribution, but it reinforces the idea
 that the statistic tends to be near the parameter of interest across
 repeated sampling.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
 
 Remember, these discussions are about the distribution of a statistic
 across repeated samples, and so they apply prior to collecting data.
@@ -2207,7 +2187,7 @@ sample mean and \(S^2\) is the sample standard deviation.
 
 \end{theorem}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 ``The'' Central Limit Theorem is a misnomer; there are actually several
 Central Limit Theorems which differ in their assumptions. The one most
@@ -2235,7 +2215,7 @@ The huge draw of the CLT is that it applies under vary weak conditions
 any population, we have an approximation for the sampling distribution
 of the sample mean.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 The above methods describe the actual sampling distribution. Of course,
 because these describe how a statistic behaves across repeated samples,
@@ -2248,8 +2228,7 @@ spread of the sampling distribution.
 
 \end{tcolorbox}
 
-\hypertarget{bootstrapping}{%
-\section{Bootstrapping}\label{bootstrapping}}
+\section{Bootstrapping}\label{bootstrapping}
 
 In the above sections, we have discussed analytical methods (both exact
 and approximation through limit theorems) for the sampling distribution.
@@ -2331,7 +2310,7 @@ approximate that of a Normal distribution as a result of the CLT. This
 highlights that \emph{models} of the sampling distribution tend to have
 similar characteristics to that of sampling distributions.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Common Characteristics of Models for Sampling Distributions}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Common Characteristics of Models for Sampling Distributions}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 While not guaranteed, the model of a sampling distribution of many
 statistics tend to have the following characteristics:
@@ -2358,8 +2337,7 @@ be broken.
 
 \end{tcolorbox}
 
-\hypertarget{application}{%
-\section{Application}\label{application}}
+\section{Application}\label{application}
 
 Consider the following research objective:
 
@@ -2382,14 +2360,16 @@ shown in Figure~\ref{fig-samplingdistributions-sample}.
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-samplingdistributions-sample-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-samplingdistributions-sample-1.pdf}
 
 }
 
 \caption{\label{fig-samplingdistributions-sample}Distribution of the
 cost of a diamond sold in the United States.}
 
-\end{figure}
+\end{figure}%
 
 Using the sample, we conduct 5000 bootstrap replications, each time
 computing the sample mean. The bootstrap sampling distribution is shown
@@ -2402,7 +2382,7 @@ that observed in the sample. With a large sample size, we see that the
 empirical model of the sampling distribution is very similar to that
 suggested by the CLT.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 Bootstrapping can be used to qualitatively assess whether the CLT is
 appropriate for a particular sample. Of course, if we have gone through
@@ -2420,7 +2400,9 @@ therefore, those results are inappropriate.
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-samplingdistributions-bootstrap-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-samplingdistributions-bootstrap-1.pdf}
 
 }
 
@@ -2428,15 +2410,23 @@ therefore, those results are inappropriate.
 distribution of the sample mean cost of a diamond based on the available
 data. 5000 bootstrap replicates were used.}
 
-\end{figure}
+\end{figure}%
 
 The next chapter considers ways of using the above tools to perform
 inference.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{sec-inference}{%
-\chapter{Inference for a Population Mean}\label{sec-inference}}
+\chapter{Inference for a Population Mean}\label{sec-inference}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 In the previous chapter, we examined properties of sampling
 distribution, with particular attention paid to the sampling
@@ -2445,8 +2435,7 @@ empirical methods for modeling the sampling distribution of a statistic.
 In this chapter, we build on those results to conduct inference on a
 parameter.
 
-\hypertarget{confidence-intervals}{%
-\section{Confidence Intervals}\label{confidence-intervals}}
+\section{Confidence Intervals}\label{confidence-intervals}
 
 Sampling distributions characterize the variability in a statistic
 across repeated samples. That is, we expect the statistic to differ from
@@ -2467,7 +2456,9 @@ the shaded region.
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-inference-samplingdistribution-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-inference-samplingdistribution-1.pdf}
 
 }
 
@@ -2475,7 +2466,7 @@ the shaded region.
 a sampling distribution to determine the values of a statistic we would
 likely observe in a new sample.}
 
-\end{figure}
+\end{figure}%
 
 Given a sample, we want to ``reverse engineer'' the problem. That is,
 the sampling distribution tells us that the statistic would likely not
@@ -2488,7 +2479,9 @@ statistic. We call this a \textbf{confidence interval}.
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-inference-model-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-inference-model-1.pdf}
 
 }
 
@@ -2496,7 +2489,7 @@ statistic. We call this a \textbf{confidence interval}.
 the sampling distribution to determine the values of the parameter that
 are consistent with the observed sample.}
 
-\end{figure}
+\end{figure}%
 
 \begin{definition}[Confidence
 Interval]\protect\hypertarget{def-confidence-interval}{}\label{def-confidence-interval}
@@ -2510,7 +2503,7 @@ population characterized by the parameter \(\theta\). The interval
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-warning-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
 
 It is important to note that in the definition of a confidence interval,
 the statistics \(h_1(\mathbf{Y})\) and \(h_2(\mathbf{Y})\) are the
@@ -2540,7 +2533,6 @@ with a finite mean \(\mu\) and variance \(\sigma^2\). Develop a
 \end{example}
 
 \begin{solution}
-
 Define \(z_{0.5(1 + c)}\) to be the value such that
 
 \[Pr\left(Z \leq z_{0.5(1+c)}\right) = 0.5(1 + c)\]
@@ -2575,7 +2567,6 @@ and \(h_2(\mathbf{Y}) = \bar{Y} + z_{0.5(1+c)}\frac{S}{\sqrt{n}}\), we
 have identified an interval
 \(\left(h_1(\mathbf{Y}), h_2(\mathbf{Y})\right)\) that satisfies the
 definition of a \(100c\)\% confidence interval.
-
 \end{solution}
 
 Consider the following research objective:
@@ -2608,7 +2599,9 @@ confidence interval. \textbf{?@fig-inference-bootstrap} illustrates the
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-samplingdistributions-bootstrap-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-samplingdistributions-bootstrap-1.pdf}
 
 }
 
@@ -2616,15 +2609,14 @@ confidence interval. \textbf{?@fig-inference-bootstrap} illustrates the
 distribution of the sample mean cost of a diamond based on the available
 data. 5000 bootstrap replicates were used.}
 
-\end{figure}
+\end{figure}%
 
 Not surprisingly, since we saw in the last chapter that the empirical
 model and the CLT were extremely similar, the 95\% CI from the empirical
 model matches the 95\% CI given by the CLT.
 
-\hypertarget{null-distributions-and-p-values}{%
 \section{Null Distributions and
-P-Values}\label{null-distributions-and-p-values}}
+P-Values}\label{null-distributions-and-p-values}
 
 The disciplines of probability and statistics blend together most
 naturally when performing a hypothesis test. In
@@ -2671,7 +2663,7 @@ respectively. In the above ratio, \(\theta\) is unknown. However,
 \emph{if we are willing to assume the above null hypothesis is true},
 then we know that \(\theta = 3900\).
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 When working with a one-sided hypothesis, ``assuming the null
 hypothesis'' always considers the boundary of the interval. The idea
@@ -2731,7 +2723,7 @@ observed in the sample.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 Often times, our analytic results imply a sampling distribution (or an
 approximation of the sampling distribution) for a ratio instead of the
@@ -2744,8 +2736,16 @@ difference between our expectations and our observations in the sample.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{sec-regression}{%
-\chapter{Inference for Regression Models}\label{sec-regression}}
+\chapter{Inference for Regression Models}\label{sec-regression}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 The previous chapters introduced the primary components of inference.
 Particular attention was paid to making inference for the mean of a
@@ -2771,9 +2771,8 @@ additional variables.
 
 \end{definition}
 
-\hypertarget{simple-linear-regression-model}{%
 \section{Simple Linear Regression
-Model}\label{simple-linear-regression-model}}
+Model}\label{simple-linear-regression-model}
 
 In previous chapters, we considered distributional models for the
 population of the form
@@ -2820,7 +2819,7 @@ where \(\beta_0\), \(\beta_1\), and \(\sigma^2\) are unknown parameters.
 
 \end{definition}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 In Definition~\ref{def-classical-simple-regression}, note that we only
 consider the response to be a random variable; the predictor is
@@ -2880,8 +2879,7 @@ characterizing the mean of the distribution of the response; we may be
 willing to characterize the mean and the variance; or, we may be willing
 to fully characterize the distributional form.
 
-\hypertarget{least-squares-estimation}{%
-\section{Least Squares Estimation}\label{least-squares-estimation}}
+\section{Least Squares Estimation}\label{least-squares-estimation}
 
 While the previous section defines a model for the data generating
 process, it does not specify how to estimate the unknown parameters.
@@ -2926,7 +2924,6 @@ and predictor are given by
 \end{theorem}
 
 \begin{proof}
-
 By definition, the least squares estimates are the values of the
 parameters that minimize the quantity
 
@@ -3027,10 +3024,9 @@ The determinant of the Hessian matrix is then
 
 Since the determinant is always positive, we have that our least squares
 estimates minimize the quantity of interest.
-
 \end{proof}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 In the proof above, we essentially derive a very helpful relation that
 pops up often in statistical proofs:
@@ -3058,7 +3054,6 @@ also an unbiased estimator.
 \end{example}
 
 \begin{solution}
-
 To establish that this statement is correct, observe that
 
 \[
@@ -3078,7 +3073,6 @@ the data generating process; in line 3, we make use of the linearity of
 expectations; in line 4, we assume that the least squares estimate of
 the slope is an unbiased estimator. Finally, in line 5, we assume that
 the error term has an average of 0.
-
 \end{solution}
 
 Note that in our solution, the only assumption we needed on the error
@@ -3120,8 +3114,16 @@ to make inference --- confidence intervals or p-values.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{sec-normality}{%
-\chapter{More on the Classical Model}\label{sec-normality}}
+\chapter{More on the Classical Model}\label{sec-normality}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 In the previous chapter, we introduced the classical simple linear
 regression model (Definition~\ref{def-classical-simple-regression}). For
@@ -3145,8 +3147,7 @@ In this chapter, we examine some additional results associated with the
 Normal distribution that are instrumental in classical theory of the
 linear model.
 
-\hypertarget{linear-combinations}{%
-\section{Linear Combinations}\label{linear-combinations}}
+\section{Linear Combinations}\label{linear-combinations}
 
 In general, combining random variables does not yield a predictable
 result; the Normal distribution is a notable exception. The following
@@ -3166,7 +3167,6 @@ Let \(a_1, a_2, \dotsc, a_n \in \mathbb{R}\) be known constants. Then,
 \end{theorem}
 
 \begin{proof}
-
 Let \(Z = \sum_{i=1}^{n} a_i Y_i\). Then, observe that
 
 \[
@@ -3200,7 +3200,6 @@ We now recognize this as the form of an MGF of a Normal distribution
 with a mean of \(\sum_{i=1}^{n} a_i \mu_i\) and a variance of
 \(\sum_{i=1}^{n} a_i^2 \sigma^2\). By the uniqueness of MGF's, we have
 the result.
-
 \end{proof}
 
 Why is Theorem~\ref{thm-normal-linear-combination} so important? It
@@ -3226,7 +3225,6 @@ Show that this can be written as a linear combination of the responses.
 \end{example}
 
 \begin{solution}
-
 Consider expanding the numerator to observe that
 
 \[
@@ -3257,7 +3255,6 @@ in the numerator, we can define
 Then, we have that
 
 \[\widehat{\beta}_1 = \sum_{i=1}^{n} a_i Y_i.\]
-
 \end{solution}
 
 The real power of recognizing that the least squares estimate of the
@@ -3272,7 +3269,7 @@ Example~\ref{exm-slope-linear-combination}. This reduces to
 
 \[\widehat{\beta}_1 \sim N\left(\beta_1, \sigma^2 \sum_{i=1}^{n} a_i^2\right).\]
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 Notice that since \(\sum_{i=1}^{n} \left(x_i - \bar{x}\right) q = 0\)
 for any constant \(q\), we have that \(\sum_{i=1}^{n} a_i = 0\) and
@@ -3294,7 +3291,7 @@ difference is that in the above, it is assumed that \(\sigma^2\) is
 known. Estimating the parameter \(\sigma^2\) impacts the sampling
 distribution.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-tip-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Big Idea}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
 
 When the sampling distribution of an estimator depends on unknown
 nuisance parameters, the estimation of those nuisance parameters impacts
@@ -3302,8 +3299,7 @@ the sampling distribution of the estimator.
 
 \end{tcolorbox}
 
-\hypertarget{results-for-squares}{%
-\section{Results for Squares}\label{results-for-squares}}
+\section{Results for Squares}\label{results-for-squares}
 
 The previous section considered a linear combination of Normal random
 variables. In this section, we explore a related result.
@@ -3321,7 +3317,6 @@ As with previous proofs, this is best addressed through a moment
 generating function argument.
 
 \begin{proof}
-
 Let \(Z = \sum_{i=1}^{n} Y_i^2\); then, observe that
 
 \[
@@ -3384,12 +3379,10 @@ this distribution to continue our previous derivation, giving
 
 which we recognize as the MGF of a \(\chi^2_n\) distribution. By the
 uniqueness of moment generating functions, we have the result.
-
 \end{proof}
 
-\hypertarget{relation-to-the-f-distribution}{%
 \section{Relation to the F
-Distribution}\label{relation-to-the-f-distribution}}
+Distribution}\label{relation-to-the-f-distribution}
 
 While this chapter has been focused on the Normal distribution, its
 presence in statistical analysis is often associated with other
@@ -3412,7 +3405,6 @@ Unlike previous results that relied on the MGF, this theorem requires
 that we perform a transformation.
 
 \begin{proof}
-
 Let \(X = U/V\) and let \(Y = V\). We will find the joint density of
 \(X\) and \(Y\), and then integrate out \(Y\) to derive the density of
 \(X\). Observe that
@@ -3484,13 +3476,20 @@ have
 
 which we recognize as the density of the F-distribution with \(\nu\)
 numerator and \(\eta\) denominator degrees of freedom.
-
 \end{proof}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{sec-location-scale}{%
-\chapter{Location Scale Families}\label{sec-location-scale}}
+\chapter{Location Scale Families}\label{sec-location-scale}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 As we have seen, the Normal distribution plays a large role in classical
 statistical theory. However, it is just one example of a location-scale
@@ -3523,7 +3522,6 @@ with scale parameter \(a\lambda\).
 \end{example}
 
 \begin{solution}
-
 Let \(Y = aX\), then the CDF of \(Y\) is given by
 
 \[
@@ -3539,7 +3537,6 @@ Let \(Y = aX\), then the CDF of \(Y\) is given by
 
 which we recognize as the CDF of an Exponential distribution with scale
 parameter \(a\lambda\).
-
 \end{solution}
 
 The above example illustrates a very helpful result regarding
@@ -3577,7 +3574,6 @@ generating this location-scale family. Find an expression for the
 \end{example}
 
 \begin{solution}
-
 The \(q\)-th quantile of \(X\), call it \(X_q\), is the value such that
 
 \[q = F_X\left(X_q\right).\]
@@ -3594,7 +3590,6 @@ given by
 Therefore,
 
 \[X_q = Z_q b + a.\]
-
 \end{solution}
 
 Example~\ref{exm-location-scale-quantiles} reveals that the quantiles of
@@ -3653,7 +3648,7 @@ For the median, we have \(q = 0.5\), which falls between \(\frac{2}{5}\)
 and \(\frac{3}{5}\); therefore, we take the third observation in the
 dataset, which is 3.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 There are several accepted definitions for computing a sample quantile.
 In fact, the default definition used by the major statistical software
@@ -3695,7 +3690,7 @@ Of course, in practice, we do not know \(\mu\) and \(\sigma\), but we
 can rely on this same idea because it should work for \emph{any} choice
 of \(\mu\) and \(\sigma\).
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Assessing Normality}, opacityback=0, toptitle=1mm, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, titlerule=0mm, breakable, colframe=quarto-callout-note-color-frame, arc=.35mm, coltitle=black, bottomtitle=1mm, rightrule=.15mm, colback=white, bottomrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Assessing Normality}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
 
 Given a sample of size \(n\), a plot of the observed quantiles against
 the quantiles from a Standard Normal distribution will be roughly linear
@@ -3716,23 +3711,885 @@ correspond to \(\frac{j - 0.5}{n}\) for \(j = 1,2,\dotsc,n\).
 
 \bookmarksetup{startatroot}
 
-\hypertarget{references}{%
-\chapter*{References}\label{references}}
-\addcontentsline{toc}{chapter}{References}
+\chapter{Matrix View of Regression}\label{sec-matrix}
 
-\markboth{References}{References}
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
-\hypertarget{refs}{}
-\begin{CSLReferences}{0}{0}
-\end{CSLReferences}
+Definition~\ref{def-classical-simple-regression} introduced us to a
+model for the mean response as a function of a single predictor.
+Specifically, we considered
+\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)
+to be observations made on a sample of \(n\) units. Under the classical
+simple linear regression model, the distributional model for the
+response among the population is given by
+
+\[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)\]
+
+where \(\beta_0\), \(\beta_1\), and \(\sigma^2\) are unknown parameters.
+
+This model is simplistic in that it only considers a single predictor.
+In reality, we often want the mean response to depend on several
+variables.
+
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Predictors vs.~Covariates}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
+
+A statistical model posits a relationship between a response and one or
+more variables. Depending on the discipline or the use of the
+statistical model, we might refer to the variables in the model as
+``predictors,'' ``covariates,'' ``factors,'' or ``treatments.'' We tend
+to refer to quantitative variables as ``predictors'' and categorical
+variables as ``factors'' when they appear in the mean model. However,
+these terms may be used differently in different disciplines.
+
+\end{tcolorbox}
+
+On one hand, incorporating additional predictors into the model is
+straight-forward; for example, we might consider \(Y_i\) to be the
+response measured on the \(i\)-th observation in a sample, and
+\(x_{1,i}, x_{2, i}, \dotsc, x_{p,i}\) to be the 1st, 2nd, \(\dotsc\),
+\(p\)-th predictor measured on the \(i\)-th observation (for
+\(i = 1, 2, \dotsc, n\)). Then, we might posit the following model for
+the response among the population:
+
+\[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \sum_{j=1}^{p} \beta_j x_{j,i}, \sigma^2\right)\]
+
+where \(\beta_0, \beta_1, \beta_2, \dotsc, \beta_p\) and \(\sigma^2\)
+are unknown parameters.
+
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
+
+As in Definition~\ref{def-classical-simple-regression}, note that we
+only consider the response to be a random variable; the predictors are
+considered fixed (hence the use of a lowercase \(x\) instead of a
+capital \(X\)). This is consistent with the idea of a designed
+experiment for which the values of the predictor can be determined in
+advance by the researchers.
+
+However, for observational studies, the values of the predictor cannot
+be fixed. That is, in practice, the predictor is also unknown in advance
+and is therefore a random variable as well. In such cases, we can
+proceed in the same manner, considering the \emph{conditional}
+distribution of the response \emph{given} the predictor.
+
+\end{tcolorbox}
+
+While we can continue to extend results from
+Chapter~\ref{sec-regression} to the case of \(p\) predictors, the
+notation can become tedious. It helps to express our model using
+matrices.
+
+\section{Expressing Linear
+Combinations}\label{expressing-linear-combinations}
+
+You might have noticed that we wrote our mean model as a linear
+combination of predictors
+
+\[\sum_{j=1}^{p} \beta_j x_{j,i}.\]
+
+Actually, while it may not be clear at this stage, it is better to
+recognize the mean model as a linear combination of \emph{predictors},
+written as
+
+\[\beta_0 + \sum_{j=1}^{p} \beta_j x_{j,i} = 1 \beta_0 + x_{1,i} \beta_1 + \dotsb + x_{p,i} \beta_p.\]
+
+Recall that a linear combination can be written as a dot product of two
+vectors. Therefore, we can express this linear combination as
+
+\[1 \beta_0 + x_{1,i} \beta_1 + \dotsb + x_{p,i} \beta_p = \mathbf{x}_i^\top \boldsymbol{\beta},\]
+
+where
+
+\[\mathbf{x}_i = \begin{pmatrix} 1 \\x_{1,i} \\ x_{2,i} \\ \vdots \\ x_{p,i} \end{pmatrix}\]
+
+and
+
+\[\boldsymbol{\beta} = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \\ \vdots \\ \beta_p \end{pmatrix}.\]
+
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
+
+All vectors are by default column vectors, which corresponds to how they
+are stored in statistical programming languages.
+
+\end{tcolorbox}
+
+Notice we maintain the \(i\) subscript, because the linear combination
+\(\mathbf{x}_i^\top \boldsymbol{\beta}\) will differ for each
+observation in our sample (the values of the variables for one
+observation will differ from the values of the variables for other
+observations). We might then re-express distributional model for the
+response as
+
+\[Y_i \stackrel{\text{Ind}}{\sim} N\left(\mathbf{x}_i^\top \boldsymbol{\beta}, \sigma^2\right).\]
+
+\section{Multiple Regression}\label{multiple-regression}
+
+Often termed ``multiple regression,'' we write out the model for the
+response when we allow the mean to be a linear function of several
+predictors.
+
+\begin{definition}[Classical Regression
+Model]\protect\hypertarget{def-multiple-model}{}\label{def-multiple-model}
+
+Let \(Y_i\) represent the response for the \(i\)-th observation, and let
+\(\mathbf{x}_i\) represent the vector of observed predictors for the
+\(i\)-th observation in a sample of \(n\) units, including the intercept
+term. Under the classical linear regression model, the distributional
+model for the response among the population is given by
+
+\[Y_i \stackrel{\text{Ind}}{\sim} N\left(\mathbf{x}_i^\top \boldsymbol{\beta}, \sigma^2\right).\]
+
+\end{definition}
+
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
+
+We have been assuming that the first element in \(\mathbf{x}_i\) is a 1
+to capture the intercept. It is possible to express a model without an
+intercept term in which case the first element of \(\mathbf{x}_i\) is
+\(x_{1,i}\).
+
+\end{tcolorbox}
+
+Notice that Definition~\ref{def-multiple-model} simply extends the form
+of the distributional model we have previously considered. It makes it
+clear that
+
+\[E\left(Y_i\right) = \mathbf{x}_i^\top \boldsymbol{\beta}\]
+
+for each unit. While this presentation connects the process for the
+inference of a single mean with that of regression, it is not the common
+presentation. Instead, the model is traditionally presented as saying
+that
+
+\[Y_i = \mathbf{x}_i^\top \boldsymbol{\beta} + \varepsilon_i\]
+
+where
+\(\varepsilon_i \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right)\),
+where now we can make use of the ``identically distributed'' language.
+In this presentation, we have introduced a new random variable,
+\(\varepsilon\). Since the expression
+\(\mathbf{x}_i^\top \boldsymbol{\beta}\) does not contain a random
+variable, it is deterministic in nature. Therefore, the distribution of
+\(Y_i\) is determined because we are simply shifting the distribution of
+\(\varepsilon_i\). As with the simple linear regression model, we can
+relax the conditions we place on the distribution of \(\varepsilon_i\).
+
+Regardless of the conditions we impose on \(\varepsilon\), we are
+essentially specifying a model for the data generating process --- the
+set of statements we are willing to make regarding the variability in
+the response. We know that since the response is a random variable it
+has some distribution. The model for the data generating process is
+really a set of statements about that distribution. We may only be
+characterizing the mean of the distribution of the response; we may be
+willing to characterize the mean and the variance; or, we may be willing
+to fully characterize the distributional form.
+
+Just as we did with the simple linear regression model, we can use the
+method of least squares to estimate the parameters in the model.
+Specifically, we choose the parameter vector \(\boldsymbol{\beta}\) to
+minimize the quantity
+
+\begin{equation}\phantomsection\label{eq-lsq}{\sum_{i=1}^{n} \left(Y_i - \mathbf{x}_i^\top \boldsymbol{\beta}\right)^2.}\end{equation}
+
+The corresponding estimates are denoted by the vector
+\(\widehat{\boldsymbol{\beta}}.\) Unlike the simple linear regression
+case, we now have \(p + 1\) parameters (assuming an intercept term) and
+therefore minimizing this quantity requires that we take \(p + 1\)
+partial derivatives and simultaneously solve the \(p + 1\) resulting
+equations. This is where the power of matrix algebra makes the
+computations simpler.
+
+Let \(\mathbf{Y}\) denote the vector of responses; that is,
+
+\[\mathbf{Y} = \begin{pmatrix} Y_1 \\ Y_2 \\ \vdots \\ Y_n \end{pmatrix}.\]
+
+And, let \(\mathbf{X}\) denote the \textbf{design matrix}
+
+\[\mathbf{X} = \begin{pmatrix} 1 & x_{1,1} & x_{2,1} & \dotsb & x_{p, 1} \\
+1 & x_{1, 2} & x_{2, 2} & \dotsb & x_{p, 2} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_{1, n} & x_{2, n} & \dotsb & x_{p, n} \end{pmatrix} = \begin{pmatrix} \mathbf{x}_1^\top \\ \mathbf{x}_2^\top \\ \vdots \\ \mathbf{x}_n^\top \end{pmatrix}.\]
+
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-note-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, colbacktitle=quarto-callout-note-color!10!white]
+
+The first column being a column of 1's captures the intercept term; if
+there is no intercept in the model, this column is omitted.
+
+\end{tcolorbox}
+
+Now, we can express the least squares objective function
+(Equation~\ref{eq-lsq}) as
+
+\begin{equation}\phantomsection\label{eq-ls-matrix}{(\mathbf{Y} - \mathbf{X}\boldsymbol{\beta})^\top (\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}).}\end{equation}
+
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-tip-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, titlerule=0mm, colbacktitle=quarto-callout-tip-color!10!white]
+
+Before proceeding, convince yourself that this algebra makes sense. A
+dot product of any vector with itself is simply a sum of squared terms
+(``sum of squares''), and the \(i\)-th element of each vector is simply
+the \(i\)-th component of the sum in Equation~\ref{eq-lsq}.
+
+\end{tcolorbox}
+
+Least squares estimation is now about choosing the parameter vector
+\(\boldsymbol{\beta}\) such that we minimize
+Equation~\ref{eq-ls-matrix}. Taking a derivative (with respect to the
+\emph{vector} \(\boldsymbol{\beta}\)) results in choosing the parameter
+vector \(\boldsymbol{\beta}\) such that
+
+\begin{equation}\phantomsection\label{eq-norm-eq}{\left(\mathbf{X}^\top \mathbf{X}\right) \boldsymbol{\beta} = \mathbf{X}^\top \boldsymbol{Y},}\end{equation}
+
+which are known as the \textbf{normal equations}. Again, we have not
+changed the original problem; we are just expressing it in matrices;
+there are still \(p + 1\) equations with \(p + 1\) unknowns (assuming an
+intercept term). This leads to a compact expression for the least
+squares estimator:
+
+\begin{equation}\phantomsection\label{eq-reg-lse}{\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \boldsymbol{Y}.}\end{equation}
+
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-warning-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, titlerule=0mm, colbacktitle=quarto-callout-warning-color!10!white]
+
+In practice, the inverse of the matrix \(\mathbf{X}^\top \mathbf{X}\) is
+never taken directly. There are much more efficient algorithms for
+computing the least squares estimates.
+
+\end{tcolorbox}
+
+\begin{theorem}[Least Squares
+Estimates]\protect\hypertarget{thm-least-squares-mlr}{}\label{thm-least-squares-mlr}
+
+Let \(Y_i\) represent the response for the \(i\)-th observation, and let
+\(\mathbf{x}_i\) represent the vector of observed predictors for the
+\(i\)-th observation in a sample of \(n\) units, including the intercept
+term. The least squares estimates for the multiple linear regression
+model relating the response and predictor are given by
+
+\[\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \boldsymbol{Y}.\]
+
+where \(\mathbf{Y}\) is the vector of responses and
+
+\[\mathbf{X} = \begin{pmatrix} \mathbf{x}_1^\top \\ \mathbf{x}_2^\top \\ \vdots \\ \mathbf{x}_n^\top \end{pmatrix}.\]
+
+is known as the design matrix.
+
+\end{theorem}
+
+\begin{proof}
+By definition, the least squares estimate of the parameter vector
+\(\boldsymbol{\beta}\) is the vector that minimizes the quantity
+
+\[Q(\boldsymbol{\beta}) = \left(\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}\right)^\top \left(\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}\right).\]
+
+Define \(\widehat{\boldsymbol{\beta}}\) to be the vector
+
+\[\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \boldsymbol{Y}.\]
+
+Observe that
+
+\[
+\begin{aligned}
+  Q(\boldsymbol{\beta})
+    &= \left(\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}\right)^\top \left(\mathbf{Y} - \mathbf{X} \boldsymbol{\beta}\right) \\
+    &= \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}} + \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}} + \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)
+\end{aligned}
+\]
+
+where the second line is obtained by adding and subtracting the term
+\(\mathbf{X}\widehat{\boldsymbol{\beta}}\) from each vector. We then
+expand the terms and obtain
+
+\begin{equation}\phantomsection\label{eq-proof-q}{
+\begin{aligned}
+  Q(\boldsymbol{\beta})
+    &= \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right)^\top \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right) \\
+    &\qquad + \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right) \\
+    &\qquad + \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right) \\
+    &\qquad + \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right).
+\end{aligned}
+}\end{equation}
+
+Let's consider the second line of Equation~\ref{eq-proof-q}; observe
+that
+
+\[
+\begin{aligned}
+  \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)
+    &= \mathbf{Y}^\top \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &\qquad - \widehat{\boldsymbol{\beta}}^\top \mathbf{X}^\top \mathbf{X} \widehat{\boldsymbol{\beta}} + \widehat{\boldsymbol{\beta}}^\top \mathbf{X}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &= \mathbf{Y}^\top \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &\qquad - \left[\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Y}\right]^\top \mathbf{X}^\top \mathbf{X} \widehat{\boldsymbol{\beta}} \\
+    &\qquad + \left[\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Y}\right]^\top \mathbf{X}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &= \mathbf{Y}^\top \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &\qquad - \mathbf{Y}^\top \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1}  \mathbf{X}^\top \mathbf{X} \widehat{\boldsymbol{\beta}} \\
+    &\qquad + \mathbf{Y}^\top \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &= \mathbf{Y}^\top \mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &\qquad - \mathbf{Y}^\top \mathbf{X} \widehat{\boldsymbol{\beta}} + \mathbf{Y}^\top \mathbf{X} \boldsymbol{\beta} \\
+    &= 0.
+\end{aligned}
+\]
+
+That is, the cross product terms cancel out. Further, since line 3 of
+Equation~\ref{eq-proof-q} is simply the transpose of line 2, we also
+have that line 3 is equivalent to 0. That is, we rewrite
+Equation~\ref{eq-proof-q} as
+
+\begin{equation}\phantomsection\label{eq-proof-q-simple}{
+\begin{aligned}
+  Q(\boldsymbol{\beta})
+    &= \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right)^\top \left(\mathbf{Y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right) \\
+    &\qquad + \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right) \\
+    &= Q\left(\widehat{\boldsymbol{\beta}}\right) + \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right)^\top \left(\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{X}\boldsymbol{\beta}\right).
+\end{aligned}
+}\end{equation}
+
+We note that both terms are sums of squares and therefore must be
+non-negative. Further, since only the second term is a function of
+\(\boldsymbol{\beta}\), minimizing \(Q(\boldsymbol{\beta})\) is
+equivalent to minimizing the second term. Since the second term in
+Equation~\ref{eq-proof-q-simple} is non-negative, we can minimize it by
+equating it to 0, which happens if and only if
+\(\boldsymbol{\beta} = \widehat{\boldsymbol{\beta}}\). This establishes
+the result.
+\end{proof}
+
+\begin{example}[Least Squares Estimate in the Intercept Only
+Model]\protect\hypertarget{exm-special-case}{}\label{exm-special-case}
+
+Suppose we have only an intercept in the model, determine the least
+squares estimates of the intercept starting with the matrix
+representation.
+
+\end{example}
+
+\begin{solution}
+While we have already determined the least squares estimates for the
+simple linear model in Chapter~\ref{sec-regression}, and we could use
+that result to determine this estimate. However, we establish this as a
+special case of the multiple regression model as well. Specifically,
+note that the least squares estimates are given by
+
+\[\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}^top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Y}.\]
+
+Now, we know that for an intercept-only model, the design matrix is
+given by
+
+\[\mathbf{X} = \begin{pmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{pmatrix}.\]
+
+Therefore, we have that
+
+\[\mathbf{X}^\top \mathbf{X} = n\] and
+
+\[
+\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} = \frac{1}{n}.
+\]
+
+We also have that
+
+\[\mathbf{X}^\top \mathbf{Y} = \sum_{i=1}^{n} y_i = n\bar{y}.\]
+
+Therefore, the least squares estimate is given by
+
+\[
+\widehat{\beta}_0 = \frac{1}{n} n \bar{y} = \bar{y}
+\]
+
+the sample mean response.
+\end{solution}
+
+\begin{theorem}[Sampling Distribution for Least Squares
+Estimators]\protect\hypertarget{thm-classical-ls-multiple}{}\label{thm-classical-ls-multiple}
+
+Under the conditions of the Classical Regression Model
+(Definition~\ref{def-multiple-model}), we have that, holding all other
+predictors fixed
+
+\[\frac{\widehat{\beta}_j - \beta_j}{\sqrt{Var\left(\widehat{\beta}_j\right)}} \sim t_{n - p - 1}\]
+
+where \(Var\left(\widehat{\beta}_j\right)\) is the \((j,j)\)-th element
+of the matrix
+
+\[\widehat{\sigma}^2 \left(\mathbf{X}^\top \mathbf{X}\right)^{-1}\]
+
+and
+
+\[\widehat{\sigma}^2 = \frac{1}{n - p - 1} \sum_{i=1}^{n} \left(Y_i - \mathbf{x}_i^\top \widehat{\boldsymbol{\beta}}\right)^2\]
+
+is our estimate of the unknown population variance \(\sigma^2\).
+
+\end{theorem}
+
+Once we have a model for the sampling distribution, we have the ability
+to make inference --- confidence intervals or p-values.
+
+\begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, leftrule=.75mm, opacityback=0, coltitle=black, bottomrule=.15mm, opacitybacktitle=0.6, left=2mm, colframe=quarto-callout-important-color-frame, breakable, colback=white, arc=.35mm, toprule=.15mm, toptitle=1mm, bottomtitle=1mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Important}, titlerule=0mm, colbacktitle=quarto-callout-important-color!10!white]
+
+While subtle, the phrase ``holding all other predictors fixed'' is
+critical in the sampling distribution of the least squares estimates.
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Hierarchical Models}\label{sec-hierarchical-models}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
+
+We have primarily addressed models where the only random variable was
+the response. All terms in the model were either fixed predictors or
+fixed (albeit unknown) parameters. In this model, we consider a
+hierarchical models.
+
+\section{Motivating Example}\label{motivating-example}
+
+Consider obtaining the weight of an individual. We might randomly select
+the individual from a population; then, we place them on a scale, which
+is subject to measurement error. Since the scale is subject to
+measurement error, we do not observe their actual weight; instead, we
+see some jittered version of their weight. So, we might want to take
+multiple weight readings. As a result, the \(j\)-th weight we observe
+\(Y_j\) on the subject is the sum of the individual's true weight
+\(\theta\) and the measurement error \(\varepsilon_j\) in the scale on
+the \(j\)-th reading:
+
+\[Y_j = \theta + \varepsilon_j.\]
+
+This looks a lot like a linear model with only an intercept. However,
+the primary difference is that this is for multiple observations from a
+single unit! We would of course not only measure the weight of one
+person from the population but a sample of size \(n\) from the
+population. Therefore, our model would become
+
+\begin{equation}\phantomsection\label{eq-hier-one}{Y_{i,j} = \theta_i + \varepsilon_{i,j}}\end{equation}
+
+where
+
+\begin{itemize}
+\tightlist
+\item
+  \(Y_{i,j}\) represents the \(j\)-th weight measurement taken on the
+  \(i\)-th person (remember, we record each person's weight multiple
+  times),
+\item
+  \(\theta_i\) represents the true weight for person \(i\), and
+\item
+  \(\varepsilon_{i,j}\) represents the measurement error in the \(j\)-th
+  weight measurement taken on the \(i\)-th person.
+\end{itemize}
+
+And, since the measurement error is random, we might posit a model for
+its distribution. For example, we might say that
+
+\[\varepsilon_{i,j} \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right).\]
+
+Notice that unlike our previous models, the unknown terms
+\(\theta_1, \theta_2, \dotsc, \theta_n\) change with each person. More,
+since the individuals are from some underlying population, we might
+think about their weights as coming from some underlying distribution.
+That is, we might posit that
+
+\[\theta_i \stackrel{\text{IID}}{\sim} N\left(\mu, \eta^2\right)\]
+
+for some unknown parameters \(\mu\) and \(\eta^2\). Here, \(\mu\)
+represents the average weight of individuals in the population.
+
+We now have two distributional models; putting this together, we can
+write
+
+\[
+\begin{aligned}
+  Y_{i,j} \mid \theta_j &\stackrel{\text{Ind}}{\sim} N\left(\theta_j, \sigma^2\right) \\
+  \theta_j &\stackrel{\text{IID}}{\sim} N\left(\mu, \eta^2\right).
+\end{aligned}
+\]
+
+That is, the distributional model for the observed weight is
+\emph{conditional} on knowing the true weight of the individual, and
+this true weight has its own distribution. This is an example of a
+\textbf{hierarchical model}.
+
+\begin{definition}[Hierarchical
+Model]\protect\hypertarget{def-hierarchical-model}{}\label{def-hierarchical-model}
+
+A distributional model for a response that is constructed in layers. The
+top-most layer is conditional on components that are expressed in lower
+layers.
+
+\end{definition}
+
+Hierarchical models rely on the notion of conditional probability.
+
+\section{Quick Review of Conditional
+Probability}\label{quick-review-of-conditional-probability}
+
+\begin{definition}[Conditional
+Probability]\protect\hypertarget{def-conditional-probability}{}\label{def-conditional-probability}
+
+Let \(A\) and \(B\) be events with non-zero probability. Then, the
+probability that event \(A\) occurs given that event \(B\) occurs
+(written \(A \mid B\)) is given by
+
+\[Pr(A \mid B) = \frac{Pr(A \cap B)}{Pr(B)}.\]
+
+\end{definition}
+
+The notion of conditional probability constrains the sample space to
+consider only that region where the event \(B\) does occur. We are
+essentially looking for the proportional area that \(A\) takes up within
+\(B\). We generalize this definition to random variables as well. In
+order to do so, we need the notion of a joint density function.
+
+\begin{definition}[Joint
+Density]\protect\hypertarget{def-joint-density}{}\label{def-joint-density}
+
+Let \(X\) and \(Y\) be continuous random variables. Then, the joint
+density function of \(X\) and \(Y\), written \(f_{X,Y}(x,y)\) is the
+function such that
+
+\[Pr(a < X < b, c < Y < d) = \int_{c}^{d} \int_{a}^{b} f_{X,Y}(x,y) dx dy.\]
+
+\end{definition}
+
+While we have defined a joint density function for two continuous random
+variables, we could create an analogous definition for two discrete
+random variables or a mix of the two. We can now define a conditional
+density.
+
+\begin{definition}[Conditional
+Density]\protect\hypertarget{def-conditional-density}{}\label{def-conditional-density}
+
+Let \(X\) and \(Y\) be continuous random variables. Then, the density
+function of \(X\) given the value of \(Y\), written as
+\(f_{X \mid Y}(x \mid y)\) is given by
+
+\[f_{X \mid Y}(x \mid y) = \frac{f_{X,Y}(x, y)}{f_Y(y)}\]
+
+where \(f_{X,Y}(x,y)\) is the joint density function.
+
+\end{definition}
+
+This is always a challenging part of a course in probability theory.
+Here, we are saying that for each value the random variable \(Y\) takes,
+a new \emph{distribution} for \(X\) is created. Knowing information
+about one variable informed the distribution of the other.
+
+Just as we talk about how a random variable ``varies'' (the variability
+of the distribution), we can talk about how two random variables
+``co-vary.''
+
+\begin{definition}[Covariance]\protect\hypertarget{def-covariance}{}\label{def-covariance}
+
+Let \(X\) and \(Y\) be random variables. The covariance of \(X\) and
+\(Y\), written \(Cov(X, Y)\) is defined as
+
+\[Cov(X,Y) = E\left[(X - E(X))(Y - E(Y))\right] = E(XY) - E(X) E(Y).\]
+
+\end{definition}
+
+\section{Properties for the Simple Hierarchical
+Model}\label{properties-for-the-simple-hierarchical-model}
+
+Consider the simple hierarchical model from our motivating example:
+
+\[Y_{i,j} = \theta_i + \varepsilon_{i,j}.\]
+
+Since the response is a sum of random variables, we trivially have that
+
+\[E\left(Y_{i,j}\right) = E\left(\theta_i\right) + E\left(\varepsilon_{i,j}\right) = \mu.\]
+
+So, the mean response across all observed observations is the average
+weight in the population. Since we assume that the \(\theta_i\) terms
+are independent of the \(\varepsilon_{i,j}\) terms, we also readily
+obtain that
+
+\[Var\left(Y_{i,j}\right) = Var\left(\theta_i\right) + Var\left(\varepsilon_{i,j}\right) = \eta^2 + \sigma^2.\]
+
+That is, the variability in the response is the result of the
+variability across individuals as well as the variability due to
+measurement error. And, if the measurement error did not exist
+(\(\sigma^2 = 0\)), then we would have that
+\(Y_{i,1} = Y_{i,2} = \dotsb = Y_{i,m}\).
+
+\begin{example}[Covariance in Hierarchical
+Model]\protect\hypertarget{exm-covariance-blocks}{}\label{exm-covariance-blocks}
+
+Consider the simple hierarchical model
+
+\[Y_{i,j} = \theta_i + \varepsilon_{i,j}\]
+
+where
+\(\theta_i \stackrel{\text{IID}}{\sim} N\left(\mu, \eta^2\right)\),
+\(\varepsilon_{i,j} \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right)\),
+and \(\theta_i\) independent of \(\varepsilon_{i,j}\) for all \(i\) and
+\(j\). Determine the covariance between two observations made on the
+same unit, and determine the covariance between two observations made on
+different units.
+
+\end{example}
+
+First, consider two observations made on different units. Without loss
+of generality, we consider \(Y_{1,j}\) and \(Y_{2,j}\). We are
+interested in finding the covariance between \(Y_{1,j}\) and
+\(Y_{2,j}\). By definition
+
+\[Cov\left(Y_{1,j}, Y_{2,j}\right) = E\left(Y_{1,j} Y_{2,j}\right) - E\left(Y_{1,j}\right)E\left(Y_{2,j}\right).\]
+
+We have already established the mean of each observation, \(\mu\).
+Plugging in the form of the linear model for \(Y_{1,j}\) and \(Y_{2,j}\)
+and expanding, we have that
+
+\[
+\begin{aligned}
+  Cov\left(Y_{1,j}, Y_{2,j}\right)
+    &= E\left(Y_{1,j} Y_{2,j}\right) - E\left(Y_{1,j}\right)E\left(Y_{2,j}\right) \\
+    &= E\left(\theta_1\theta_2 + \theta_1 \varepsilon_{2,j} + \theta_2 \varepsilon_{1,j} + \varepsilon_{1,j}\varepsilon_{2,j}\right) - \mu^2 \\
+    &= E\left(\theta_1\right)E\left(\theta_2\right) + E\left(\theta_1\right) E\left(\varepsilon_{2,j}\right) + E\left(\theta_2\right) E\left(\varepsilon_{1,j}\right) + E\left(\varepsilon_{1,j}\right)E\left(\varepsilon_{2,j}\right) - \mu^2 
+\end{aligned}
+\]
+
+where the expectations separate due to the independence between the
+\(\theta\) and \(\varepsilon\) terms. Now, plugging in, we have that
+
+\[Cov\left(Y_{1,j}, Y_{2,j}\right) = \mu^2 + 0 + 0 + 0 - \mu^2 = 0.\]
+
+We now consider two observations from the same unit; without loss of
+generality, we consider \(Y_{i,1}\) and \(Y_{i,2}\) (the same \(i\)
+ensures they are from the same subject). Following a similar process as
+before, we have
+
+\[
+\begin{aligned}
+  Cov\left(Y_{i,1}, Y_{i,2}\right)
+    &= E\left(Y_{i,1} Y_{i,2}\right) - E\left(Y_{i,1}\right)E\left(Y_{i,2}\right) \\
+    &= E\left(\theta_i\theta_i + \theta_i \varepsilon_{i,1} + \theta_i \varepsilon_{i,2} + \varepsilon_{i,1}\varepsilon_{i,2}\right) - \mu^2 \\
+    &= E\left(\theta_i^2\right) + E\left(\theta_i\right) E\left(\varepsilon_{i,1}\right) + E\left(\theta_i\right) E\left(\varepsilon_{i,2}\right) + E\left(\varepsilon_{i,1}\right)E\left(\varepsilon_{i,2}\right) - \mu^2 \\
+    &= E\left(\theta_i^2\right) - \mu^2
+\end{aligned}
+\]
+
+where the expectations separate due to the independence. However, we
+still have one term left to resolve. Remembering the definition of
+variance, we have that
+
+\[Cov\left(Y_{i,1}, Y_{i,2}\right) = Var\left(\theta_i\right) + E^2\left(\theta_i\right) - \mu^2 = \eta^2 + \mu^2 - \mu^2 = \eta^2.\]
+
+That is, observations from the same subject are correlated with one
+another.
+
+\section{Repeated Measures as a Hierarchical
+Model}\label{repeated-measures-as-a-hierarchical-model}
+
+The repeated measures ANOVA model views the mean response as a function
+of a factor of interest and a block term. Specifically, we write
+
+\[Y_i = \sum_{j=1}^{k} \mu_j (\text{Group } j)_i + \sum_{b=1}^{m} \beta_b (\text{Block } b)_i + \varepsilon_i\]
+
+where
+
+\[
+\begin{aligned}
+  (\text{Group } j)_i 
+    &= \begin{cases}
+      1 & \text{if i-th observation comes from group j} \\
+      0 & \text{otherwise}
+      \end{cases} \\
+  (\text{Block } b)_i
+    &= \begin{cases}
+      1 & \text{if i-th observation comes from block b} \\
+      0 & \text{otherwise}
+      \end{cases}
+\end{aligned}
+\]
+
+are indicator variables. It is common to assume the block effects,
+\(\beta_1, \beta_2, \dotsc, \beta_b\) are random variables that are
+independent of the treatment groups and the error in the response
+\(\varepsilon_i\); further, it is common to assume that
+
+\[\beta_j \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2_b\right).\]
+
+That is, the repeated measures ANOVA model is a hierarchical model. The
+distribution of the response can only be specified if we know the block
+effect, and the block effect itself is a random variable.
+
+Viewing it as a hierarchical model allows us to see where the
+correlation structure comes from. All observations that share a similar
+value of \(\beta_b\) are associated in some way.
+
+\bookmarksetup{startatroot}
+
+\chapter{Autocorrelation}\label{sec-autocorrelation}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
+
+A critical assumption throughout the text has been that of independence.
+For example, we might assume that
+
+\[Y_i = \mu + \varepsilon_i\]
+
+where the \(\varepsilon_i\) are independent random variables. For a more
+concrete example, suppose we say that \(\mu = 0\) and
+\(\varepsilon \sim N(0, 1)\), again, all independent. And, suppose we
+take a sample of size 100. Figure~\ref{fig-time-series} illustrates
+several possible samples, where the observations are made sequentially.
+That is, Figure~\ref{fig-time-series} shows several time-series plots
+(plot of the observations over time).
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-time-series-1.pdf}
+
+}
+
+\caption{\label{fig-time-series}The time-series plot for several random
+samples of size 100 taken from a Standard Normal distribution. One
+sample is highlighted for illustration. No visible patterns are
+present.}
+
+\end{figure}%
+
+There are no visible trends in the location or spread of the responses
+as we move across the graphic. While any one time-series plot \emph{may}
+show some small trend, overall, across repeated samples, no trend is
+observed. This lack of trend is the result of the independence between
+observations. Any one observation does not help us predict the location
+of the next.
+
+In contrast, suppose we continue to take \(\mu = 0\), but we say that
+\(\varepsilon_1 \sim N(0, 1)\) and
+
+\[\varepsilon_i \mid \varepsilon_{i-1} \sim N\left(\varepsilon_{i-1}, 1\right)\]
+
+for \(i = 2, 3, \dotsc, n\). Notice that the distribution of one error
+term depends on the value of the previous error. We again consider
+taking a sample of size 100. Figure~\ref{fig-time-series-auto} shows
+several time-series plots for this updated situation.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{./images/fig-time-series-auto-1.pdf}
+
+}
+
+\caption{\label{fig-time-series-auto}The time-series plot for several
+samples of size 100 taken sequentially. The first observation is taken
+from a Standard Normal distribution; each subsequent observation is
+taken from a Normal distribution centered on the previous observation
+with a variance of 1. One sample is highlighted for illustration.}
+
+\end{figure}%
+
+Unlike Figure~\ref{fig-time-series}, we notice a clear trend in the
+location of the series highlighted in Figure~\ref{fig-time-series-auto}.
+The location of the response tends to decrease over time. The lack of
+independence is revealing itself in a trend in the location of the
+response over time.
+
+This is known as auto-correlation. While the specifics of this phenomena
+would be studied in a course on regression modeling, what we see is that
+the relationship between one observation and the next is time-dependent.
+That is, observations close together in time (indices that are near one
+another) are related to one another, while observations further apart in
+time are less related to one another.
+
+\begin{example}[Covariance in Autocorrelation
+Model]\protect\hypertarget{exm-covariance-auto}{}\label{exm-covariance-auto}
+
+Consider the simple autocorrelation model
+
+\[Y_i = \varepsilon_i\]
+
+where \(\varepsilon_1 \sim N(0, 1)\) and
+
+\[\varepsilon_i \mid \varepsilon_{i-1} \sim N\left(\varepsilon_{i-1}, 1\right)\]
+
+for \(i > 1\). Determine the covariance between two observations.
+
+\end{example}
+
+Without loss of generality, consider \(Y_1\) and \(Y_2\). Observe that
+
+\[Cov\left(Y_1, Y_2\right) = Cov\left(\varepsilon_1, \varepsilon_2\right) = E\left(\varepsilon_{1} \varepsilon_{2}\right) - E\left(\varepsilon_{1}\right)E\left(\varepsilon_{2}\right).\]
+
+In order to evaluate these expectations, we need an interim result: for
+any two random variables \(X\) and \(Y\), we have that
+\(E(X) = E(E(X \mid Y))\). That is, in the inner expectation, we take
+the conditional expectation of \(X\) given \(Y\); the result will be
+only a function of the random variable \(Y\). In the outer expectation,
+we take the expectation with respect to \(Y\).
+
+Returning to our problem at hand, we know that
+\(E\left(\varepsilon_1\right) = 0\). Applying our latest result, we have
+
+\[
+\begin{aligned}
+  E\left(\varepsilon_2\right) 
+    &= E\left[E\left(\varepsilon_2 \mid \varepsilon_1\right)\right] \\
+    &= E\left[\varepsilon_1\right] \\
+    &= 0.
+\end{aligned}
+\]
+
+We also have that
+
+\[
+\begin{aligned}
+  E\left(\varepsilon_1 \varepsilon_2\right) 
+    &= E\left[E\left(\varepsilon_1 \varepsilon_2 \mid \varepsilon_1\right)\right] \\
+    &= E\left[ \varepsilon_1 E\left(\varepsilon_2 \mid \varepsilon_1\right)\right] \\
+    &= E\left[\varepsilon_1^2\right] \\
+    &= Var\left(\varepsilon_1\right) + E^2\left(\varepsilon_1\right) \\
+    &= 1.
+\end{aligned}
+\]
+
+Line 2 comes from recognizing that if we are ``given''
+\(\varepsilon_1\), then it is constant in terms of the inner expectation
+and comes out of the expectation. Now, we have shown that
+
+\[Cov\left(Y_1, Y_2\right) = 1\]
+
+meaning that there is a correlation between terms that are next to one
+another.
 
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{part}{Appendices}
 \appendix
 
-\hypertarget{glossary}{%
-\chapter{Glossary}\label{glossary}}
+\chapter{Glossary}\label{glossary}
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\dist}[1]{\stackrel{\text{#1}}{\sim}}
+\providecommand{\ind}[1]{\mathbb{I}\left(#1\right)}
+\providecommand{\bm}[1]{\mathbf{#1}}
+\providecommand{\bs}[1]{\boldsymbol{#1}}
+\providecommand{\Ell}{\mathcal{L}}
+\providecommand{\indep}{\perp\negthickspace\negmedspace\perp}
 
 The following key terms were defined in the text; each term is presented
 with a link to where the term was first encountered in the text.
@@ -3863,6 +4720,18 @@ distribution is a special case of the Gamma distribution where
 
 \begin{description}
 \tightlist
+\item[Classical Regression Model (Definition~\ref{def-multiple-model})]
+Let \(Y_i\) represent the response for the \(i\)-th observation, and let
+\(\mathbf{x}_i\) represent the vector of observed predictors for the
+\(i\)-th observation in a sample of \(n\) units, including the intercept
+term. Under the classical linear regression model, the distributional
+model for the response among the population is given by
+\end{description}
+
+\[Y_i \stackrel{\text{Ind}}{\sim} N\left(\mathbf{x}_i^\top \boldsymbol{\beta}, \sigma^2\right).\]
+
+\begin{description}
+\tightlist
 \item[Classical Simple Linear Regression
 (Definition~\ref{def-classical-simple-regression})]
 Let
@@ -3875,6 +4744,29 @@ response among the population is given by
 \[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)\]
 
 where \(\beta_0\), \(\beta_1\), and \(\sigma^2\) are unknown parameters.
+
+\begin{description}
+\tightlist
+\item[Conditional Density (Definition~\ref{def-conditional-density})]
+Let \(X\) and \(Y\) be continuous random variables. Then, the density
+function of \(X\) given the value of \(Y\), written as
+\(f_{X \mid Y}(x \mid y)\) is given by
+\end{description}
+
+\[f_{X \mid Y}(x \mid y) = \frac{f_{X,Y}(x, y)}{f_Y(y)}\]
+
+where \(f_{X,Y}(x,y)\) is the joint density function.
+
+\begin{description}
+\tightlist
+\item[Conditional Probability
+(Definition~\ref{def-conditional-probability})]
+Let \(A\) and \(B\) be events with non-zero probability. Then, the
+probability that event \(A\) occurs given that event \(B\) occurs
+(written \(A \mid B\)) is given by
+\end{description}
+
+\[Pr(A \mid B) = \frac{Pr(A \cap B)}{Pr(B)}.\]
 
 \begin{description}
 \tightlist
@@ -3896,6 +4788,15 @@ its corresponding support is countable. The random variable \(X\) is
 said to be a continuous random variable if the corresponding support is
 uncountable (such as an interval or a union of intervals on the real
 line).
+\item[Covariance (Definition~\ref{def-covariance})]
+Let \(X\) and \(Y\) be random variables. The covariance of \(X\) and
+\(Y\), written \(Cov(X, Y)\) is defined as
+\end{description}
+
+\[Cov(X,Y) = E\left[(X - E(X))(Y - E(Y))\right] = E(XY) - E(X) E(Y).\]
+
+\begin{description}
+\tightlist
 \item[Cumulative Distribution Function (CDF) (Definition~\ref{def-cdf})]
 Let \(X\) be a random variable; the cumulative distribution function
 (CDF) is defined as
@@ -4042,6 +4943,10 @@ We note that, in general, there is no closed form solution for
 
 \begin{description}
 \tightlist
+\item[Hierarchical Model (Definition~\ref{def-hierarchical-model})]
+A distributional model for a response that is constructed in layers. The
+top-most layer is conditional on components that are expressed in lower
+layers.
 \item[Independence (Definition~\ref{def-independence})]
 Random variables \(X_1, X_2, \dotsc, X_n\) are said to be mutually
 independent (or just ``independent'') if and only if
@@ -4050,6 +4955,16 @@ independent (or just ``independent'') if and only if
 \[Pr\left(X_1 \in A_1, X_2 \in A_2, \dotsb, X_n \in A_n\right) = \prod_{i=1}^{n} Pr\left(X_i \in A_i\right),\]
 
 where \(A_1, A_2, \dotsc, A_n\) are arbitrary sets.
+
+\begin{description}
+\tightlist
+\item[Joint Density (Definition~\ref{def-joint-density})]
+Let \(X\) and \(Y\) be continuous random variables. Then, the joint
+density function of \(X\) and \(Y\), written \(f_{X,Y}(x,y)\) is the
+function such that
+\end{description}
+
+\[Pr(a < X < b, c < Y < d) = \int_{c}^{d} \int_{a}^{b} f_{X,Y}(x,y) dx dy.\]
 
 \begin{description}
 \tightlist

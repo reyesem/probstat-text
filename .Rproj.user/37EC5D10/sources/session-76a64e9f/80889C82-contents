@@ -1,0 +1,269 @@
+# Matrix View of Regression {#sec-matrix}
+
+{{< include _setupcode.qmd >}}
+
+@def-classical-simple-regression introduced us to a model for the mean response as a function of a single predictor.  Specifically, we considered $\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)$ to be observations made on a sample of $n$ units.  Under the classical simple linear regression model, the distributional model for the response among the population is given by
+
+$$Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)$$
+
+where $\beta_0$, $\beta_1$, and $\sigma^2$ are unknown parameters.
+
+This model is simplistic in that it only considers a single predictor.  In reality, we often want the mean response to depend on several variables.
+
+:::{.callout-note}
+## Predictors vs. Covariates
+A statistical model posits a relationship between a response and one or more variables.  Depending on the discipline or the use of the statistical model, we might refer to the variables in the model as "predictors," "covariates," "factors," or "treatments."  We tend to refer to quantitative variables as "predictors" and categorical variables as "factors" when they appear in the mean model.  However, these terms may be used differently in different disciplines.
+:::
+
+On one hand, incorporating additional predictors into the model is straight-forward; for example, we might consider $Y_i$ to be the response measured on the $i$-th observation in a sample, and $x_{1,i}, x_{2, i}, \dotsc, x_{p,i}$ to be the 1st, 2nd, $\dotsc$, $p$-th predictor measured on the $i$-th observation (for $i = 1, 2, \dotsc, n$).  Then, we might posit the following model for the response among the population:
+
+$$Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \sum_{j=1}^{p} \beta_j x_{j,i}, \sigma^2\right)$$
+
+where $\beta_0, \beta_1, \beta_2, \dotsc, \beta_p$ and $\sigma^2$ are unknown parameters.
+
+:::{.callout-note}
+As in @def-classical-simple-regression, note that we only consider the response to be a random variable; the predictors are considered fixed (hence the use of a lowercase $x$ instead of a capital $X$).  This is consistent with the idea of a designed experiment for which the values of the predictor can be determined in advance by the researchers.  
+
+However, for observational studies, the values of the predictor cannot be fixed.  That is, in practice, the predictor is also unknown in advance and is therefore a random variable as well.  In such cases, we can proceed in the same manner, considering the _conditional_ distribution of the response _given_ the predictor.
+:::
+
+While we can continue to extend results from @sec-regression to the case of $p$ predictors, the notation can become tedious.  It helps to express our model using matrices.
+
+
+## Expressing Linear Combinations
+You might have noticed that we wrote our mean model as a linear combination of predictors
+
+$$\sum_{j=1}^{p} \beta_j x_{j,i}.$$
+
+Actually, while it may not be clear at this stage, it is better to recognize the mean model as a linear combination of _predictors_, written as
+
+$$\beta_0 + \sum_{j=1}^{p} \beta_j x_{j,i} = 1 \beta_0 + x_{1,i} \beta_1 + \dotsb + x_{p,i} \beta_p.$$
+
+Recall that a linear combination can be written as a dot product of two vectors.  Therefore, we can express this linear combination as
+
+$$1 \beta_0 + x_{1,i} \beta_1 + \dotsb + x_{p,i} \beta_p = \bm{x}_i^\top \bs{\beta},$$
+
+where
+
+$$\bm{x}_i = \begin{pmatrix} 1 \\x_{1,i} \\ x_{2,i} \\ \vdots \\ x_{p,i} \end{pmatrix}$$
+
+and
+
+$$\bs{\beta} = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \\ \vdots \\ \beta_p \end{pmatrix}.$$
+
+:::{.callout-note}
+All vectors are by default column vectors, which corresponds to how they are stored in statistical programming languages.
+:::
+
+Notice we maintain the $i$ subscript, because the linear combination $\bm{x}_i^\top \bs{\beta}$ will differ for each observation in our sample (the values of the variables for one observation will differ from the values of the variables for other observations).  We might then re-express distributional model for the response as
+
+$$Y_i \stackrel{\text{Ind}}{\sim} N\left(\bm{x}_i^\top \bs{\beta}, \sigma^2\right).$$
+
+## Multiple Regression
+Often termed "multiple regression," we write out the model for the response when we allow the mean to be a linear function of several predictors. 
+
+:::{#def-multiple-model}
+## Classical Regression Model
+Let $Y_i$ represent the response for the $i$-th observation, and let $\bm{x}_i$ represent the vector of observed predictors for the $i$-th observation in a sample of $n$ units, including the intercept term.  Under the classical linear regression model, the distributional model for the response among the population is given by
+
+$$Y_i \stackrel{\text{Ind}}{\sim} N\left(\bm{x}_i^\top \bs{\beta}, \sigma^2\right).$$
+
+:::
+
+:::{.callout-note}
+We have been assuming that the first element in $\bm{x}_i$ is a 1 to capture the intercept.  It is possible to express a model without an intercept term in which case the first element of $\bm{x}_i$ is $x_{1,i}$.
+:::
+
+Notice that @def-multiple-model simply extends the form of the distributional model we have previously considered.  It makes it clear that
+
+$$E\left(Y_i\right) = \bm{x}_i^\top \bs{\beta}$$
+
+for each unit.  While this presentation connects the process for the inference of a single mean with that of regression, it is not the common presentation.  Instead, the model is traditionally presented as saying that
+
+$$Y_i = \bm{x}_i^\top \bs{\beta} + \varepsilon_i$$
+
+where $\varepsilon_i \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right)$, where now we can make use of the "identically distributed" language.  In this presentation, we have introduced a new random variable, $\varepsilon$.  Since the expression $\bm{x}_i^\top \bs{\beta}$ does not contain a random variable, it is deterministic in nature.  Therefore, the distribution of $Y_i$ is determined because we are simply shifting the distribution of $\varepsilon_i$.  As with the simple linear regression model, we can relax the conditions we place on the distribution of $\varepsilon_i$.
+
+Regardless of the conditions we impose on $\varepsilon$, we are essentially specifying a model for the data generating process --- the set of statements we are willing to make regarding the variability in the response.  We know that since the response is a random variable it has some distribution.  The model for the data generating process is really a set of statements about that distribution.  We may only be characterizing the mean of the distribution of the response; we may be willing to characterize the mean and the variance; or, we may be willing to fully characterize the distributional form.
+
+Just as we did with the simple linear regression model, we can use the method of least squares to estimate the parameters in the model.  Specifically, we choose the parameter vector $\bs{\beta}$ to minimize the quantity
+
+$$\sum_{i=1}^{n} \left(Y_i - \bm{x}_i^\top \bs{\beta}\right)^2.$$ {#eq-lsq}
+
+The corresponding estimates are denoted by the vector $\widehat{\bs{\beta}}.$  Unlike the simple linear regression case, we now have $p + 1$ parameters (assuming an intercept term) and therefore minimizing this quantity requires that we take $p + 1$ partial derivatives and simultaneously solve the $p + 1$ resulting equations.  This is where the power of matrix algebra makes the computations simpler.  
+
+Let $\bm{Y}$ denote the vector of responses; that is,
+
+$$\bm{Y} = \begin{pmatrix} Y_1 \\ Y_2 \\ \vdots \\ Y_n \end{pmatrix}.$$
+
+And, let $\bm{X}$ denote the __design matrix__
+
+$$\bm{X} = \begin{pmatrix} 1 & x_{1,1} & x_{2,1} & \dotsb & x_{p, 1} \\
+1 & x_{1, 2} & x_{2, 2} & \dotsb & x_{p, 2} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_{1, n} & x_{2, n} & \dotsb & x_{p, n} \end{pmatrix} = \begin{pmatrix} \bm{x}_1^\top \\ \bm{x}_2^\top \\ \vdots \\ \bm{x}_n^\top \end{pmatrix}.$$
+
+:::{.callout-note}
+The first column being a column of 1's captures the intercept term; if there is no intercept in the model, this column is omitted.
+:::
+
+Now, we can express the least squares objective function (@eq-lsq) as
+
+$$(\bm{Y} - \bm{X}\bs{\beta})^\top (\bm{Y} - \bm{X} \bs{\beta}).$$ {#eq-ls-matrix}
+
+:::{.callout-tip}
+Before proceeding, convince yourself that this algebra makes sense.  A dot product of any vector with itself is simply a sum of squared terms ("sum of squares"), and the $i$-th element of each vector is simply the $i$-th component of the sum in @eq-lsq.
+:::
+
+
+Least squares estimation is now about choosing the parameter vector $\bs{\beta}$ such that we minimize @eq-ls-matrix.  Taking a derivative (with respect to the _vector_ $\bs{\beta}$) results in choosing the parameter vector $\bs{\beta}$ such that 
+
+$$\left(\bm{X}^\top \bm{X}\right) \bs{\beta} = \bm{X}^\top \bs{Y},$$ {#eq-norm-eq}
+
+which are known as the __normal equations__.  Again, we have not changed the original problem; we are just expressing it in matrices; there are still $p + 1$ equations with $p + 1$ unknowns (assuming an intercept term).  This leads to a compact expression for the least squares estimator:
+
+$$\widehat{\bs{\beta}} = \left(\bm{X}^\top \bm{X}\right)^{-1} \bm{X}^\top \bs{Y}.$$ {#eq-reg-lse}
+
+:::{.callout-warning}
+In practice, the inverse of the matrix $\bm{X}^\top \bm{X}$ is never taken directly.  There are much more efficient algorithms for computing the least squares estimates.
+:::
+
+
+:::{#thm-least-squares-mlr}
+## Least Squares Estimates
+Let $Y_i$ represent the response for the $i$-th observation, and let $\bm{x}_i$ represent the vector of observed predictors for the $i$-th observation in a sample of $n$ units, including the intercept term.  The least squares estimates for the multiple linear regression model relating the response and predictor are given by
+
+$$\widehat{\bs{\beta}} = \left(\bm{X}^\top \bm{X}\right)^{-1} \bm{X}^\top \bs{Y}.$$
+
+where $\bm{Y}$ is the vector of responses and 
+
+$$\bm{X} = \begin{pmatrix} \bm{x}_1^\top \\ \bm{x}_2^\top \\ \vdots \\ \bm{x}_n^\top \end{pmatrix}.$$
+
+is known as the design matrix.
+:::
+
+:::{.proof}
+By definition, the least squares estimate of the parameter vector $\bs{\beta}$ is the vector that minimizes the quantity
+
+$$Q(\bs{\beta}) = \left(\bm{Y} - \bm{X} \bs{\beta}\right)^\top \left(\bm{Y} - \bm{X} \bs{\beta}\right).$$
+
+Define $\widehat{\bs{\beta}}$ to be the vector
+
+$$\left(\bm{X}^\top \bm{X}\right)^{-1} \bm{X}^\top \bs{Y}.$$
+
+Observe that
+
+$$
+\begin{aligned}
+  Q(\bs{\beta})
+    &= \left(\bm{Y} - \bm{X} \bs{\beta}\right)^\top \left(\bm{Y} - \bm{X} \bs{\beta}\right) \\
+    &= \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}} + \bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right)^\top \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}} + \bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right)
+\end{aligned}
+$$
+
+where the second line is obtained by adding and subtracting the term $\bm{X}\widehat{\bs{\beta}}$ from each vector.  We then expand the terms and obtain
+
+$$
+\begin{aligned}
+  Q(\bs{\beta})
+    &= \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}}\right)^\top \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}}\right) \\
+    &\qquad + \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}}\right)^\top \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right) \\
+    &\qquad + \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right)^\top \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}}\right) \\
+    &\qquad + \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right)^\top \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right).
+\end{aligned}
+$$ {#eq-proof-q}
+
+Let's consider the second line of @eq-proof-q; observe that
+
+$$
+\begin{aligned}
+  \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}}\right)^\top \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right)
+    &= \bm{Y}^\top \bm{X}\widehat{\bs{\beta}} - \bm{Y}^\top \bm{X} \bs{\beta} \\
+    &\qquad - \widehat{\bs{\beta}}^\top \bm{X}^\top \bm{X} \widehat{\bs{\beta}} + \widehat{\bs{\beta}}^\top \bm{X}^\top \bm{X} \bs{\beta} \\
+    &= \bm{Y}^\top \bm{X}\widehat{\bs{\beta}} - \bm{Y}^\top \bm{X} \bs{\beta} \\
+    &\qquad - \left[\left(\bm{X}^\top \bm{X}\right)^{-1} \bm{X}^\top \bm{Y}\right]^\top \bm{X}^\top \bm{X} \widehat{\bs{\beta}} \\
+    &\qquad + \left[\left(\bm{X}^\top \bm{X}\right)^{-1} \bm{X}^\top \bm{Y}\right]^\top \bm{X}^\top \bm{X} \bs{\beta} \\
+    &= \bm{Y}^\top \bm{X}\widehat{\bs{\beta}} - \bm{Y}^\top \bm{X} \bs{\beta} \\
+    &\qquad - \bm{Y}^\top \bm{X} \left(\bm{X}^\top \bm{X}\right)^{-1}  \bm{X}^\top \bm{X} \widehat{\bs{\beta}} \\
+    &\qquad + \bm{Y}^\top \bm{X} \left(\bm{X}^\top \bm{X}\right)^{-1} \bm{X}^\top \bm{X} \bs{\beta} \\
+    &= \bm{Y}^\top \bm{X}\widehat{\bs{\beta}} - \bm{Y}^\top \bm{X} \bs{\beta} \\
+    &\qquad - \bm{Y}^\top \bm{X} \widehat{\bs{\beta}} + \bm{Y}^\top \bm{X} \bs{\beta} \\
+    &= 0.
+\end{aligned}
+$$
+
+That is, the cross product terms cancel out.  Further, since line 3 of @eq-proof-q is simply the transpose of line 2, we also have that line 3 is equivalent to 0.  That is, we rewrite @eq-proof-q as
+
+$$
+\begin{aligned}
+  Q(\bs{\beta})
+    &= \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}}\right)^\top \left(\bm{Y} - \bm{X}\widehat{\bs{\beta}}\right) \\
+    &\qquad + \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right)^\top \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right) \\
+    &= Q\left(\widehat{\bs{\beta}}\right) + \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right)^\top \left(\bm{X}\widehat{\bs{\beta}} - \bm{X}\bs{\beta}\right).
+\end{aligned}
+$$ {#eq-proof-q-simple}
+
+We note that both terms are sums of squares and therefore must be non-negative.  Further, since only the second term is a function of $\bs{\beta}$, minimizing $Q(\bs{\beta})$ is equivalent to minimizing the second term.  Since the second term in @eq-proof-q-simple is non-negative, we can minimize it by equating it to 0, which happens if and only if $\bs{\beta} = \widehat{\bs{\beta}}$.  This establishes the result.
+:::
+
+
+:::{#exm-special-case}
+## Least Squares Estimate in the Intercept Only Model
+Suppose we have only an intercept in the model, determine the least squares estimates of the intercept starting with the matrix representation.
+:::
+
+:::{.solution}
+While we have already determined the least squares estimates for the simple linear model in @sec-regression, and we could use that result to determine this estimate.  However, we establish this as a special case of the multiple regression model as well.  Specifically, note that the least squares estimates are given by
+
+$$\widehat{\bs{\beta}} = \left(\bm{X}^top \bm{X}\right)^{-1} \bm{X}^\top \bm{Y}.$$
+
+Now, we know that for an intercept-only model, the design matrix is given by
+
+$$\bm{X} = \begin{pmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{pmatrix}.$$
+
+Therefore, we have that
+
+$$\bm{X}^\top \bm{X} = n$$
+and
+
+$$
+\left(\bm{X}^\top \bm{X}\right)^{-1} = \frac{1}{n}.
+$$
+
+We also have that
+
+$$\bm{X}^\top \bm{Y} = \sum_{i=1}^{n} y_i = n\bar{y}.$$
+
+Therefore, the least squares estimate is given by
+
+$$
+\widehat{\beta}_0 = \frac{1}{n} n \bar{y} = \bar{y}
+$$
+
+the sample mean response.
+:::
+
+
+:::{#thm-classical-ls-multiple}
+## Sampling Distribution for Least Squares Estimators
+Under the conditions of the Classical Regression Model (@def-multiple-model), we have that, holding all other predictors fixed
+
+$$\frac{\widehat{\beta}_j - \beta_j}{\sqrt{Var\left(\widehat{\beta}_j\right)}} \sim t_{n - p - 1}$$
+
+where $Var\left(\widehat{\beta}_j\right)$ is the $(j,j)$-th element of the matrix
+
+$$\widehat{\sigma}^2 \left(\bm{X}^\top \bm{X}\right)^{-1}$$
+
+and
+
+$$\widehat{\sigma}^2 = \frac{1}{n - p - 1} \sum_{i=1}^{n} \left(Y_i - \bm{x}_i^\top \widehat{\bs{\beta}}\right)^2$$
+
+is our estimate of the unknown population variance $\sigma^2$.
+:::
+
+Once we have a model for the sampling distribution, we have the ability to make inference --- confidence intervals or p-values.
+
+
+:::{.callout-important}
+While subtle, the phrase "holding all other predictors fixed" is critical in the sampling distribution of the least squares estimates.
+:::

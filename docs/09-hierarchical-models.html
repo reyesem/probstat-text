@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction to Statistical Theory - 9&nbsp; Hierarchical Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10-autocorrelation.html" rel="next">
+<link href="./08-matrix.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="mystyles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./09-hierarchical-models.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Intro Statistical Theory</a> 
+        <div class="sidebar-tools-main">
+    <a href="./ma382-text.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-fundamentals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Essential Probability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-randomvariables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Random Variables and Distributions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-samplingdistributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sampling Distribution of a Statistic</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference for a Population Mean</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inference for Regression Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-normality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">More on the Classical Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-location-scale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Location Scale Families</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-hierarchical-models.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Autocorrelation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./app-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link active" data-scroll-target="#motivating-example"><span class="header-section-number">9.1</span> Motivating Example</a></li>
+  <li><a href="#quick-review-of-conditional-probability" id="toc-quick-review-of-conditional-probability" class="nav-link" data-scroll-target="#quick-review-of-conditional-probability"><span class="header-section-number">9.2</span> Quick Review of Conditional Probability</a></li>
+  <li><a href="#properties-for-the-simple-hierarchical-model" id="toc-properties-for-the-simple-hierarchical-model" class="nav-link" data-scroll-target="#properties-for-the-simple-hierarchical-model"><span class="header-section-number">9.3</span> Properties for the Simple Hierarchical Model</a></li>
+  <li><a href="#repeated-measures-as-a-hierarchical-model" id="toc-repeated-measures-as-a-hierarchical-model" class="nav-link" data-scroll-target="#repeated-measures-as-a-hierarchical-model"><span class="header-section-number">9.4</span> Repeated Measures as a Hierarchical Model</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-hierarchical-models" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We have primarily addressed models where the only random variable was the response. All terms in the model were either fixed predictors or fixed (albeit unknown) parameters. In this model, we consider a hierarchical models.</p>
+<section id="motivating-example" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">9.1</span> Motivating Example</h2>
+<p>Consider obtaining the weight of an individual. We might randomly select the individual from a population; then, we place them on a scale, which is subject to measurement error. Since the scale is subject to measurement error, we do not observe their actual weight; instead, we see some jittered version of their weight. So, we might want to take multiple weight readings. As a result, the <span class="math inline">\(j\)</span>-th weight we observe <span class="math inline">\(Y_j\)</span> on the subject is the sum of the individual’s true weight <span class="math inline">\(\theta\)</span> and the measurement error <span class="math inline">\(\varepsilon_j\)</span> in the scale on the <span class="math inline">\(j\)</span>-th reading:</p>
+<p><span class="math display">\[Y_j = \theta + \varepsilon_j.\]</span></p>
+<p>This looks a lot like a linear model with only an intercept. However, the primary difference is that this is for multiple observations from a single unit! We would of course not only measure the weight of one person from the population but a sample of size <span class="math inline">\(n\)</span> from the population. Therefore, our model would become</p>
+<p><span id="eq-hier-one"><span class="math display">\[Y_{i,j} = \theta_i + \varepsilon_{i,j} \tag{9.1}\]</span></span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(Y_{i,j}\)</span> represents the <span class="math inline">\(j\)</span>-th weight measurement taken on the <span class="math inline">\(i\)</span>-th person (remember, we record each person’s weight multiple times),</li>
+<li><span class="math inline">\(\theta_i\)</span> represents the true weight for person <span class="math inline">\(i\)</span>, and</li>
+<li><span class="math inline">\(\varepsilon_{i,j}\)</span> represents the measurement error in the <span class="math inline">\(j\)</span>-th weight measurement taken on the <span class="math inline">\(i\)</span>-th person.</li>
+</ul>
+<p>And, since the measurement error is random, we might posit a model for its distribution. For example, we might say that</p>
+<p><span class="math display">\[\varepsilon_{i,j} \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right).\]</span></p>
+<p>Notice that unlike our previous models, the unknown terms <span class="math inline">\(\theta_1, \theta_2, \dotsc, \theta_n\)</span> change with each person. More, since the individuals are from some underlying population, we might think about their weights as coming from some underlying distribution. That is, we might posit that</p>
+<p><span class="math display">\[\theta_i \stackrel{\text{IID}}{\sim} N\left(\mu, \eta^2\right)\]</span></p>
+<p>for some unknown parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\eta^2\)</span>. Here, <span class="math inline">\(\mu\)</span> represents the average weight of individuals in the population.</p>
+<p>We now have two distributional models; putting this together, we can write</p>
+<p><span class="math display">\[
+\begin{aligned}
+  Y_{i,j} \mid \theta_j &amp;\stackrel{\text{Ind}}{\sim} N\left(\theta_j, \sigma^2\right) \\
+  \theta_j &amp;\stackrel{\text{IID}}{\sim} N\left(\mu, \eta^2\right).
+\end{aligned}
+\]</span></p>
+<p>That is, the distributional model for the observed weight is <em>conditional</em> on knowing the true weight of the individual, and this true weight has its own distribution. This is an example of a <strong>hierarchical model</strong>.</p>
+<div id="def-hierarchical-model" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 9.1 (Hierarchical Model)</strong></span> A distributional model for a response that is constructed in layers. The top-most layer is conditional on components that are expressed in lower layers.</p>
+</div>
+<p>Hierarchical models rely on the notion of conditional probability.</p>
+</section>
+<section id="quick-review-of-conditional-probability" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="quick-review-of-conditional-probability"><span class="header-section-number">9.2</span> Quick Review of Conditional Probability</h2>
+<div id="def-conditional-probability" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 9.2 (Conditional Probability)</strong></span> Let <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> be events with non-zero probability. Then, the probability that event <span class="math inline">\(A\)</span> occurs given that event <span class="math inline">\(B\)</span> occurs (written <span class="math inline">\(A \mid B\)</span>) is given by</p>
+<p><span class="math display">\[Pr(A \mid B) = \frac{Pr(A \cap B)}{Pr(B)}.\]</span></p>
+</div>
+<p>The notion of conditional probability constrains the sample space to consider only that region where the event <span class="math inline">\(B\)</span> does occur. We are essentially looking for the proportional area that <span class="math inline">\(A\)</span> takes up within <span class="math inline">\(B\)</span>. We generalize this definition to random variables as well. In order to do so, we need the notion of a joint density function.</p>
+<div id="def-joint-density" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 9.3 (Joint Density)</strong></span> Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be continuous random variables. Then, the joint density function of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, written <span class="math inline">\(f_{X,Y}(x,y)\)</span> is the function such that</p>
+<p><span class="math display">\[Pr(a &lt; X &lt; b, c &lt; Y &lt; d) = \int_{c}^{d} \int_{a}^{b} f_{X,Y}(x,y) dx dy.\]</span></p>
+</div>
+<p>While we have defined a joint density function for two continuous random variables, we could create an analogous definition for two discrete random variables or a mix of the two. We can now define a conditional density.</p>
+<div id="def-conditional-density" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 9.4 (Conditional Density)</strong></span> Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be continuous random variables. Then, the density function of <span class="math inline">\(X\)</span> given the value of <span class="math inline">\(Y\)</span>, written as <span class="math inline">\(f_{X \mid Y}(x \mid y)\)</span> is given by</p>
+<p><span class="math display">\[f_{X \mid Y}(x \mid y) = \frac{f_{X,Y}(x, y)}{f_Y(y)}\]</span></p>
+<p>where <span class="math inline">\(f_{X,Y}(x,y)\)</span> is the joint density function.</p>
+</div>
+<p>This is always a challenging part of a course in probability theory. Here, we are saying that for each value the random variable <span class="math inline">\(Y\)</span> takes, a new <em>distribution</em> for <span class="math inline">\(X\)</span> is created. Knowing information about one variable informed the distribution of the other.</p>
+<p>Just as we talk about how a random variable “varies” (the variability of the distribution), we can talk about how two random variables “co-vary.”</p>
+<div id="def-covariance" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 9.5 (Covariance)</strong></span> Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be random variables. The covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, written <span class="math inline">\(Cov(X, Y)\)</span> is defined as</p>
+<p><span class="math display">\[Cov(X,Y) = E\left[(X - E(X))(Y - E(Y))\right] = E(XY) - E(X) E(Y).\]</span></p>
+</div>
+</section>
+<section id="properties-for-the-simple-hierarchical-model" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="properties-for-the-simple-hierarchical-model"><span class="header-section-number">9.3</span> Properties for the Simple Hierarchical Model</h2>
+<p>Consider the simple hierarchical model from our motivating example:</p>
+<p><span class="math display">\[Y_{i,j} = \theta_i + \varepsilon_{i,j}.\]</span></p>
+<p>Since the response is a sum of random variables, we trivially have that</p>
+<p><span class="math display">\[E\left(Y_{i,j}\right) = E\left(\theta_i\right) + E\left(\varepsilon_{i,j}\right) = \mu.\]</span></p>
+<p>So, the mean response across all observed observations is the average weight in the population. Since we assume that the <span class="math inline">\(\theta_i\)</span> terms are independent of the <span class="math inline">\(\varepsilon_{i,j}\)</span> terms, we also readily obtain that</p>
+<p><span class="math display">\[Var\left(Y_{i,j}\right) = Var\left(\theta_i\right) + Var\left(\varepsilon_{i,j}\right) = \eta^2 + \sigma^2.\]</span></p>
+<p>That is, the variability in the response is the result of the variability across individuals as well as the variability due to measurement error. And, if the measurement error did not exist (<span class="math inline">\(\sigma^2 = 0\)</span>), then we would have that <span class="math inline">\(Y_{i,1} = Y_{i,2} = \dotsb = Y_{i,m}\)</span>.</p>
+<div id="exm-covariance-blocks" class="theorem example">
+<p><span class="theorem-title"><strong>Example 9.1 (Covariance in Hierarchical Model)</strong></span> Consider the simple hierarchical model</p>
+<p><span class="math display">\[Y_{i,j} = \theta_i + \varepsilon_{i,j}\]</span></p>
+<p>where <span class="math inline">\(\theta_i \stackrel{\text{IID}}{\sim} N\left(\mu, \eta^2\right)\)</span>, <span class="math inline">\(\varepsilon_{i,j} \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right)\)</span>, and <span class="math inline">\(\theta_i\)</span> independent of <span class="math inline">\(\varepsilon_{i,j}\)</span> for all <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. Determine the covariance between two observations made on the same unit, and determine the covariance between two observations made on different units.</p>
+</div>
+<div class="soln">
+<p>First, consider two observations made on different units. Without loss of generality, we consider <span class="math inline">\(Y_{1,j}\)</span> and <span class="math inline">\(Y_{2,j}\)</span>. We are interested in finding the covariance between <span class="math inline">\(Y_{1,j}\)</span> and <span class="math inline">\(Y_{2,j}\)</span>. By definition</p>
+<p><span class="math display">\[Cov\left(Y_{1,j}, Y_{2,j}\right) = E\left(Y_{1,j} Y_{2,j}\right) - E\left(Y_{1,j}\right)E\left(Y_{2,j}\right).\]</span></p>
+<p>We have already established the mean of each observation, <span class="math inline">\(\mu\)</span>. Plugging in the form of the linear model for <span class="math inline">\(Y_{1,j}\)</span> and <span class="math inline">\(Y_{2,j}\)</span> and expanding, we have that</p>
+<p><span class="math display">\[
+\begin{aligned}
+  Cov\left(Y_{1,j}, Y_{2,j}\right)
+    &amp;= E\left(Y_{1,j} Y_{2,j}\right) - E\left(Y_{1,j}\right)E\left(Y_{2,j}\right) \\
+    &amp;= E\left(\theta_1\theta_2 + \theta_1 \varepsilon_{2,j} + \theta_2 \varepsilon_{1,j} + \varepsilon_{1,j}\varepsilon_{2,j}\right) - \mu^2 \\
+    &amp;= E\left(\theta_1\right)E\left(\theta_2\right) + E\left(\theta_1\right) E\left(\varepsilon_{2,j}\right) + E\left(\theta_2\right) E\left(\varepsilon_{1,j}\right) + E\left(\varepsilon_{1,j}\right)E\left(\varepsilon_{2,j}\right) - \mu^2
+\end{aligned}
+\]</span></p>
+<p>where the expectations separate due to the independence between the <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\varepsilon\)</span> terms. Now, plugging in, we have that</p>
+<p><span class="math display">\[Cov\left(Y_{1,j}, Y_{2,j}\right) = \mu^2 + 0 + 0 + 0 - \mu^2 = 0.\]</span></p>
+<p>We now consider two observations from the same unit; without loss of generality, we consider <span class="math inline">\(Y_{i,1}\)</span> and <span class="math inline">\(Y_{i,2}\)</span> (the same <span class="math inline">\(i\)</span> ensures they are from the same subject). Following a similar process as before, we have</p>
+<p><span class="math display">\[
+\begin{aligned}
+  Cov\left(Y_{i,1}, Y_{i,2}\right)
+    &amp;= E\left(Y_{i,1} Y_{i,2}\right) - E\left(Y_{i,1}\right)E\left(Y_{i,2}\right) \\
+    &amp;= E\left(\theta_i\theta_i + \theta_i \varepsilon_{i,1} + \theta_i \varepsilon_{i,2} + \varepsilon_{i,1}\varepsilon_{i,2}\right) - \mu^2 \\
+    &amp;= E\left(\theta_i^2\right) + E\left(\theta_i\right) E\left(\varepsilon_{i,1}\right) + E\left(\theta_i\right) E\left(\varepsilon_{i,2}\right) + E\left(\varepsilon_{i,1}\right)E\left(\varepsilon_{i,2}\right) - \mu^2 \\
+    &amp;= E\left(\theta_i^2\right) - \mu^2
+\end{aligned}
+\]</span></p>
+<p>where the expectations separate due to the independence. However, we still have one term left to resolve. Remembering the definition of variance, we have that</p>
+<p><span class="math display">\[Cov\left(Y_{i,1}, Y_{i,2}\right) = Var\left(\theta_i\right) + E^2\left(\theta_i\right) - \mu^2 = \eta^2 + \mu^2 - \mu^2 = \eta^2.\]</span></p>
+<p>That is, observations from the same subject are correlated with one another.</p>
+</div>
+</section>
+<section id="repeated-measures-as-a-hierarchical-model" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="repeated-measures-as-a-hierarchical-model"><span class="header-section-number">9.4</span> Repeated Measures as a Hierarchical Model</h2>
+<p>The repeated measures ANOVA model views the mean response as a function of a factor of interest and a block term. Specifically, we write</p>
+<p><span class="math display">\[Y_i = \sum_{j=1}^{k} \mu_j (\text{Group } j)_i + \sum_{b=1}^{m} \beta_b (\text{Block } b)_i + \varepsilon_i\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{aligned}
+  (\text{Group } j)_i
+    &amp;= \begin{cases}
+      1 &amp; \text{if i-th observation comes from group j} \\
+      0 &amp; \text{otherwise}
+      \end{cases} \\
+  (\text{Block } b)_i
+    &amp;= \begin{cases}
+      1 &amp; \text{if i-th observation comes from block b} \\
+      0 &amp; \text{otherwise}
+      \end{cases}
+\end{aligned}
+\]</span></p>
+<p>are indicator variables. It is common to assume the block effects, <span class="math inline">\(\beta_1, \beta_2, \dotsc, \beta_b\)</span> are random variables that are independent of the treatment groups and the error in the response <span class="math inline">\(\varepsilon_i\)</span>; further, it is common to assume that</p>
+<p><span class="math display">\[\beta_j \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2_b\right).\]</span></p>
+<p>That is, the repeated measures ANOVA model is a hierarchical model. The distribution of the response can only be specified if we know the block effect, and the block effect itself is a random variable.</p>
+<p>Viewing it as a hierarchical model allows us to see where the correlation structure comes from. All observations that share a similar value of <span class="math inline">\(\beta_b\)</span> are associated in some way.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./08-matrix.html" class="pagination-link" aria-label="Matrix View of Regression">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./10-autocorrelation.html" class="pagination-link" aria-label="Autocorrelation">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Autocorrelation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="prev">
+<link href="./10-autocorrelation.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -46,7 +46,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -55,6 +61,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -63,6 +70,33 @@ ul.task-list li input[type="checkbox"] {
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="mystyles.css">
 </head>
@@ -73,12 +107,12 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./app-glossary.html">Appendices</a></li><li class="breadcrumb-item"><a href="./app-glossary.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./app-glossary.html">Appendices</a></li><li class="breadcrumb-item"><a href="./app-glossary.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -88,12 +122,12 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Intro Statistical Theory</a> 
         <div class="sidebar-tools-main">
-    <a href="./ma382-text.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="./ma382-text.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -159,8 +193,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./08-matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-hierarchical-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Autocorrelation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -183,7 +229,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
@@ -191,7 +237,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./app-glossary.html">Appendices</a></li><li class="breadcrumb-item"><a href="./app-glossary.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Appendix A — Glossary</h1>
 </div>
@@ -206,11 +252,13 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <p>The following key terms were defined in the text; each term is presented with a link to where the term was first encountered in the text.</p>
 <dl>
-<dt>Axioms of Probability (<a href="01-fundamentals.html#def-axioms">Definition&nbsp;<span>1.3</span></a>)</dt>
+<dt>Axioms of Probability (<a href="01-fundamentals.html#def-axioms" class="quarto-xref">Definition&nbsp;<span>1.3</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(\mathcal{S}\)</span> be the sample space of a random process. Suppose that to each event <span class="math inline">\(A\)</span> within <span class="math inline">\(\mathcal{S}\)</span>, a number denoted by <span class="math inline">\(Pr(A)\)</span> is associated with <span class="math inline">\(A\)</span>. If the map <span class="math inline">\(Pr(\cdot)\)</span> satisfies the following three axioms, then it is called a <strong>probability</strong>:
 </dd>
@@ -223,7 +271,7 @@ Let <span class="math inline">\(\mathcal{S}\)</span> be the sample space of a ra
 <p><span class="math display">\[Pr\left(\bigcup_{i = 1}^{\infty} A_i\right) = \sum_{i = 1}^{\infty} Pr\left(A_i\right).\]</span></p>
 <p><span class="math inline">\(Pr(A)\)</span> is said to be the “probability of <span class="math inline">\(A\)</span>” or the “probability <span class="math inline">\(A\)</span> occurs.”</p>
 <dl>
-<dt>Bernoulli Distribution (<a href="02-randomvariables.html#def-bernoulli-distribution">Definition&nbsp;<span>2.11</span></a>)</dt>
+<dt>Bernoulli Distribution (<a href="02-randomvariables.html#def-bernoulli-distribution" class="quarto-xref">Definition&nbsp;<span>2.11</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a discrete random variable taking the value 0 or 1. <span class="math inline">\(X\)</span> is said to have a Bernoulli distribution with density
 </dd>
@@ -236,7 +284,7 @@ Let <span class="math inline">\(X\)</span> be a discrete random variable taking 
 </ul>
 <p>We write <span class="math inline">\(X \sim Ber(\theta)\)</span>, which is read “X follows a Bernoulli distribution with probability <span class="math inline">\(\theta\)</span>.”</p>
 <dl>
-<dt>Binomial Distribution (<a href="02-randomvariables.html#def-binomial-distribution">Definition&nbsp;<span>2.12</span></a>)</dt>
+<dt>Binomial Distribution (<a href="02-randomvariables.html#def-binomial-distribution" class="quarto-xref">Definition&nbsp;<span>2.12</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a discrete random variable taking integer values between 0 and <span class="math inline">\(n\)</span>, inclusive. <span class="math inline">\(X\)</span> is said to have a Binomial distribution with density
 </dd>
@@ -249,7 +297,7 @@ Let <span class="math inline">\(X\)</span> be a discrete random variable taking 
 </ul>
 <p>We write <span class="math inline">\(X \sim Bin(n, \theta)\)</span>, which is read “X follows a Binomial distribution with parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(\theta\)</span>.”</p>
 <dl>
-<dt>Case-Resampling Bootstrap (<a href="03-samplingdistributions.html#def-case-bootstrap">Definition&nbsp;<span>3.8</span></a>)</dt>
+<dt>Case-Resampling Bootstrap (<a href="03-samplingdistributions.html#def-case-bootstrap" class="quarto-xref">Definition&nbsp;<span>3.8</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(Y_1, Y_2, \dotsc, Y_n\)</span> be a random sample from an underlying population, and let <span class="math inline">\(\theta\)</span> represent a parameter of interest characterizing the underlying population. Further, define <span class="math inline">\(\widehat{\theta} = h(\mathbf{Y})\)</span> be a statistic which estimates the parameter. The case-resampling bootstrap algorithm proceeds as follows:
 </dd>
@@ -261,7 +309,7 @@ Let <span class="math inline">\(Y_1, Y_2, \dotsc, Y_n\)</span> be a random sampl
 </ol>
 <p>The empirical distribution of <span class="math inline">\(\widehat{\theta}_1^*, \widehat{\theta}_2^*, \dotsc, \widehat{\theta}_m^*\)</span> will approximate the shape and spread of the sampling distribution of the statistic <span class="math inline">\(h(\mathbf{Y})\)</span>.</p>
 <dl>
-<dt>Chi-Square Distribution (<a href="02-randomvariables.html#def-chi-square-distribution">Definition&nbsp;<span>2.16</span></a>)</dt>
+<dt>Chi-Square Distribution (<a href="02-randomvariables.html#def-chi-square-distribution" class="quarto-xref">Definition&nbsp;<span>2.16</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a continuous random variable. <span class="math inline">\(X\)</span> is said to have a Chi-Square distribution if the density is given by
 </dd>
@@ -270,7 +318,14 @@ Let <span class="math inline">\(X\)</span> be a continuous random variable. <spa
 <p>where <span class="math inline">\(\nu &gt; 0\)</span> is the degrees of freedom.</p>
 <p>We write <span class="math inline">\(X \sim \chi^2_{\nu}\)</span>, which is read “X follows a Chi-Square distribution with <span class="math inline">\(\nu\)</span> degrees of freedom.” The Chi-Square distribution is a special case of the Gamma distribution where <span class="math inline">\(\alpha = \nu/2\)</span> and <span class="math inline">\(\beta = 2\)</span>.</p>
 <dl>
-<dt>Classical Simple Linear Regression (<a href="05-regression.html#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a>)</dt>
+<dt>Classical Regression Model (<a href="08-matrix.html#def-multiple-model" class="quarto-xref">Definition&nbsp;<span>8.1</span></a>)</dt>
+<dd>
+Let <span class="math inline">\(Y_i\)</span> represent the response for the <span class="math inline">\(i\)</span>-th observation, and let <span class="math inline">\(\mathbf{x}_i\)</span> represent the vector of observed predictors for the <span class="math inline">\(i\)</span>-th observation in a sample of <span class="math inline">\(n\)</span> units, including the intercept term. Under the classical linear regression model, the distributional model for the response among the population is given by
+</dd>
+</dl>
+<p><span class="math display">\[Y_i \stackrel{\text{Ind}}{\sim} N\left(\mathbf{x}_i^\top \boldsymbol{\beta}, \sigma^2\right).\]</span></p>
+<dl>
+<dt>Classical Simple Linear Regression (<a href="05-regression.html#def-classical-simple-regression" class="quarto-xref">Definition&nbsp;<span>5.2</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)</span> be observations made on a sample of <span class="math inline">\(n\)</span> units. Under the classical simple linear regression model, the distributional model for the response among the population is given by
 </dd>
@@ -278,18 +333,40 @@ Let <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \d
 <p><span class="math display">\[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)\]</span></p>
 <p>where <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\sigma^2\)</span> are unknown parameters.</p>
 <dl>
-<dt>Confidence Interval (<a href="04-inference.html#def-confidence-interval">Definition&nbsp;<span>4.1</span></a>)</dt>
+<dt>Conditional Density (<a href="09-hierarchical-models.html#def-conditional-density" class="quarto-xref">Definition&nbsp;<span>9.4</span></a>)</dt>
+<dd>
+Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be continuous random variables. Then, the density function of <span class="math inline">\(X\)</span> given the value of <span class="math inline">\(Y\)</span>, written as <span class="math inline">\(f_{X \mid Y}(x \mid y)\)</span> is given by
+</dd>
+</dl>
+<p><span class="math display">\[f_{X \mid Y}(x \mid y) = \frac{f_{X,Y}(x, y)}{f_Y(y)}\]</span></p>
+<p>where <span class="math inline">\(f_{X,Y}(x,y)\)</span> is the joint density function.</p>
+<dl>
+<dt>Conditional Probability (<a href="09-hierarchical-models.html#def-conditional-probability" class="quarto-xref">Definition&nbsp;<span>9.2</span></a>)</dt>
+<dd>
+Let <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> be events with non-zero probability. Then, the probability that event <span class="math inline">\(A\)</span> occurs given that event <span class="math inline">\(B\)</span> occurs (written <span class="math inline">\(A \mid B\)</span>) is given by
+</dd>
+</dl>
+<p><span class="math display">\[Pr(A \mid B) = \frac{Pr(A \cap B)}{Pr(B)}.\]</span></p>
+<dl>
+<dt>Confidence Interval (<a href="04-inference.html#def-confidence-interval" class="quarto-xref">Definition&nbsp;<span>4.1</span></a>)</dt>
 <dd>
 Consider repeatedly taking samples <span class="math inline">\(\mathbf{Y}\)</span> of size <span class="math inline">\(n\)</span> from a population characterized by the parameter <span class="math inline">\(\theta\)</span>. The interval <span class="math inline">\(\left(h_1(\mathbf{Y}), h_2(\mathbf{Y})\right)\)</span> is said to be a <span class="math inline">\(100c\)</span>% confidence interval if
 </dd>
 </dl>
 <p><span class="math display">\[Pr\left(h_1(\mathbf{Y}) \leq \theta \leq h_2(\mathbf{Y})\right) = c.\]</span></p>
 <dl>
-<dt>Continuous and Discrete Random Variable (<a href="02-randomvariables.html#def-rvtypes">Definition&nbsp;<span>2.3</span></a>)</dt>
+<dt>Continuous and Discrete Random Variable (<a href="02-randomvariables.html#def-rvtypes" class="quarto-xref">Definition&nbsp;<span>2.3</span></a>)</dt>
 <dd>
 The random variable <span class="math inline">\(X\)</span> is said to be a discrete random variable if its corresponding support is countable. The random variable <span class="math inline">\(X\)</span> is said to be a continuous random variable if the corresponding support is uncountable (such as an interval or a union of intervals on the real line).
 </dd>
-<dt>Cumulative Distribution Function (CDF) (<a href="02-randomvariables.html#def-cdf">Definition&nbsp;<span>2.10</span></a>)</dt>
+<dt>Covariance (<a href="09-hierarchical-models.html#def-covariance" class="quarto-xref">Definition&nbsp;<span>9.5</span></a>)</dt>
+<dd>
+Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be random variables. The covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, written <span class="math inline">\(Cov(X, Y)\)</span> is defined as
+</dd>
+</dl>
+<p><span class="math display">\[Cov(X,Y) = E\left[(X - E(X))(Y - E(Y))\right] = E(XY) - E(X) E(Y).\]</span></p>
+<dl>
+<dt>Cumulative Distribution Function (CDF) (<a href="02-randomvariables.html#def-cdf" class="quarto-xref">Definition&nbsp;<span>2.10</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a random variable; the cumulative distribution function (CDF) is defined as
 </dd>
@@ -300,7 +377,7 @@ Let <span class="math inline">\(X\)</span> be a random variable; the cumulative 
 <p>implying that the density function is the derivative of the CDF. For a discrete random variable</p>
 <p><span class="math display">\[F(u) = \sum_{x \leq u} f(x).\]</span></p>
 <dl>
-<dt>Density Function (<a href="02-randomvariables.html#def-density-function">Definition&nbsp;<span>2.4</span></a>)</dt>
+<dt>Density Function (<a href="02-randomvariables.html#def-density-function" class="quarto-xref">Definition&nbsp;<span>2.4</span></a>)</dt>
 <dd>
 A density function <span class="math inline">\(f\)</span> relates the values in the support of a random variable with the probability of observing those values.
 </dd>
@@ -312,11 +389,11 @@ A density function <span class="math inline">\(f\)</span> relates the values in 
 <p><span class="math display">\[Pr(X = u) = f(u)\]</span></p>
 <p>for any real number <span class="math inline">\(u\)</span> in the support.</p>
 <dl>
-<dt>Event (<a href="01-fundamentals.html#def-event">Definition&nbsp;<span>1.2</span></a>)</dt>
+<dt>Event (<a href="01-fundamentals.html#def-event" class="quarto-xref">Definition&nbsp;<span>1.2</span></a>)</dt>
 <dd>
 A subset of the sample space that is of particular interest.
 </dd>
-<dt>Expectation of a Function (<a href="02-randomvariables.html#def-expectation">Definition&nbsp;<span>2.8</span></a>)</dt>
+<dt>Expectation of a Function (<a href="02-randomvariables.html#def-expectation" class="quarto-xref">Definition&nbsp;<span>2.8</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a random variable with density function <span class="math inline">\(f\)</span> over the support <span class="math inline">\(\mathcal{S}\)</span>, and let <span class="math inline">\(g\)</span> be a real-valued function. Then,
 </dd>
@@ -326,14 +403,14 @@ Let <span class="math inline">\(X\)</span> be a random variable with density fun
 <p><span class="math display">\[E\left[g(X)\right] = \sum_{\mathcal{S}} g(x) f(x)\]</span></p>
 <p>for discrete random variables.</p>
 <dl>
-<dt>Expectation of a Product of Independent Random Variables (<a href="03-samplingdistributions.html#def-product-expectations">Definition&nbsp;<span>3.4</span></a>)</dt>
+<dt>Expectation of a Product of Independent Random Variables (<a href="03-samplingdistributions.html#def-product-expectations" class="quarto-xref">Definition&nbsp;<span>3.4</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> be independent random variables, then
 </dd>
 </dl>
 <p><span class="math display">\[E\left(\prod_{i=1}^n X_i\right) = \prod_{i=1}^{n} E\left(X_i\right).\]</span></p>
 <dl>
-<dt>Expected Value (Mean) (<a href="02-randomvariables.html#def-mean">Definition&nbsp;<span>2.6</span></a>)</dt>
+<dt>Expected Value (Mean) (<a href="02-randomvariables.html#def-mean" class="quarto-xref">Definition&nbsp;<span>2.6</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a random variable with density function <span class="math inline">\(f\)</span> defined over the support <span class="math inline">\(\mathcal{S}\)</span>. The expected value of a random variable, also called the mean and denoted <span class="math inline">\(E(X)\)</span>, is given by
 </dd>
@@ -343,7 +420,7 @@ Let <span class="math inline">\(X\)</span> be a random variable with density fun
 <p><span class="math display">\[E(X) = \sum_{\mathcal{S}} x f(x)\]</span></p>
 <p>for discrete random variables.</p>
 <dl>
-<dt>F-Distribution (<a href="02-randomvariables.html#def-f-distribution">Definition&nbsp;<span>2.17</span></a>)</dt>
+<dt>F-Distribution (<a href="02-randomvariables.html#def-f-distribution" class="quarto-xref">Definition&nbsp;<span>2.17</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a continuous random variable. <span class="math inline">\(X\)</span> is said to have an F-distribution if the density is given by
 </dd>
@@ -352,14 +429,14 @@ Let <span class="math inline">\(X\)</span> be a continuous random variable. <spa
 <p>where <span class="math inline">\(r,s &gt; 0\)</span> are the numerator and denominator degrees of freedom, respectively.</p>
 <p>We write <span class="math inline">\(X \sim F_{r, s}\)</span>, which is read “X has an F-distribution with r numerator degrees of freedom and s denominator degrees of freedom.”</p>
 <dl>
-<dt>Frequentist Interpretation of Probability (<a href="01-fundamentals.html#def-frequentist-interpretation">Definition&nbsp;<span>1.5</span></a>)</dt>
+<dt>Frequentist Interpretation of Probability (<a href="01-fundamentals.html#def-frequentist-interpretation" class="quarto-xref">Definition&nbsp;<span>1.5</span></a>)</dt>
 <dd>
 In this perspective, the probability of <span class="math inline">\(A\)</span> describes the long-run behavior of the event. Specifically, consider repeating the random process <span class="math inline">\(m\)</span> times, and let <span class="math inline">\(f(A)\)</span> represent the number of times the event <span class="math inline">\(A\)</span> occurs out of those <span class="math inline">\(m\)</span> replications. Then,
 </dd>
 </dl>
 <p><span class="math display">\[Pr(A) = \lim_{m \rightarrow \infty} \frac{f(A)}{m}.\]</span></p>
 <dl>
-<dt>Gamma Distribution (<a href="02-randomvariables.html#def-gamma-distribution">Definition&nbsp;<span>2.14</span></a>)</dt>
+<dt>Gamma Distribution (<a href="02-randomvariables.html#def-gamma-distribution" class="quarto-xref">Definition&nbsp;<span>2.14</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a continuous random variable. <span class="math inline">\(X\)</span> is said to have a Gamma distribution if the density is given by
 </dd>
@@ -377,7 +454,11 @@ Let <span class="math inline">\(X\)</span> be a continuous random variable. <spa
 <li><span class="math inline">\(\Gamma(k) = (k - 1)!\)</span> for non-negative integer <span class="math inline">\(k\)</span></li>
 </ul>
 <dl>
-<dt>Independence (<a href="03-samplingdistributions.html#def-independence">Definition&nbsp;<span>3.2</span></a>)</dt>
+<dt>Hierarchical Model (<a href="09-hierarchical-models.html#def-hierarchical-model" class="quarto-xref">Definition&nbsp;<span>9.1</span></a>)</dt>
+<dd>
+A distributional model for a response that is constructed in layers. The top-most layer is conditional on components that are expressed in lower layers.
+</dd>
+<dt>Independence (<a href="03-samplingdistributions.html#def-independence" class="quarto-xref">Definition&nbsp;<span>3.2</span></a>)</dt>
 <dd>
 Random variables <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> are said to be mutually independent (or just “independent”) if and only if
 </dd>
@@ -385,11 +466,18 @@ Random variables <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> are 
 <p><span class="math display">\[Pr\left(X_1 \in A_1, X_2 \in A_2, \dotsb, X_n \in A_n\right) = \prod_{i=1}^{n} Pr\left(X_i \in A_i\right),\]</span></p>
 <p>where <span class="math inline">\(A_1, A_2, \dotsc, A_n\)</span> are arbitrary sets.</p>
 <dl>
-<dt>Location-Scale Family (<a href="07-location-scale.html#def-location-scale">Definition&nbsp;<span>7.1</span></a>)</dt>
+<dt>Joint Density (<a href="09-hierarchical-models.html#def-joint-density" class="quarto-xref">Definition&nbsp;<span>9.3</span></a>)</dt>
+<dd>
+Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be continuous random variables. Then, the joint density function of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, written <span class="math inline">\(f_{X,Y}(x,y)\)</span> is the function such that
+</dd>
+</dl>
+<p><span class="math display">\[Pr(a &lt; X &lt; b, c &lt; Y &lt; d) = \int_{c}^{d} \int_{a}^{b} f_{X,Y}(x,y) dx dy.\]</span></p>
+<dl>
+<dt>Location-Scale Family (<a href="07-location-scale.html#def-location-scale" class="quarto-xref">Definition&nbsp;<span>7.1</span></a>)</dt>
 <dd>
 For <span class="math inline">\(a \in \mathbb{R}\)</span> and <span class="math inline">\(b &gt; 0\)</span>, let <span class="math inline">\(X = a + bZ\)</span> for some random variable <span class="math inline">\(Z\)</span>. <span class="math inline">\(X\)</span> is said to be the location-scale family associated with the distribution of <span class="math inline">\(Z\)</span> with location parameter <span class="math inline">\(a\)</span> and scale parameter <span class="math inline">\(b\)</span>.
 </dd>
-<dt>Method of Distribution Functions (<a href="02-randomvariables.html#def-method-of-distribution-functions">Definition&nbsp;<span>2.18</span></a>)</dt>
+<dt>Method of Distribution Functions (<a href="02-randomvariables.html#def-method-of-distribution-functions" class="quarto-xref">Definition&nbsp;<span>2.18</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a continuous random variable with density <span class="math inline">\(f\)</span> and cumulative distribution function <span class="math inline">\(F\)</span>. Consider <span class="math inline">\(Y = h(X)\)</span>. The following process provides the density function <span class="math inline">\(g\)</span> of <span class="math inline">\(Y\)</span> by first finding its cumulative distribution function <span class="math inline">\(G\)</span>.
 </dd>
@@ -400,7 +488,7 @@ Let <span class="math inline">\(X\)</span> be a continuous random variable with 
 <li>If interested in <span class="math inline">\(g(y)\)</span>, note that <span class="math inline">\(g(y) = \frac{\partial}{\partial y} G(y)\)</span>.</li>
 </ol>
 <dl>
-<dt>Method of Least Squares (<a href="05-regression.html#def-least-squares">Definition&nbsp;<span>5.3</span></a>)</dt>
+<dt>Method of Least Squares (<a href="05-regression.html#def-least-squares" class="quarto-xref">Definition&nbsp;<span>5.3</span></a>)</dt>
 <dd>
 The least squares estimates of the parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in a simple linear regression model are the values that minimize the quantity
 </dd>
@@ -408,7 +496,7 @@ The least squares estimates of the parameters <span class="math inline">\(\beta_
 <p><span class="math display">\[\sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2.\]</span></p>
 <p>The estimates are often denoted <span class="math inline">\(\widehat{\beta}_0\)</span> and <span class="math inline">\(\widehat{\beta}_1\)</span>.</p>
 <dl>
-<dt>Moment-Generating Function (MGF) (<a href="03-samplingdistributions.html#def-mgf">Definition&nbsp;<span>3.6</span></a>)</dt>
+<dt>Moment-Generating Function (MGF) (<a href="03-samplingdistributions.html#def-mgf" class="quarto-xref">Definition&nbsp;<span>3.6</span></a>)</dt>
 <dd>
 For a random variable <span class="math inline">\(X\)</span>, let <span class="math inline">\(M_X(t)\)</span> be defined as
 </dd>
@@ -416,7 +504,7 @@ For a random variable <span class="math inline">\(X\)</span>, let <span class="m
 <p><span class="math display">\[M_X(t) = E\left(e^{tX}\right).\]</span></p>
 <p>If <span class="math inline">\(M_X(t)\)</span> is defined for all values of <span class="math inline">\(t\)</span> in some interval about 0, then <span class="math inline">\(M_X(t)\)</span> is called the moment-generating function (MGF) of <span class="math inline">\(X\)</span>.</p>
 <dl>
-<dt>Normal (Gaussian) Distribution (<a href="02-randomvariables.html#def-normal-distribution">Definition&nbsp;<span>2.13</span></a>)</dt>
+<dt>Normal (Gaussian) Distribution (<a href="02-randomvariables.html#def-normal-distribution" class="quarto-xref">Definition&nbsp;<span>2.13</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a continuous random variable. <span class="math inline">\(X\)</span> is said to have a Normal (or Guassian) distribution if the density is given by
 </dd>
@@ -429,11 +517,11 @@ Let <span class="math inline">\(X\)</span> be a continuous random variable. <spa
 </ul>
 <p>We write <span class="math inline">\(X \sim N\left(\mu, \sigma^2\right)\)</span>, which is read “X follows a Normal distribution with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>.” This short-hand implies the density above. When <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma^2 = 1\)</span>, this is referred to as the Standard Normal distribution.</p>
 <dl>
-<dt>Null Distribution (<a href="04-inference.html#def-null-distribution">Definition&nbsp;<span>4.2</span></a>)</dt>
+<dt>Null Distribution (<a href="04-inference.html#def-null-distribution" class="quarto-xref">Definition&nbsp;<span>4.2</span></a>)</dt>
 <dd>
 Distribution of a statistic under a hypothesized value of the population parameter(s).
 </dd>
-<dt>Order Statistic (<a href="07-location-scale.html#def-order-statistic">Definition&nbsp;<span>7.2</span></a>)</dt>
+<dt>Order Statistic (<a href="07-location-scale.html#def-order-statistic" class="quarto-xref">Definition&nbsp;<span>7.2</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> be a random sample of size <span class="math inline">\(n\)</span>. The <span class="math inline">\(j\)</span>-th order statistic, denoted <span class="math inline">\(X_{(j)}\)</span> is the <span class="math inline">\(j\)</span>-th smallest value in the sample. Special cases include
 </dd>
@@ -443,71 +531,71 @@ Let <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> be a random sampl
 <li><span class="math inline">\(X_{(n)}\)</span>, the sample maximum.</li>
 </ul>
 <dl>
-<dt>P-value (<a href="04-inference.html#def-pvalue">Definition&nbsp;<span>4.3</span></a>)</dt>
+<dt>P-value (<a href="04-inference.html#def-pvalue" class="quarto-xref">Definition&nbsp;<span>4.3</span></a>)</dt>
 <dd>
 The probability, assuming the null hypothesis is true, that we would observe a statistic, by chance alone, as extreme or more so than that observed in the sample.
 </dd>
-<dt>Parameter (<a href="02-randomvariables.html#def-parameter">Definition&nbsp;<span>2.5</span></a>)</dt>
+<dt>Parameter (<a href="02-randomvariables.html#def-parameter" class="quarto-xref">Definition&nbsp;<span>2.5</span></a>)</dt>
 <dd>
 Numeric quantity which summarizes the distribution of a variable within the <em>population</em> of interest. Generally denoted by Greek letters in statistical formulas.
 </dd>
-<dt>Percentile (<a href="02-randomvariables.html#def-percentile">Definition&nbsp;<span>2.9</span></a>)</dt>
+<dt>Percentile (<a href="02-randomvariables.html#def-percentile" class="quarto-xref">Definition&nbsp;<span>2.9</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a random variable with density function <span class="math inline">\(f\)</span>. The <span class="math inline">\(100k\)</span> percentile is the value <span class="math inline">\(q\)</span> such that
 </dd>
 </dl>
 <p><span class="math display">\[Pr(X \leq q) = k.\]</span></p>
 <dl>
-<dt>Random Sample (<a href="03-samplingdistributions.html#def-random-sample">Definition&nbsp;<span>3.3</span></a>)</dt>
+<dt>Random Sample (<a href="03-samplingdistributions.html#def-random-sample" class="quarto-xref">Definition&nbsp;<span>3.3</span></a>)</dt>
 <dd>
 A random sample of size <span class="math inline">\(n\)</span> refers to a collection of <span class="math inline">\(n\)</span> random variables <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> such that the random variables are mutually independent, and the distribution of each random variable is identical.
 </dd>
 </dl>
 <p>We say <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> are independent and identically distributed, abbreviated IID. We might also write this as <span class="math inline">\(X_i \stackrel{\text{IID}}{\sim} f\)</span> for some density <span class="math inline">\(f\)</span>.</p>
 <dl>
-<dt>Random Variable (<a href="02-randomvariables.html#def-random-variable">Definition&nbsp;<span>2.1</span></a>)</dt>
+<dt>Random Variable (<a href="02-randomvariables.html#def-random-variable" class="quarto-xref">Definition&nbsp;<span>2.1</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(\mathcal{S}\)</span> be the sample space corresponding to a random process; a random variable <span class="math inline">\(X\)</span> is a function mapping elements of the sample space to the real line.
 </dd>
 </dl>
 <p>Random variables represent a measurement that will be collected during the course of a study. Random variables are typically represented by a capital letter.</p>
 <dl>
-<dt>Regression (<a href="05-regression.html#def-regression">Definition&nbsp;<span>5.1</span></a>)</dt>
+<dt>Regression (<a href="05-regression.html#def-regression" class="quarto-xref">Definition&nbsp;<span>5.1</span></a>)</dt>
 <dd>
 Allowing the parameters characterizing the distribution of a random variable to depend, through some specified function, on the value of additional variables.
 </dd>
-<dt>Sample Quantile (<a href="07-location-scale.html#def-sample-quantile">Definition&nbsp;<span>7.3</span></a>)</dt>
+<dt>Sample Quantile (<a href="07-location-scale.html#def-sample-quantile" class="quarto-xref">Definition&nbsp;<span>7.3</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(x_{(j)}\)</span> denote the <span class="math inline">\(j\)</span>-th observed order statistic in a sample. Then, the <span class="math inline">\(q\)</span>-th quantile of the sample is given by <span class="math inline">\(x_{(j)}\)</span> for <span class="math inline">\(\frac{j-1}{n} &lt; q \leq \frac{j}{n}\)</span> and <span class="math inline">\(x_{(1)}\)</span> if <span class="math inline">\(q = 0\)</span>, for <span class="math inline">\(j=1,2,\dotsc,n\)</span>.
 </dd>
-<dt>Sample Space (<a href="01-fundamentals.html#def-sample-space">Definition&nbsp;<span>1.1</span></a>)</dt>
+<dt>Sample Space (<a href="01-fundamentals.html#def-sample-space" class="quarto-xref">Definition&nbsp;<span>1.1</span></a>)</dt>
 <dd>
 The sample space for a random process is the collection of all possible results that we might observe.
 </dd>
-<dt>Sampling Distribution (<a href="03-samplingdistributions.html#def-sampling-distribution">Definition&nbsp;<span>3.5</span></a>)</dt>
+<dt>Sampling Distribution (<a href="03-samplingdistributions.html#def-sampling-distribution" class="quarto-xref">Definition&nbsp;<span>3.5</span></a>)</dt>
 <dd>
 The distribution of a statistic across repeated samples.
 </dd>
-<dt>Statistic (<a href="03-samplingdistributions.html#def-statistic">Definition&nbsp;<span>3.1</span></a>)</dt>
+<dt>Statistic (<a href="03-samplingdistributions.html#def-statistic" class="quarto-xref">Definition&nbsp;<span>3.1</span></a>)</dt>
 <dd>
 A statistic is a numerical summary of a sample; it is a function of the data alone. Prior to collecting data, a statistic is a function of the data to be collected.
 </dd>
-<dt>Subjective Interpretation of Probability (<a href="01-fundamentals.html#def-subjective-interpretation">Definition&nbsp;<span>1.4</span></a>)</dt>
+<dt>Subjective Interpretation of Probability (<a href="01-fundamentals.html#def-subjective-interpretation" class="quarto-xref">Definition&nbsp;<span>1.4</span></a>)</dt>
 <dd>
 In this perspective, the probability of <span class="math inline">\(A\)</span> describes the individual’s uncertainty about event <span class="math inline">\(A\)</span>.
 </dd>
-<dt>Support (<a href="02-randomvariables.html#def-support">Definition&nbsp;<span>2.2</span></a>)</dt>
+<dt>Support (<a href="02-randomvariables.html#def-support" class="quarto-xref">Definition&nbsp;<span>2.2</span></a>)</dt>
 <dd>
 The support of a random variable is the set of all possible values the random variable can take.
 </dd>
-<dt>Unbiased (<a href="03-samplingdistributions.html#def-unbiased">Definition&nbsp;<span>3.7</span></a>)</dt>
+<dt>Unbiased (<a href="03-samplingdistributions.html#def-unbiased" class="quarto-xref">Definition&nbsp;<span>3.7</span></a>)</dt>
 <dd>
 An estimator (statistic) <span class="math inline">\(\widehat{\theta}\)</span> is said to be unbiased for the parameter <span class="math inline">\(\theta\)</span> if
 </dd>
 </dl>
 <p><span class="math display">\[E\left(\widehat{\theta}\right) = \theta.\]</span></p>
 <dl>
-<dt>Variance (<a href="02-randomvariables.html#def-variance">Definition&nbsp;<span>2.7</span></a>)</dt>
+<dt>Variance (<a href="02-randomvariables.html#def-variance" class="quarto-xref">Definition&nbsp;<span>2.7</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a random variable with density function <span class="math inline">\(f\)</span> defined over the support <span class="math inline">\(\mathcal{S}\)</span>. The variance of a random variable, denoted <span class="math inline">\(Var(X)\)</span>, is given by
 </dd>
@@ -519,7 +607,7 @@ Let <span class="math inline">\(X\)</span> be a random variable with density fun
 <p><span class="math display">\[\sum_{\mathcal{S}} (x - \mu)^2 f(x)\]</span></p>
 <p>for discrete random variables.</p>
 <dl>
-<dt>t-Distribution (<a href="02-randomvariables.html#def-t-distribution">Definition&nbsp;<span>2.15</span></a>)</dt>
+<dt>t-Distribution (<a href="02-randomvariables.html#def-t-distribution" class="quarto-xref">Definition&nbsp;<span>2.15</span></a>)</dt>
 <dd>
 Let <span class="math inline">\(X\)</span> be a continuous random variable. <span class="math inline">\(X\)</span> is said to have a (standardized) t-distribution, sometimes called the Student’s t-distribution, if the density is given by
 </dd>
@@ -610,10 +698,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -623,8 +728,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -636,7 +750,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -680,6 +917,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -705,6 +943,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -766,14 +1030,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./references.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
+      <a href="./10-autocorrelation.html" class="pagination-link" aria-label="Autocorrelation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Autocorrelation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

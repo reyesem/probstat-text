@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -47,7 +47,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -56,6 +62,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -64,6 +71,33 @@ ul.task-list li input[type="checkbox"] {
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="mystyles.css">
 </head>
@@ -74,12 +108,12 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-regression.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inference for Regression Models</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-regression.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inference for Regression Models</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -89,12 +123,12 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Intro Statistical Theory</a> 
         <div class="sidebar-tools-main">
-    <a href="./ma382-text.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="./ma382-text.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -160,8 +194,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./08-matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-hierarchical-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Autocorrelation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -184,7 +230,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -214,7 +260,9 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <p>The previous chapters introduced the primary components of inference. Particular attention was paid to making inference for the mean of a quantitative variable. Most interesting questions involve examining a relationship between two variables. For example, consider the following question:</p>
 <blockquote class="blockquote">
@@ -222,7 +270,7 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <p>The above question depends on the relationship between the cost of a diamond and the carat of the diamond. In this chapter, we examine some of the probabilistic components associated with such problems, known as <strong>regression</strong>.</p>
 <div id="def-regression" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 5.1 (Regression) </strong></span>Allowing the parameters characterizing the distribution of a random variable to depend, through some specified function, on the value of additional variables.</p>
+<p><span class="theorem-title"><strong>Definition 5.1 (Regression)</strong></span> Allowing the parameters characterizing the distribution of a random variable to depend, through some specified function, on the value of additional variables.</p>
 </div>
 <section id="simple-linear-regression-model" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="simple-linear-regression-model"><span class="header-section-number">5.1</span> Simple Linear Regression Model</h2>
@@ -232,7 +280,7 @@ ul.task-list li input[type="checkbox"] {
 <p>It is more likely that the various units are not meant to be completely identical. That is, there are additional characteristics that might explain why each unit has a different response. For example, in our sample of diamonds, the units (the diamonds) are not identical. Some diamonds are larger than others; some have superior color or clarity. These differences in the characteristics of the diamonds might explain their different prices. Unfortunately, the distributional model above does not incorporate additional characteristics.</p>
 <p>The research question posed above suggested that the average response (cost) might depend upon another variable (carat), a predictor. The simple linear regression model allows the average response to depend upon the predictor through a linear function.</p>
 <div id="def-classical-simple-regression" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 5.2 (Classical Simple Linear Regression) </strong></span>Let <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)</span> be observations made on a sample of <span class="math inline">\(n\)</span> units. Under the classical simple linear regression model, the distributional model for the response among the population is given by</p>
+<p><span class="theorem-title"><strong>Definition 5.2 (Classical Simple Linear Regression)</strong></span> Let <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)</span> be observations made on a sample of <span class="math inline">\(n\)</span> units. Under the classical simple linear regression model, the distributional model for the response among the population is given by</p>
 <p><span class="math display">\[Y_1, Y_2, \dotsc, Y_n \stackrel{\text{Ind}}{\sim} N\left(\beta_0 + \beta_1 x_i, \sigma^2\right)\]</span></p>
 <p>where <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\sigma^2\)</span> are unknown parameters.</p>
 </div>
@@ -246,29 +294,29 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In <a href="#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a>, note that we only consider the response to be a random variable; the predictor is considered fixed (hence the use of a lowercase <span class="math inline">\(x\)</span> instead of a capital <span class="math inline">\(X\)</span>). This is consistent with the idea of a designed experiment for which the values of the predictor can be determined in advance by the researchers.</p>
+<p>In <a href="#def-classical-simple-regression" class="quarto-xref">Definition&nbsp;<span>5.2</span></a>, note that we only consider the response to be a random variable; the predictor is considered fixed (hence the use of a lowercase <span class="math inline">\(x\)</span> instead of a capital <span class="math inline">\(X\)</span>). This is consistent with the idea of a designed experiment for which the values of the predictor can be determined in advance by the researchers.</p>
 <p>However, for observational studies, the values of the predictor cannot be fixed. That is, in practice, the predictor is also unknown in advance and is therefore a random variable as well. In such cases, we can proceed in the same manner, considering the <em>conditional</em> distribution of the response <em>given</em> the predictor.</p>
 </div>
 </div>
-<p>Notice that <a href="#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a> simply extends the form of the distributional model we have previously considered. It makes it clear that</p>
+<p>Notice that <a href="#def-classical-simple-regression" class="quarto-xref">Definition&nbsp;<span>5.2</span></a> simply extends the form of the distributional model we have previously considered. It makes it clear that</p>
 <p><span class="math display">\[E\left(Y_i\right) = \beta_0 + \beta_1 x_i\]</span></p>
 <p>for each unit. Notice that we do not say that the observations are “identically distributed,” because they are not! The mean response differs (at least potentially) for each observation as it depends on the corresponding value of the predictor.</p>
 <p>While the above presentation connects the process for the inference of a single mean with that of regression, it is not the common presentation. Instead, the model is traditionally presented as saying that</p>
 <p><span class="math display">\[Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i\]</span></p>
 <p>where <span class="math inline">\(\varepsilon_i \stackrel{\text{IID}}{\sim} N\left(0, \sigma^2\right)\)</span>, where now we can make use of the “identically distributed” language. In this presentation, we have introduced a new random variable, <span class="math inline">\(\varepsilon\)</span>. Since the expression <span class="math inline">\(\beta_0 + \beta_1 x_i\)</span> does not contain a random variable, it is deterministic in nature. Therefore, the distribution of <span class="math inline">\(Y_i\)</span> is determined because we are simply shifting the distribution of <span class="math inline">\(\varepsilon_i\)</span>.</p>
-<p>Whenever we posit a distributional model for the population, as we do in <a href="#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a>, we are making a fairly strong assumption. In practice, we may not feel comfortable positing the form of the distribution. We can reduce the conditions on <span class="math inline">\(\varepsilon\)</span> and still retain some of the key characteristics of the model.</p>
+<p>Whenever we posit a distributional model for the population, as we do in <a href="#def-classical-simple-regression" class="quarto-xref">Definition&nbsp;<span>5.2</span></a>, we are making a fairly strong assumption. In practice, we may not feel comfortable positing the form of the distribution. We can reduce the conditions on <span class="math inline">\(\varepsilon\)</span> and still retain some of the key characteristics of the model.</p>
 <p>Regardless of the conditions we impose on <span class="math inline">\(\varepsilon\)</span>, we are essentially specifying a model for the data generating process — the set of statements we are willing to make regarding the variability in the response. We know that since the response is a random variable it has some distribution. The model for the data generating process is really a set of statements about that distribution. We may only be characterizing the mean of the distribution of the response; we may be willing to characterize the mean and the variance; or, we may be willing to fully characterize the distributional form.</p>
 </section>
 <section id="least-squares-estimation" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="least-squares-estimation"><span class="header-section-number">5.2</span> Least Squares Estimation</h2>
 <p>While the previous section defines a model for the data generating process, it does not specify how to estimate the unknown parameters. Prior to this section, we were able to estimate the parameters by making analogous computations within the sample. As we replace a singular parameter with a function, corresponding computations are no longer obvious. A general process for estimating the unknown parameters that define the mean response is the <strong>method of least squares</strong>.</p>
 <div id="def-least-squares" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 5.3 (Method of Least Squares) </strong></span>The least squares estimates of the parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in a simple linear regression model are the values that minimize the quantity</p>
+<p><span class="theorem-title"><strong>Definition 5.3 (Method of Least Squares)</strong></span> The least squares estimates of the parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in a simple linear regression model are the values that minimize the quantity</p>
 <p><span class="math display">\[\sum_{i=1}^{n} \left(Y_i - \beta_0 - \beta_1 x_i\right)^2.\]</span></p>
 <p>The estimates are often denoted <span class="math inline">\(\widehat{\beta}_0\)</span> and <span class="math inline">\(\widehat{\beta}_1\)</span>.</p>
 </div>
 <div id="thm-least-squares-slr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 5.1 (Least Squares Estimates) </strong></span>Let <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)</span> be observations made on a sample of <span class="math inline">\(n\)</span> units. The least squares estimates for the simple linear regression model relating the response and predictor are given by</p>
+<p><span class="theorem-title"><strong>Theorem 5.1 (Least Squares Estimates)</strong></span> Let <span class="math inline">\(\left(Y_1, x_1\right), \left(Y_2, x_2\right), \dotsc, \left(Y_n, x_n\right)\)</span> be observations made on a sample of <span class="math inline">\(n\)</span> units. The least squares estimates for the simple linear regression model relating the response and predictor are given by</p>
 <p><span class="math display">\[
 \begin{aligned}
   \widehat{\beta}_1
@@ -365,9 +413,9 @@ Note
 </div>
 <p>The method of least squares can be used to estimate the parameters in the mean model, but this is not <em>statistics</em>; it is <em>mathematics</em>. In particular, the method of least squares is just one of several optimization problems we might have defined to estimate the parameters. Statistics is the discipline of characterizing variability. Characterizing the uncertainty in these estimates — characterizing their sampling distribution — that is where we move into a statistical analysis.</p>
 <div id="exm-unbiased-ls" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.1 (Expected Value of the Intercept) </strong></span>The least squares estimate of the intercept is an unbiased estimator. Establish this, assuming that the least squares estimate of the slope is also an unbiased estimator.</p>
+<p><span class="theorem-title"><strong>Example 5.1 (Expected Value of the Intercept)</strong></span> The least squares estimate of the intercept is an unbiased estimator. Establish this, assuming that the least squares estimate of the slope is also an unbiased estimator.</p>
 </div>
-<div class="solution proof">
+<div class="proof solution">
 <p><span class="proof-title"><em>Solution</em>. </span>To establish that this statement is correct, observe that</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -384,7 +432,7 @@ Note
 </div>
 <p>Note that in our solution, the only assumption we needed on the error term was that it had an average of 0. While the other conditions on the error term typically assumed (classical regression model) are helpful in characterizing the sampling distribution of the least squares estimates, only this one condition is needed to establish where that sampling distribution is centered.</p>
 <div id="thm-classical-ls" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 5.2 (Sampling Distribution for Least Squares Estimators) </strong></span>Under the conditions of the Classical Regression Model (<a href="#def-classical-simple-regression">Definition&nbsp;<span>5.2</span></a>), we have that</p>
+<p><span class="theorem-title"><strong>Theorem 5.2 (Sampling Distribution for Least Squares Estimators)</strong></span> Under the conditions of the Classical Regression Model (<a href="#def-classical-simple-regression" class="quarto-xref">Definition&nbsp;<span>5.2</span></a>), we have that</p>
 <p><span class="math display">\[\frac{\widehat{\beta}_j - \beta_j}{\sqrt{Var\left(\widehat{\beta}_j\right)}} \sim t_{n - 2}\]</span></p>
 <p>where</p>
 <p><span class="math display">\[
@@ -484,10 +532,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -497,8 +562,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -510,7 +584,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -554,6 +751,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -579,6 +777,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -640,17 +864,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./04-inference.html" class="pagination-link">
+      <a href="./04-inference.html" class="pagination-link" aria-label="Inference for a Population Mean">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference for a Population Mean</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./06-normality.html" class="pagination-link">
+      <a href="./06-normality.html" class="pagination-link" aria-label="More on the Classical Model">
         <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">More on the Classical Model</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

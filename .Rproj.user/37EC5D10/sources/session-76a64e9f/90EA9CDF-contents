@@ -1,0 +1,131 @@
+---
+title: "Seating Layout"
+format: 
+  html:
+    embed-resources: true
+
+echo: false
+eval: true
+
+params:
+  nseats: 5
+  minseat: 4
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+```
+
+
+```{r}
+roster <- readxl::read_excel('Roster.xlsx') |>
+  mutate(
+    First = case_when(
+      First == 'Dave' ~ str_c(First, str_sub(Last, 1, 1), sep = ' '),
+      First == 'John' ~ str_c(First, str_sub(Last, 1, 1), sep = ' '),
+      TRUE ~ First
+    )
+  ) |>
+  arrange(Include, Last)
+
+
+roster <- roster |>
+  slice_sample(
+    prop = 1,
+    by = Include,
+    replace = FALSE
+  ) |>
+  filter(
+    Include != 0
+  )
+```
+
+
+```{r}
+roster <- roster |>
+  mutate(
+    Table = rep(seq(nrow(roster)), each = params$nseats, length.out = nrow(roster))
+  ) 
+
+tcount <- count(roster, Table)
+
+if (any(tcount$n < params$minseat)) {
+  roster1 <- full_join(
+    roster,
+    tcount,
+    by = 'Table'
+  ) |>
+    filter(n >= params$minseat)
+  
+  roster2 <- full_join(
+    roster,
+    tcount,
+    by = 'Table'
+  ) |>
+    filter(n < params$minseat) |>
+    mutate(
+      Table = Table - seq_along(Table)
+    )
+  
+  roster <- bind_rows(
+    select(roster1, -n),
+    select(roster2, -n)
+  )
+}
+```
+
+```{r}
+roster <- roster |>
+  group_by(Table) |>
+  mutate(
+    Seat_Angle = seq(90, 450, 
+                     length.out = (length(First) + 1))[-(length(First) + 1)],
+    Seat_Angle = Seat_Angle * (pi / 180),
+    Seat_x = 0.5 * cos(Seat_Angle) + 1.1*Table,
+    Seat_y = 0.5 * sin(Seat_Angle) + 1.75*(1 - (Table %% 2))
+  ) |>
+  ungroup() |>
+  mutate(
+    First = str_pad(First, width = max(str_width(First)), side = 'both')
+  )
+
+tables <- expand_grid(
+  Table = seq(1, max(roster$Table)),
+  angle = seq(0, 360, length.out = 500) * (pi / 180)
+) |>
+  mutate(
+    x = 0.5 * cos(angle) + 1.1*Table,
+    y = 0.5 * sin(angle) + 1.75*(1 - (Table %% 2))
+  )
+
+centers <- tibble(
+  Table = seq(1, max(roster$Table)),
+  x = 1.1 * Table,
+  y = 1.75 * (1 - (Table %% 2))
+)
+```
+
+
+```{r}
+ggplot(roster) +
+  geom_polygon(
+    data = tables,
+    mapping = aes(x = x, y = y, fill = factor(Table))
+  ) +
+  geom_label(
+    mapping = aes(x = Seat_x, y = Seat_y, label = First),
+    vjust = 'center', hjust = 'center'
+    ) +
+  geom_text(
+    data = centers,
+    mapping = aes(x = x, y = y, label = Table),
+    vjust = 'center', hjust = 'center',
+    color = 'white', size = 8
+  ) +
+  coord_equal() +
+  theme_void() +
+  scale_fill_brewer(type = 'qual', palette = 'Dark2', guide = 'none')
+```
+
+

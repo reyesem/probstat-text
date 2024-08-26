@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
+<link href="./08-matrix.html" rel="next">
 <link href="./06-normality.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -47,7 +47,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -56,6 +62,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -64,6 +71,33 @@ ul.task-list li input[type="checkbox"] {
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="mystyles.css">
 </head>
@@ -74,12 +108,12 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-location-scale.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Location Scale Families</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-location-scale.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Location Scale Families</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -89,12 +123,12 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Intro Statistical Theory</a> 
         <div class="sidebar-tools-main">
-    <a href="./ma382-text.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="./ma382-text.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -160,8 +194,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./08-matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-hierarchical-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hierarchical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Autocorrelation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -184,7 +230,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
@@ -207,17 +253,19 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <p>As we have seen, the Normal distribution plays a large role in classical statistical theory. However, it is just one example of a location-scale family. In this chapter, we briefly discuss a key property of location-scale families — probability plots.</p>
 <div id="def-location-scale" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 7.1 (Location-Scale Family) </strong></span>For <span class="math inline">\(a \in \mathbb{R}\)</span> and <span class="math inline">\(b &gt; 0\)</span>, let <span class="math inline">\(X = a + bZ\)</span> for some random variable <span class="math inline">\(Z\)</span>. <span class="math inline">\(X\)</span> is said to be the location-scale family associated with the distribution of <span class="math inline">\(Z\)</span> with location parameter <span class="math inline">\(a\)</span> and scale parameter <span class="math inline">\(b\)</span>.</p>
+<p><span class="theorem-title"><strong>Definition 7.1 (Location-Scale Family)</strong></span> For <span class="math inline">\(a \in \mathbb{R}\)</span> and <span class="math inline">\(b &gt; 0\)</span>, let <span class="math inline">\(X = a + bZ\)</span> for some random variable <span class="math inline">\(Z\)</span>. <span class="math inline">\(X\)</span> is said to be the location-scale family associated with the distribution of <span class="math inline">\(Z\)</span> with location parameter <span class="math inline">\(a\)</span> and scale parameter <span class="math inline">\(b\)</span>.</p>
 </div>
 <p>While technically we can create a location-scale family for any distribution, we generally think of those distributions for which the support remains unchanged. Many such distributions we have seen belong to this class.</p>
 <div id="exm-exponential-scale" class="theorem example">
-<p><span class="theorem-title"><strong>Example 7.1 (Scale Family: Exponential Distribution) </strong></span>The Exponential distribution is a scale family (the location parameter is 0). Let <span class="math inline">\(X\)</span> follow an Exponential distribution with scale parameter <span class="math inline">\(\lambda\)</span>. Show that <span class="math inline">\(aX\)</span> also follows an Exponential distribution with scale parameter <span class="math inline">\(a\lambda\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 7.1 (Scale Family: Exponential Distribution)</strong></span> The Exponential distribution is a scale family (the location parameter is 0). Let <span class="math inline">\(X\)</span> follow an Exponential distribution with scale parameter <span class="math inline">\(\lambda\)</span>. Show that <span class="math inline">\(aX\)</span> also follows an Exponential distribution with scale parameter <span class="math inline">\(a\lambda\)</span>.</p>
 </div>
-<div class="solution proof">
+<div class="proof solution">
 <p><span class="proof-title"><em>Solution</em>. </span>Let <span class="math inline">\(Y = aX\)</span>, then the CDF of <span class="math inline">\(Y\)</span> is given by</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -233,38 +281,38 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>The above example illustrates a very helpful result regarding location-scale families.</p>
 <div id="thm-location-scale" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 7.1 (CDF for Location-Scale Families) </strong></span>Let <span class="math inline">\(Z\)</span> be a random variable with CDF <span class="math inline">\(F_Z(z)\)</span>, and define <span class="math inline">\(X = aZ + b\)</span> for <span class="math inline">\(a \in \mathbb{R}\)</span> and <span class="math inline">\(b &gt; 0\)</span>. Then,</p>
+<p><span class="theorem-title"><strong>Theorem 7.1 (CDF for Location-Scale Families)</strong></span> Let <span class="math inline">\(Z\)</span> be a random variable with CDF <span class="math inline">\(F_Z(z)\)</span>, and define <span class="math inline">\(X = aZ + b\)</span> for <span class="math inline">\(a \in \mathbb{R}\)</span> and <span class="math inline">\(b &gt; 0\)</span>. Then,</p>
 <p><span class="math display">\[F_X(x) = F_Z\left(\frac{x - a}{b}\right).\]</span></p>
 </div>
 <p>That is, the CDF for a location-scale family is a function of the CDF of the “standard” distribution, the location parameter, and the scale parameter. Throughout a course in probability, we often make use of this property when computing probabilities of a Normal distribution (this is essentially what every Normal table in the back of a probability textbook is relying on). However, we can exploit this feature of location-scale families for much more than creating a table to enable “by-hand” computations of probabilities.</p>
 <div id="exm-location-scale-quantiles" class="theorem example">
-<p><span class="theorem-title"><strong>Example 7.2 (Quantiles of a Location-Scale Family) </strong></span>Let <span class="math inline">\(X \sim F_X\)</span> be a random variable belonging to a location-scale family with location parameter <span class="math inline">\(a \in \mathbb{R}\)</span> and scale parameter <span class="math inline">\(b &gt; 0\)</span>. Let <span class="math inline">\(Z \sim F_Z\)</span> be the “standard” distribution generating this location-scale family. Find an expression for the <span class="math inline">\(q\)</span>-th quantile of <span class="math inline">\(X\)</span> as a function of the <span class="math inline">\(q\)</span>-th quantile of <span class="math inline">\(Z\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 7.2 (Quantiles of a Location-Scale Family)</strong></span> Let <span class="math inline">\(X \sim F_X\)</span> be a random variable belonging to a location-scale family with location parameter <span class="math inline">\(a \in \mathbb{R}\)</span> and scale parameter <span class="math inline">\(b &gt; 0\)</span>. Let <span class="math inline">\(Z \sim F_Z\)</span> be the “standard” distribution generating this location-scale family. Find an expression for the <span class="math inline">\(q\)</span>-th quantile of <span class="math inline">\(X\)</span> as a function of the <span class="math inline">\(q\)</span>-th quantile of <span class="math inline">\(Z\)</span>.</p>
 </div>
-<div class="solution proof">
+<div class="proof solution">
 <p><span class="proof-title"><em>Solution</em>. </span>The <span class="math inline">\(q\)</span>-th quantile of <span class="math inline">\(X\)</span>, call it <span class="math inline">\(X_q\)</span>, is the value such that</p>
 <p><span class="math display">\[q = F_X\left(X_q\right).\]</span></p>
-<p>By <a href="#thm-location-scale">Theorem&nbsp;<span>7.1</span></a>, we have that</p>
+<p>By <a href="#thm-location-scale" class="quarto-xref">Theorem&nbsp;<span>7.1</span></a>, we have that</p>
 <p><span class="math display">\[q = F_Z\left(\frac{X_q - a}{b}\right).\]</span></p>
 <p>This implies that the <span class="math inline">\(q\)</span>-th quantile of <span class="math inline">\(Z\)</span>, call it <span class="math inline">\(Z_q\)</span> is given by</p>
 <p><span class="math display">\[\frac{X_q - a}{b}.\]</span></p>
 <p>Therefore,</p>
 <p><span class="math display">\[X_q = Z_q b + a.\]</span></p>
 </div>
-<p><a href="#exm-location-scale-quantiles">Example&nbsp;<span>7.2</span></a> reveals that the quantiles of a location-scale distribution are linearly related to the quantiles of the corresponding “standard” distribution.</p>
+<p><a href="#exm-location-scale-quantiles" class="quarto-xref">Example&nbsp;<span>7.2</span></a> reveals that the quantiles of a location-scale distribution are linearly related to the quantiles of the corresponding “standard” distribution.</p>
 <p>In order to see how this can be useful in a statistical analysis, we must first consider how we define a sample quantile. Our first pass at a definition might go something like the following:</p>
 <blockquote class="blockquote">
 <p>The <span class="math inline">\(q\)</span>-th sample quantile is the value <span class="math inline">\(k\)</span> such that <span class="math inline">\(100q\)</span>% of observed vales in the sample are no more than <span class="math inline">\(k\)</span>.</p>
 </blockquote>
 <p>While this makes intuitive sense, we recognize that it does not result in a unique value. For example, consider a the simple sample <span class="math inline">\(\{1, 2, 3, 4, 5\}\)</span>. In this sample, 60% of observations in the sample have a value no more than 3; so, it would seem that 3 represents the 0.6 quantile. But, we also know that 60% of observations have a value no more than 3.5; so, 3.5 is also the 0.6 quantile. More, we would generally consider 3 to be the median (0.5 quantile) of the sample! It seems our working definition of a sample quantile seems a bit off. In order to create a more rigorous definition, we first need the concept of an order statistic.</p>
 <div id="def-order-statistic" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 7.2 (Order Statistic) </strong></span>Let <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> be a random sample of size <span class="math inline">\(n\)</span>. The <span class="math inline">\(j\)</span>-th order statistic, denoted <span class="math inline">\(X_{(j)}\)</span> is the <span class="math inline">\(j\)</span>-th smallest value in the sample. Special cases include</p>
+<p><span class="theorem-title"><strong>Definition 7.2 (Order Statistic)</strong></span> Let <span class="math inline">\(X_1, X_2, \dotsc, X_n\)</span> be a random sample of size <span class="math inline">\(n\)</span>. The <span class="math inline">\(j\)</span>-th order statistic, denoted <span class="math inline">\(X_{(j)}\)</span> is the <span class="math inline">\(j\)</span>-th smallest value in the sample. Special cases include</p>
 <ul>
 <li><span class="math inline">\(X_{(1)}\)</span>, the sample minimum, and</li>
 <li><span class="math inline">\(X_{(n)}\)</span>, the sample maximum.</li>
 </ul>
 </div>
 <div id="def-sample-quantile" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 7.3 (Sample Quantile) </strong></span>Let <span class="math inline">\(x_{(j)}\)</span> denote the <span class="math inline">\(j\)</span>-th observed order statistic in a sample. Then, the <span class="math inline">\(q\)</span>-th quantile of the sample is given by <span class="math inline">\(x_{(j)}\)</span> for <span class="math inline">\(\frac{j-1}{n} &lt; q \leq \frac{j}{n}\)</span> and <span class="math inline">\(x_{(1)}\)</span> if <span class="math inline">\(q = 0\)</span>, for <span class="math inline">\(j=1,2,\dotsc,n\)</span>.</p>
+<p><span class="theorem-title"><strong>Definition 7.3 (Sample Quantile)</strong></span> Let <span class="math inline">\(x_{(j)}\)</span> denote the <span class="math inline">\(j\)</span>-th observed order statistic in a sample. Then, the <span class="math inline">\(q\)</span>-th quantile of the sample is given by <span class="math inline">\(x_{(j)}\)</span> for <span class="math inline">\(\frac{j-1}{n} &lt; q \leq \frac{j}{n}\)</span> and <span class="math inline">\(x_{(1)}\)</span> if <span class="math inline">\(q = 0\)</span>, for <span class="math inline">\(j=1,2,\dotsc,n\)</span>.</p>
 </div>
 <p>Let’s apply the above definition to our sample <span class="math inline">\(\{1, 2, 3, 4, 5\}\)</span>. For the median, we have <span class="math inline">\(q = 0.5\)</span>, which falls between <span class="math inline">\(\frac{2}{5}\)</span> and <span class="math inline">\(\frac{3}{5}\)</span>; therefore, we take the third observation in the dataset, which is 3.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -282,7 +330,7 @@ Note
 </div>
 <p>Let’s consider applying the above to a sample from a Normal distribution. In particular, consider taking a random sample of 15 observations from a Normal distribution with a <em>known</em> mean of <span class="math inline">\(\mu\)</span> and a <em>known</em> variance of <span class="math inline">\(\sigma^2\)</span>. For these 15 observations, note that we have that</p>
 <p><span class="math display">\[Q\left(\frac{j - 0.5}{15}\right) = X_{(j)}\]</span></p>
-<p>where <span class="math inline">\(Q(p)\)</span> represents the <span class="math inline">\(p\)</span>-th quantile for <span class="math inline">\(j = 1,2,\dotsc, 15\)</span>. The choice of the these 15 quantiles is somewhat arbitrary but provides 15 evenly spaced points over the interval <span class="math inline">\((0, 1)\)</span>. Additionally, since each observation is from a known Normal distribution, we can apply the results of <a href="#exm-location-scale-quantiles">Example&nbsp;<span>7.2</span></a> to recognize that</p>
+<p>where <span class="math inline">\(Q(p)\)</span> represents the <span class="math inline">\(p\)</span>-th quantile for <span class="math inline">\(j = 1,2,\dotsc, 15\)</span>. The choice of the these 15 quantiles is somewhat arbitrary but provides 15 evenly spaced points over the interval <span class="math inline">\((0, 1)\)</span>. Additionally, since each observation is from a known Normal distribution, we can apply the results of <a href="#exm-location-scale-quantiles" class="quarto-xref">Example&nbsp;<span>7.2</span></a> to recognize that</p>
 <p><span class="math display">\[X_{(j)} = Z_{(j - 0.5)/15} \sigma + \mu,\]</span></p>
 <p>where</p>
 <p><span class="math display">\[Z_{(j - 0.5)/15} = \begin{cases} -1.83 &amp; j = 1 \\ -1.28 &amp; j = 2 \\ \dotsc &amp; \dotsc \\ 1.83 &amp; j = 15\end{cases}\]</span></p>
@@ -385,10 +433,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -398,8 +463,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -411,7 +485,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -455,6 +652,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -480,6 +678,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -541,17 +765,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./06-normality.html" class="pagination-link">
+      <a href="./06-normality.html" class="pagination-link" aria-label="More on the Classical Model">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">More on the Classical Model</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./08-matrix.html" class="pagination-link" aria-label="Matrix View of Regression">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Matrix View of Regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
